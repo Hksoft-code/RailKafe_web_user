@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./dashboard.css";
 import delicioustext from "../../Assets/delicioustext.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import items from "../../Assets/home (2).png";
 import groupIcon from "../../Assets/Person.png";
 import adds from "../../Assets/adds.png";
@@ -10,22 +10,22 @@ import IRCTCPartner from "../IRCTC partner/IRCTCPartner";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import UpComingFood from "../IRCTC partner/UpcomingOrder";
 import Footer from "./../../Common-Components/Footer.jsx";
-
+import TrainSelectInput from "./../Otherpages/TrainSelectInput.jsx";
 function Dashboard() {
   // const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
-  const [trainNumber, setTrainNumber] = useState("");
-  const navigate = useNavigate();
+  // const [trainNumber, setTrainNumber] = useState("");
+  // const navigate = useNavigate();
 
-  const handleTrainNumberChange = (event) => {
-    setTrainNumber(event.target.value);
-  };
+  // const handleTrainNumberChange = (event) => {
+  //   setTrainNumber(event.target.value);
+  // };
 
-  const handleSubmitTrainNumber = (event) => {
-    event.preventDefault();
-    navigate(`/order-food/${trainNumber}`);
-  };
+  // const handleSubmitTrainNumber = (event) => {
+  //   event.preventDefault();
+  //   navigate(`/order-food/${trainNumber}`);
+  // };
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -43,7 +43,7 @@ function Dashboard() {
     // Do something with the input value, e.g., submit it to a server
     // console.log("Submitted value:", inputValue);
   };
-  const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
+  // const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
 
   return (
     <div>
@@ -103,28 +103,29 @@ function Dashboard() {
             )}
             {activeButton === "train" && (
               /* Dropdown menu with all train numbers */
-              <form
-                onSubmit={handleSubmitTrainNumber}
-                className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
-              >
-                <input
-                  type="text"
-                  list="trainNumbers"
-                  placeholder="Train Number"
-                  value={trainNumber}
-                  className="inputpnr mx-auto w-full"
-                  required
-                  onChange={handleTrainNumberChange}
-                />
-                <datalist id="trainNumbers">
-                  {trainNumbersArray.map((trainNumber, index) => (
-                    <option key={index} value={trainNumber} />
-                  ))}
-                </datalist>
-                <button type="submit" className="button1 sm:my-0 my-4">
-                  Submit
-                </button>
-              </form>
+              // <form
+              //   onSubmit={handleSubmitTrainNumber}
+              //   className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
+              // >
+              //   <input
+              //     type="text"
+              //     list="trainNumbers"
+              //     placeholder="Train Number"
+              //     value={trainNumber}
+              //     className="inputpnr mx-auto w-full"
+              //     required
+              //     onChange={handleTrainNumberChange}
+              //   />
+              //   <datalist id="trainNumbers">
+              //     {trainNumbersArray.map((trainNumber, index) => (
+              //       <option key={index} value={trainNumber} />
+              //     ))}
+              //   </datalist>
+              //   <button type="submit" className="button1 sm:my-0 my-4">
+              //     Submit
+              //   </button>
+              // </form>
+              <TrainSelectInput />
             )}
             {/* Add similar conditional rendering for other buttons */}
             {activeButton === "whatsapp" && (
