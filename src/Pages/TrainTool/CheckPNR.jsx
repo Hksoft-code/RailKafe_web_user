@@ -1,8 +1,23 @@
 import { useState } from "react";
 import Group from "./../../Assets/top-banner-food 1.png";
-
+import { getCheckPnr } from "./service/TrainToolsServices.jsx";
 import FAQs from "./../Faqsection/FAQ.jsx";
 const CheckPNR = () => {
+  const [pnrNumber, setPnrNumber] = useState("");
+  console.log("pnr", pnrNumber);
+  // const [pnrDetails, setPnrDetails] = useState(null)
+  const getCheck_Pnr = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await getCheckPnr(pnrNumber);
+      const pnr = response?.data.data;
+      // setPnrDetails(pnrDetails);
+      console.log("pnrdetail",pnr);
+      console.log("restaurant info response", response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const [faqs, setFaqs] = useState([
     {
       question: "How many programmers does it take to screw a lightbulb?",
@@ -42,11 +57,15 @@ const CheckPNR = () => {
       <h1 className="text-center font-bold text-4xl mt-4 mb-3">
         CHECK PNR STATUS
       </h1>
-      <form onSubmit={"handleSubmit"} className="my-2">
+      <form onSubmit={getCheck_Pnr} className="my-2">
         <input
           placeholder="Enter PNR Number"
           className="inputpnr mx-3"
           type="text"
+          value={pnrNumber}
+          onChange={(e) => {
+            setPnrNumber(e.target.value);
+          }}
           required
         />
         <button type="submit" className="button1">
@@ -89,7 +108,9 @@ const CheckPNR = () => {
             Step 1 – Note or copy your ten-digit PNR number which is generally
             on the top left side of your ticket.
           </li>
-          <li className="w-9/10">Step 2 –Go to the PNR check page on Zoop website.</li>
+          <li className="w-9/10">
+            Step 2 –Go to the PNR check page on Zoop website.
+          </li>
           <li className="w-9/10">
             Step 3 –Type or paste your PNR number in the search box and click on
             submit button.
@@ -98,7 +119,9 @@ const CheckPNR = () => {
             Step 4 –You will see details of current reservation status of your
             train journey.
           </li>
-          <li className="w-9/10">Indian Railways PNR Number Abbreviations or Short Codes</li>
+          <li className="w-9/10">
+            Indian Railways PNR Number Abbreviations or Short Codes
+          </li>
         </ul>
       </div>
       <div>
@@ -174,7 +197,7 @@ const CheckPNR = () => {
             smaller stations and generally have less chances of getting
             confirmed.
           </li>
-        </ol >
+        </ol>
         <p className="text-justify w-4/5 mx-auto text-xl text-gray-500">
           Modes of PNR Inquiry and How Does it Work? <br />
           Indian Railways and IRCTC provide various modes for passengers to

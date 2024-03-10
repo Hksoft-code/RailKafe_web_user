@@ -1,5 +1,5 @@
 import food from "./../../Assets/items.png";
-import { useLocation, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import "./orderfood.css";
 import TrainInfo from "../Otherpages/TrainInfo";
