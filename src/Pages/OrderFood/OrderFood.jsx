@@ -26,13 +26,13 @@ function OrderFood() {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (selectedStation != null) {
-      getRestaurantByTrain_Number(trainNumber, "CTC");
+      getRestaurantByTrain_Number(trainNumber, "RJY");
     }
   }, [selectedStation]);
 
   const getRestaurantByTrain_Number = async () => {
     try {
-      const response = await getResturantsByTrain(trainNumber, "CTC");
+      const response = await getResturantsByTrain(trainNumber, "RJY");
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturants);
       console.log("restaurant info response", response);
@@ -41,70 +41,70 @@ function OrderFood() {
     }
   };
 
-  const restaurants = {
-    12345: [
-      {
-        name: "Feeder Kitchen",
-        location: "New Delhi",
-        cuisine: "North Indian, Fast Food, Chinese, Pizza",
-      },
-      {
-        name: "Tasty Bites",
-        location: "Mumbai",
-        cuisine: "South Indian, Fast Food, Italian, Chinese",
-      },
-      {
-        name: "Crispy Crunch",
-        location: "Bangalore",
-        cuisine: "Italian, Fast Food, Mexican, Thai",
-      },
-    ],
-    67890: [
-      {
-        name: "Spice Paradise",
-        location: "Hyderabad",
-        cuisine: "Indian, Chinese, Continental",
-      },
-      {
-        name: "Flavors of India",
-        location: "Chennai",
-        cuisine: "South Indian, North Indian, Seafood",
-      },
-    ],
-    24680: [
-      {
-        name: "Green Garden",
-        location: "Pune",
-        cuisine: "Vegetarian, Indian, Chinese",
-      },
-    ],
-    13579: [
-      {
-        name: "Ocean Delight",
-        location: "Goa",
-        cuisine: "Seafood, Goan, Continental",
-      },
-      {
-        name: "Golden Grill",
-        location: "Jaipur",
-        cuisine: "Rajasthani, North Indian",
-      },
-    ],
-    98765: [
-      {
-        name: "Dhaba Express",
-        location: "Amritsar",
-        cuisine: "Punjabi, North Indian",
-      },
-      {
-        name: "Coastal Flavors",
-        location: "Kochi",
-        cuisine: "Kerala, Seafood, South Indian",
-      },
-    ],
-  };
+  // const restaurants = {
+  //   12345: [
+  //     {
+  //       name: "Feeder Kitchen",
+  //       location: "New Delhi",
+  //       cuisine: "North Indian, Fast Food, Chinese, Pizza",
+  //     },
+  //     {
+  //       name: "Tasty Bites",
+  //       location: "Mumbai",
+  //       cuisine: "South Indian, Fast Food, Italian, Chinese",
+  //     },
+  //     {
+  //       name: "Crispy Crunch",
+  //       location: "Bangalore",
+  //       cuisine: "Italian, Fast Food, Mexican, Thai",
+  //     },
+  //   ],
+  //   67890: [
+  //     {
+  //       name: "Spice Paradise",
+  //       location: "Hyderabad",
+  //       cuisine: "Indian, Chinese, Continental",
+  //     },
+  //     {
+  //       name: "Flavors of India",
+  //       location: "Chennai",
+  //       cuisine: "South Indian, North Indian, Seafood",
+  //     },
+  //   ],
+  //   24680: [
+  //     {
+  //       name: "Green Garden",
+  //       location: "Pune",
+  //       cuisine: "Vegetarian, Indian, Chinese",
+  //     },
+  //   ],
+  //   13579: [
+  //     {
+  //       name: "Ocean Delight",
+  //       location: "Goa",
+  //       cuisine: "Seafood, Goan, Continental",
+  //     },
+  //     {
+  //       name: "Golden Grill",
+  //       location: "Jaipur",
+  //       cuisine: "Rajasthani, North Indian",
+  //     },
+  //   ],
+  //   98765: [
+  //     {
+  //       name: "Dhaba Express",
+  //       location: "Amritsar",
+  //       cuisine: "Punjabi, North Indian",
+  //     },
+  //     {
+  //       name: "Coastal Flavors",
+  //       location: "Kochi",
+  //       cuisine: "Kerala, Seafood, South Indian",
+  //     },
+  //   ],
+  // };
 
-  const restaurant = restaurants[trainNumber];
+  // const restaurant = restaurants[trainNumber];
 
   return (
     <>
@@ -114,10 +114,10 @@ function OrderFood() {
           Order Food in Exp {trainNumber}
         </h1>
         <div>
-          {restaurant && restaurant.length > 0 && (
+          {restaurantList && restaurantList.length > 0 && (
             <div className="d-flex my-3 mx-5 flex-col sm:flex-row justify-between items-center">
               <h3 className="font-semibold my-2">
-                Restaurants at {restaurant[0].location}
+                Restaurants at {restaurantList[0].location}
               </h3>
               <div className="bg-[#de4d11] shadow-custom w-fit h-auto rounded-lg my-2">
                 <p className="text-white font-semibold text-base p-2 mb-0">
