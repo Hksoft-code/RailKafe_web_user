@@ -1,0 +1,27 @@
+.profileimage {
+  background-color: #ffffff;
+  /* Initial box shadow values */
+  --box-shadow-x: 5px;
+  --box-shadow-y: 5px;
+  --box-shadow-blur: 10px;
+  --box-shadow-color: rgba(0, 0, 0, 0.5);
+  /* Apply box shadow using CSS variables */
+  box-shadow: var(--box-shadow-x) var(--box-shadow-y) var(--box-shadow-blur)
+    var(--box-shadow-color);
+}
+
+.imagecamera {
+  position: relative;
+  bottom: 0;
+  right: 0;
+}
+
+
+
+/* @media only screen and (max-width: 600px) {
+  .imagecamera {
+    position: absolute;
+    top: 25%;
+    right: 37%;
+  }
+} */

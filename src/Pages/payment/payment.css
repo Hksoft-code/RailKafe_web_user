@@ -1,0 +1,30 @@
+input[type="radio"] {
+  /* Hide the default radio button */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Define the size of the custom radio button */
+  width: 20px;
+  height: 20px;
+  /* Add a border */
+  border: 2px solid #DE4D11;
+  border-radius: 50%; /* Make it round */
+  /* Center the custom radio button within its container */
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+/* Style the radio button's inner circle when checked */
+input[type="radio"]:checked::after {
+  /* Display a white circle inside the radio button */
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #DE4D11; /* Change this to your desired color */
+  border-radius: 50%; /* Make it round */
+  /* Position the inner circle at the center of the radio button */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

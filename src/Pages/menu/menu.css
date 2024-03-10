@@ -1,0 +1,14 @@
+.buttons {
+  border: 2px solid rgba(222, 77, 17, 1);
+  color: rgba(222, 77, 17, 1);
+}
+.buttons:hover,
+.buttons:active {
+  color: white;
+  background-color: rgba(222, 77, 17, 1);
+}
+
+.custommargin{
+  margin-left: auto ;
+  margin-right: auto ;
+}

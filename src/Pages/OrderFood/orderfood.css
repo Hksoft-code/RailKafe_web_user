@@ -1,0 +1,9 @@
+/* In your custom CSS file or within a <style> tag */
+.shadow-custom {
+    --shadow-horizontal: 0px;
+    --shadow-vertical: 3.9733777046203613px;
+    --shadow-blur: 52.05125045776367px;
+    --shadow-color: rgba(0, 0, 0, 0.14);
+    box-shadow: var(--shadow-horizontal) var(--shadow-vertical) var(--shadow-blur) var(--shadow-color);
+  }
+  

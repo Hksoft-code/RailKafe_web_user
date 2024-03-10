@@ -1,0 +1,19 @@
+.css-1bjk3jo-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected,
+.css-16lloyr-MuiBottomNavigation-root,
+.css-de1c49,
+.css-sxw2zh.Mui-selected {
+  color: #de4d11 !important;
+}
+.css-16lloyr-MuiBottomNavigation-root,
+.css-de1c49 {
+  width: 75%;
+  background: var(--Other-Colors-White, #fff);
+  box-shadow: 0px -1.793px 12.281px 0px rgba(0, 0, 0, 0.3);
+}
+
+@media only screen and (max-width: 600px) {
+  .css-16lloyr-MuiBottomNavigation-root,
+  .css-de1c49 {
+    width: 100%;
+  }
+}

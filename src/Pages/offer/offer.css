@@ -1,0 +1,42 @@
+.imageheight {
+  height: 16rem;
+  border-radius: 1rem 1rem 0rem 0rem;
+}
+.offerbox {
+  border-radius: 0px 0px 14.456px 14.456px;
+  background: #fff;
+  box-shadow: 0px 5.782px 5.782px 0px rgba(0, 0, 0, 0.25);
+}
+
+.buttonn {
+  border-radius: 7.228px;
+  background: var(--Orange, #de4d11);
+  box-shadow: 0px 0px 5.023px 0px rgba(0, 0, 0, 0.18);
+  color: var(--Main-white, #fff);
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: none;
+}
+.button2 {
+  border-radius: 7.228px;
+  border: 1.446px solid #95989a;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+@media only screen and (max-width: 600px) {
+  .imageheight {
+    height: 10rem;
+    border-radius: 1rem 1rem 0rem 0rem;
+  }
+  .buttonn {
+    font-size: 18px;
+  }
+  .button2 {
+    font-size: 18px;
+  }
+}

@@ -1,0 +1,46 @@
+.login {
+  background-color: #de4d11;
+}
+.login-text {
+  color: aliceblue;
+}
+.login-image {
+  height: 17.9rem;
+}
+.input-label {
+  color: #9b9a9a;
+}
+.form-control {
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
+}
+.submit {
+  background-color: #de4d11;
+  border-radius: 2rem;
+  border: none;
+  height: 2rem;
+  color: aliceblue;
+}
+.custom-container {
+  width: 2em !important;
+}
+.otp-input {
+  border: none;
+  background-color: #c2bdbd;
+}
+.otp-input:active {
+  border: 1px solid red;
+  background-color: #c2bdbd;
+}
+.react-tel-input .form-control {
+  height: 2.7em;
+  width: 100%;
+}
+@media only screen and (max-width: 600px) {
+  .react-tel-input .form-control {
+    height: 2.7em;
+    width: 100%;
+  }
+  .login-image {
+    height: 9rem;
+  }
+}

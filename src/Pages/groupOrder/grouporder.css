@@ -1,0 +1,4 @@
+input:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: transparent; /* Set border color to transparent on focus */
+  }
