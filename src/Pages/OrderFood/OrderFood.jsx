@@ -37,13 +37,13 @@ function OrderFood() {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (selectedStation != null) {
-      getRestaurantByTrain_Number(trainNumber, "RJY");
+      getRestaurantByTrain_Number(trainNumber, selectedStation);
     }
   }, [selectedStation]);
 
   const getRestaurantByTrain_Number = async () => {
     try {
-      const response = await getResturantsByTrain(trainNumber, "RJY");
+      const response = await getResturantsByTrain(trainNumber, selectedStation);
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturants);
       console.log("restaurant info response", response);
@@ -86,7 +86,7 @@ function OrderFood() {
 
   return (
     <>
-      {setshowrestaurant ? (
+      {restaurantList && restaurantList.length > 0 && setshowrestaurant ? (
         <>
           <section className="mb-24">
             <h1 className="text-center text-black font-bold text-xl my-3 mx-auto">
@@ -205,6 +205,7 @@ function OrderFood() {
                 </select>
               </div>
             </form>
+            <div>No restaurant available</div>
           </div>
         </>
       )}

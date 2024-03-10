@@ -2,7 +2,7 @@ import axiosInstance from "../../../api-config/axiosinstance";
 
 const FoodMenuDetails = async (rest_id) => {
   try {
-    const resp = await axiosInstance.get("/getResturantDetailsByResturantId", {
+    const resp = await axiosInstance.get("/getFoodMenuByResturantId", {
       params: {
         Rest_id: rest_id,
       },
