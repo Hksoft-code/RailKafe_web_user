@@ -5,6 +5,7 @@ import Img3 from "./../Assets/offer1 (5).jpg";
 import TrainInfo from "./Otherpages/TrainInfo";
 import { useEffect, useState } from "react";
 import { getStationsByTrainNumber } from "./OrderFood/Services/OrderfoodServices";
+import PropTypes from 'prop-types';
 const BoardingStation = ({ sendSelectedStationCode }) => {
   const [stationCode, setStationCode] = useState();
   const [selectedStationCode, setSelectedStationCode] = useState("");
@@ -92,6 +93,9 @@ const BoardingStation = ({ sendSelectedStationCode }) => {
       <TrainInfo />
     </section>
   );
+};
+BoardingStation.propTypes = {
+  sendSelectedStationCode: PropTypes.func.isRequired,
 };
 
 export default BoardingStation;
