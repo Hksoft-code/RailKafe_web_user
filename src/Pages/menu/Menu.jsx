@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
-import food from "./../../Assets/items.png";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import ImageSlider from "./../Dashboard/ImageSlider.jsx";
 import "./menu.css";
-import dummyData from "./dummydata.js";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../Otherpages/CustomPagination.jsx";
 import { FoodMenuDetails } from "./service/FoodMenu_Get.jsx";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const Menu = ({ resturant_id }) => {
+  console.log("restauuuu", resturant_id);
   const [showAddToCartInfo, setShowAddToCartInfo] = useState(false);
+  const [restaurantDetails, setRestaurantDetails] = useState([]);
   const pageSize = 5; // Number of items per page
   const [currentPageMap, setCurrentPageMap] = useState({ All: 1 });
   const [activeButton, setActiveButton] = useState("All");
-
+  // console.log("restaurantdetails", restaurantDetails);
   const handleButtonClick = (name) => {
     setActiveButton(name);
     setCurrentPageMap((prevMap) => ({
@@ -38,9 +38,10 @@ const Menu = ({ resturant_id }) => {
 
   const getRestaurantDetails = async () => {
     try {
-      const response = await FoodMenuDetails(resturant_id);
+      const response = await FoodMenuDetails("SE69HQ");
       // const restaurant = response?.data.data;
-      console.log("restaurant info response", response);
+      console.log("restaurant info response", response?.data.data);
+      setRestaurantDetails(response?.data.data.resturantDetails);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -51,7 +52,21 @@ const Menu = ({ resturant_id }) => {
     const currentContent =
       buttonsData.find((btn) => btn.name === activeButton)?.content || [];
     const startIndex = (currentPageMap[activeButton] - 1) * pageSize;
-    return currentContent.slice(startIndex, startIndex + pageSize);
+    const slicedContent = currentContent.slice(
+      startIndex,
+      startIndex + pageSize
+    );
+
+    // Map over the sliced content and add the restaurantDetails data
+    const contentWithDetails = slicedContent.map((item) => {
+      const restaurantDetail = restaurantDetails.find(
+        (detail) => detail.id === item.id
+      );
+      return { ...item, ...restaurantDetail };
+    });
+
+    console.log("contentarray", contentWithDetails);
+    return contentWithDetails;
   };
 
   const handlePageChange = (pageNumber) => {
@@ -74,26 +89,17 @@ const Menu = ({ resturant_id }) => {
     // Logic to handle the click event for the "+" button
     setShowAddToCartInfo(true);
   };
-  const buttonsData = [
-    { name: "All", content: dummyData },
-    {
-      name: "Hamburger",
-      content: dummyData.filter((item) => item.category === "Hamburger"),
-    },
-    {
-      name: "Drinks",
-      content: dummyData.filter((item) => item.category === "Drinks"),
-    },
-    {
-      name: "Appetizer",
-      content: dummyData.filter((item) => item.category === "Appetizer"),
-    },
-    {
-      name: "Pizza",
-      content: dummyData.filter((item) => item.category === "Pizza"),
-    },
+  const foodTypes = Array.from(
+    new Set(restaurantDetails.map((item) => item.food_type))
+  );
 
-    // Add more buttons and corresponding content as needed
+  // Create buttons data based on unique food types
+  const buttonsData = [
+    { name: "All", content: restaurantDetails },
+    ...foodTypes.map((type) => ({
+      name: type,
+      content: restaurantDetails.filter((item) => item.food_type === type),
+    })),
   ];
   return (
     <section className="mb-24">
@@ -143,10 +149,12 @@ const Menu = ({ resturant_id }) => {
                 className="d-flex shadow-custom sm:flex-row flex-col-reverse items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
               >
                 <div className="d-flex px-3 sm:w-4/12 w-full flex-col items-start ">
-                  <h4 className="text-black font-bold">{item.name}</h4>
-                  <h4 className="text-black font-bold">{item.price}</h4>
+                  <h4 className="text-black font-bold">{item.food_name}</h4>
+                  <h4 className="text-black font-bold">
+                    {item.selling_price} ₹
+                  </h4>
                   <p className="text-justify font-semibold text-gray-400 ">
-                    {item.description}
+                    {item.food_discription}
                   </p>
                   <div
                     className="bg-[#DE4D11] w-fit  text-lg text-white d-flex items-center"
@@ -170,7 +178,7 @@ const Menu = ({ resturant_id }) => {
                   </div>
                 </div>
                 <div className="d-flex items-start justify-between md:justify-end">
-                  <img className="w-8/12 mb-2" src={food} alt="Food" />
+                  <img className="w-8/12 mb-2" src={item.image} alt="Food" />
                   <Checkbox
                     style={{ color: "red" }}
                     {...label}
@@ -208,7 +216,7 @@ const Menu = ({ resturant_id }) => {
   );
 };
 Menu.propTypes = {
-  resturant_id: PropTypes.string.isRequired,
+  resturant_id: PropTypes.number.isRequired,
 };
 
 export default Menu;

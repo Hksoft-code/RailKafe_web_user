@@ -2,6 +2,8 @@
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import "./orderfood.css";
+import NonVeg from "./../../Assets/nonveg.png";
+import Veg from "./../../Assets/veg.png";
 import Img1 from "./../../Assets/offer1 (3).jpg";
 import Img2 from "./../../Assets/offer1 (4).jpg";
 import Img3 from "./../../Assets/offer1 (5).jpg";
@@ -37,13 +39,13 @@ function OrderFood() {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (selectedStation != null) {
-      getRestaurantByTrain_Number(trainNumber, selectedStation);
+      getRestaurantByTrain_Number(trainNumber, "RJY");
     }
   }, [selectedStation]);
 
   const getRestaurantByTrain_Number = async () => {
     try {
-      const response = await getResturantsByTrain(trainNumber, selectedStation);
+      const response = await getResturantsByTrain(trainNumber, "RJY");
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturants);
       console.log("restaurant info response", response);
@@ -53,7 +55,9 @@ function OrderFood() {
   };
 
   const HandleRestId = () => {
-    navigate("/menu", restaurantList.resturant_id);
+    navigate("/menu", {
+      state: { restaurant_id: restaurantList.resturant_id },
+    });
   };
 
   const handleChange = (event) => {
@@ -142,9 +146,13 @@ function OrderFood() {
                       </div>
                     </div>
                     <div className="flex flex-col items-end justify-between sm:h-40 h-auto sm:w-fit w-full sm:flex-row">
-                      <div className="bg-gray-300 w-fit h-auto rounded-lg">
-                        <p className="text-green-800  font-bold text-base p-2 mb-0">
-                          {restaurant.food_type}
+                      <div className=" w-fit h-auto rounded-lg">
+                        <p className=" mb-0">
+                          {restaurant.food_type === "non-veg" ? (
+                            <img className="w-10" src={NonVeg} alt="" />
+                          ) : (
+                            <img className="w-10" src={Veg} alt="" />
+                          )}
                         </p>
                       </div>
                     </div>

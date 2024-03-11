@@ -5,9 +5,10 @@ function CustomSelect() {
   const [trainNumber, setTrainNumber] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [listOpen, setListOpen] = useState(false);
-
+  console.log("TrainNumber", trainNumber);
   console.log("searchResult", searchResults);
   const handleInputChange = (e) => {
+    e.preventDefault();
     setTrainNumber(e.target.value);
 
     setListOpen(!listOpen); // Call a function to search for results whenever the input value changes
