@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Food from "./../../Assets/items.png";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -178,7 +179,7 @@ const Menu = ({ resturant_id }) => {
                   </div>
                 </div>
                 <div className="d-flex items-start justify-between md:justify-end">
-                  <img className="w-8/12 mb-2" src={item.image} alt="Food" />
+                  <img className="w-2/4 mb-2" src={Food} alt="Food" />
                   <Checkbox
                     style={{ color: "red" }}
                     {...label}
