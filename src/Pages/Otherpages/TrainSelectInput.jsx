@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { GetTrainNameList } from "./service/GetTrainName";
+import { useNavigate } from "react-router-dom";
 // import "./dashboard.css";
 function CustomSelect() {
   const [trainNumber, setTrainNumber] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const navigate = useNavigate();
   const [listOpen, setListOpen] = useState(false);
   console.log("TrainNumber", trainNumber);
   console.log("searchResult", searchResults);
@@ -57,7 +59,13 @@ function CustomSelect() {
             required
             onChange={handleInputChange}
           />
-          <button type="submit" className="button1">
+          <button
+            type="submit"
+            className="button1"
+            onClick={() => {
+              navigate(`/order-food/${trainNumber}`);
+            }}
+          >
             Submit
           </button>
         </div>
@@ -69,7 +77,7 @@ function CustomSelect() {
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
                   setTrainNumber(result.train_number);
-                  setListOpen(!listOpen); // Close the list after selection
+                  setListOpen(!listOpen);
                 }}
               >
                 {`${result.train_name} - ${result.train_number}`}
