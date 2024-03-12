@@ -87,6 +87,7 @@ function OrderFood() {
       console.error("Error fetching data:", error);
     }
   };
+  console.log("Stationsss", stationCode);
 
   return (
     <>
@@ -100,7 +101,7 @@ function OrderFood() {
               {restaurantList && restaurantList.length > 0 && (
                 <div className="d-flex my-3 mx-5 flex-col sm:flex-row justify-between items-center">
                   <h3 className="font-semibold my-2">
-                    Restaurants at {restaurantList[0].location}
+                    Restaurants at {stationCode[0].Stations.station_name}
                   </h3>
                   <div className="bg-[#de4d11] shadow-custom w-fit h-auto rounded-lg my-2">
                     <p className="text-white font-semibold text-base p-2 mb-0">
