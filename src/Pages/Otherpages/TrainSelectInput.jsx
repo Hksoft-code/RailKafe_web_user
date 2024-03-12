@@ -30,6 +30,12 @@ function CustomSelect() {
     }
   };
 
+  const handleSubmit = () => {
+    if (trainNumber) {
+      navigate(`/order-food/${trainNumber}`);
+    }
+  };
+
   return (
     <>
       {/* <div>
@@ -62,9 +68,7 @@ function CustomSelect() {
           <button
             type="submit"
             className="button1"
-            onClick={() => {
-              navigate(`/order-food/${trainNumber}`);
-            }}
+            onClick={() => handleSubmit()}
           >
             Submit
           </button>

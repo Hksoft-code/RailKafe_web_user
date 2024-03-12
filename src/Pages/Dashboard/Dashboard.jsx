@@ -12,20 +12,9 @@ import UpComingFood from "../IRCTC partner/UpcomingOrder";
 import Footer from "./../../Common-Components/Footer.jsx";
 import TrainSelectInput from "./../Otherpages/TrainSelectInput.jsx";
 function Dashboard() {
-  // const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
-  // const [trainNumber, setTrainNumber] = useState("");
-  // const navigate = useNavigate();
 
-  // const handleTrainNumberChange = (event) => {
-  //   setTrainNumber(event.target.value);
-  // };
-
-  // const handleSubmitTrainNumber = (event) => {
-  //   event.preventDefault();
-  //   navigate(`/order-food/${trainNumber}`);
-  // };
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -34,14 +23,8 @@ function Dashboard() {
     setIsOpen(!isOpen);
   };
 
-  // const handleChange = (event) => {
-  //   setInputValue(event.target.value);
-  // };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Do something with the input value, e.g., submit it to a server
-    // console.log("Submitted value:", inputValue);
   };
   // const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
 
