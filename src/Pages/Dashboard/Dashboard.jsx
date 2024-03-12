@@ -154,7 +154,7 @@ function Dashboard() {
           <div className="d-flex justify-content-around sm:gap-5 gap-1 align-items-center sm:px-10 px-1">
             <img src={groupIcon} className="p-2" alt="" />
             <div>
-              <h3 className="text-justify text-black font-bold ">
+              <h3 className="text-left text-black font-bold ">
                 Group food ordering in train
               </h3>
               <h6 className="text-justify text-black font-semibold">

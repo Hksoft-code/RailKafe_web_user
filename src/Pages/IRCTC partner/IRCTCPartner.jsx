@@ -8,7 +8,7 @@ const IRCTCPartner = () => {
       <div className="mainIRCTC1 mt-5 mb-4">
         <h2 className="font-semibold">Follow these steps to Order Food on Train</h2>
       </div>
-      <img className="mx-auto sm:px-4 px-1 h-40  sm:h-auto" style={{borderRadius:"3.5rem"}} src={Howworks} alt="" />
+      <img className="mx-auto sm:px-4 px-1 h-28  sm:h-auto" style={{borderRadius:"3.5rem"}} src={Howworks} alt="" />
     </section>
   );
 };

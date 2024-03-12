@@ -149,7 +149,7 @@ const Menu = ({ resturant_id }) => {
                 key={index}
                 className="d-flex shadow-custom sm:flex-row flex-col-reverse items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
               >
-                <div className="d-flex px-3 sm:w-4/12 w-full flex-col items-start ">
+                <div className="d-flex px-3 sm:w-4/12 w-full flex-col sm:items-start items-center sm:py-1 py-2 ">
                   <h4 className="text-black font-bold">{item.food_name}</h4>
                   <h4 className="text-black font-bold">
                     {item.selling_price} ₹
@@ -158,7 +158,7 @@ const Menu = ({ resturant_id }) => {
                     {item.food_discription}
                   </p>
                   <div
-                    className="bg-[#DE4D11] w-fit  text-lg text-white d-flex items-center"
+                    className="bg-[#DE4D11] sm:w-fit w-full  text-lg text-white d-flex sm:justify-start justify-around items-center"
                     style={{ borderRadius: "2rem" }}
                   >
                     <button
@@ -178,7 +178,7 @@ const Menu = ({ resturant_id }) => {
                     </button>
                   </div>
                 </div>
-                <div className="d-flex items-start justify-between md:justify-end">
+                <div className="d-flex items-start justify-between md:justify-between">
                   <img className="w-2/4 mb-2" src={Food} alt="Food" />
                   <Checkbox
                     style={{ color: "red" }}

@@ -132,6 +132,74 @@ const Payment = () => {
             <p className="text-gray-600 font-bold">Order Total</p>
             <p className="text-[#DE4D11] font-bold ">₹1322.00</p>
           </div>
+          <div className="sm:w-3/4 w-11/12">
+            <h3 className="text-justify mb-0  text-black font-bold px-4 py-4 mt-2">
+              Bill Details
+            </h3>
+            <div className="d-flex justify-between items-center px-4 py-3">
+              <div>
+                <h4 className="text-justify w-10/12 text-black font-bold text-lg mb-0">
+                  Paneer Tikka Stuffed Garlic Bread x1
+                </h4>
+                <p className="font-bold mb-0 text-gray-400 pb-2 text-justify">
+                  Cheese Burst, Medium
+                </p>
+              </div>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹12.00</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-3">
+              <div>
+                <h4 className="text-justify w-10/12 text-black font-bold text-lg mb-0">
+                  Paneer Tikka Stuffed Garlic Bread x1
+                </h4>
+                <p className="font-bold mb-0 text-gray-400 pb-2 text-justify">
+                  Cheese Burst, Medium
+                </p>
+              </div>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹12.00</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-3">
+              <div>
+                <h4 className="text-black font-bold text-lg mb-0">
+                  Indi Tandoori Paneer Pizza x1
+                </h4>
+                <p className="font-bold mb-0 text-gray-400 pb-2 text-justify">
+                  New Hand Tossed, Medium
+                </p>
+              </div>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹12.00</p>
+            </div>
+          </div>
+          <div className="rounded-xl border-t border-gray-300 x-4 sm:w-3/4 w-11/12">
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">
+                Item Total
+              </h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹12.234</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">
+                Restaurant Handing Charges
+              </h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹00.00</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">
+                Discount Applied (FREEISH)
+              </h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">Taxes</h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">
+                Paid Via Bank
+              </h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+            </div>
+          </div>
           <label
             htmlFor=""
             className="text-gray-600 font-bold mb-2 text-lg w-3/4 text-justify "

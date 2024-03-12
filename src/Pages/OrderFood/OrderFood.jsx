@@ -126,7 +126,7 @@ function OrderFood() {
                         />
                       </div>
                       <div className="flex items-start flex-col">
-                        <h2 className="mb-0 text-black font-bold sm:text-2xl text-xl">
+                        <h2 className="mb-0 text-black font-bold sm:text-2xl text-xl text-left">
                           {restaurant.resturant_name}
                         </h2>
                         <p className="mb-0 text-black font-semibold text-lg my-2">
