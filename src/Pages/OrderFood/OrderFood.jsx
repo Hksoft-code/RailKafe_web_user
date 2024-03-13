@@ -11,6 +11,7 @@ import Img3 from "./../../Assets/offer1 (5).jpg";
 // import BoardingStation from "../BoardingStation";
 import { useEffect, useState } from "react";
 import {
+  getResturantsByPnr,
   getResturantsByTrain,
   getStationsByTrainNumber,
 } from "./Services/OrderfoodServices";
@@ -38,10 +39,23 @@ function OrderFood() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (selectedStation != null) {
+    if (trainNumber > 6) {
+      getRestaurantByPnr();
+    } else {
       getRestaurantByTrain_Number(trainNumber, "RJY");
     }
   }, [selectedStation]);
+
+  const getRestaurantByPnr = async () => {
+    try {
+      const response = await getResturantsByPnr(trainNumber);
+      const restaurant = response?.data.data;
+      setRestaurantList(restaurant?.resturantDetails);
+      console.log("restaurant info response", response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const getRestaurantByTrain_Number = async () => {
     try {

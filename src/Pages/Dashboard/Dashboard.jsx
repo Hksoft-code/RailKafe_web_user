@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./dashboard.css";
 import delicioustext from "../../Assets/delicioustext.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import items from "../../Assets/home (2).png";
 import groupIcon from "../../Assets/Person.png";
 import adds from "../../Assets/adds.png";
@@ -14,7 +14,8 @@ import TrainSelectInput from "./../Otherpages/TrainSelectInput.jsx";
 function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
-
+  const [trainNumber, setTrainNumber] = useState("");
+  const navigate = useNavigate();
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -23,8 +24,19 @@ function Dashboard() {
     setIsOpen(!isOpen);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleInputChange = (e) => {
+    e.preventDefault();
+    setTrainNumber(e.target.value);
+  };
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  // };
+
+  const handleSubmit = () => {
+    if (trainNumber) {
+      navigate(`/order-food/${trainNumber}`);
+    }
   };
   // const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
 
@@ -69,17 +81,20 @@ function Dashboard() {
           </div>
           <div className="mt-3  flex justify-center">
             {activeButton === "pnr" && (
-              <form
-                onSubmit={handleSubmit}
-                className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
-              >
+              <form className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between">
                 <input
                   placeholder="Enter PNR Number"
-                  className="inputpnr mx-auto w-full"
-                  type="text"
+                  value={trainNumber}
+                  className="inputpnr w-full"
                   required
+                  onChange={handleInputChange}
+                  type="text"
                 />
-                <button type="submit" className="button1 sm:my-0 my-4">
+                <button
+                  type="submit"
+                  className="button1"
+                  onClick={() => handleSubmit()}
+                >
                   Submit
                 </button>
               </form>
