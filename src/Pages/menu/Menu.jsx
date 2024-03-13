@@ -175,8 +175,8 @@ const Menu = ({ resturant_id }) => {
                     </button>
                   </div>
                 </div>
-                <div className="d-flex items-start justify-between md:justify-between">
-                  <img className="w-2/4 mb-2" src={Food} alt="Food" />
+                <div className="d-flex mx-auto items-start sm:justify-between justify-end md:justify-between">
+                  <img className="w-2/4 mb-2 sm:mr-0 mr-16 p-3 bg-gray-800 rounded-lg" src={Food} alt="Food" />
                   <Checkbox
                     style={{ color: "red" }}
                     {...label}
