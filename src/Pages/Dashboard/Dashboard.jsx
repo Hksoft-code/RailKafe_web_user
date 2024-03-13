@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./dashboard.css";
 import delicioustext from "../../Assets/delicioustext.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import items from "../../Assets/home (2).png";
 import groupIcon from "../../Assets/Person.png";
 import adds from "../../Assets/adds.png";
@@ -10,24 +10,14 @@ import IRCTCPartner from "../IRCTC partner/IRCTCPartner";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import UpComingFood from "../IRCTC partner/UpcomingOrder";
 import Footer from "./../../Common-Components/Footer.jsx";
-import TrainSelectInput from "./../Otherpages/TrainSelectInput.jsx";
-import { getTrainDetailsByPnr } from "../OrderFood/Services/OrderfoodServices.jsx";
+import CustomSelect from "../Otherpages/TrainSelectInput.jsx";
+
 function Dashboard() {
-  // const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
-  const [pnr, setPnr] = useState("");
-  // const [trainNumber, setTrainNumber] = useState("");
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const handleTrainNumberChange = (event) => {
-  //   setTrainNumber(event.target.value);
-  // };
-
-  // const handleSubmitTrainNumber = (event) => {
-  //   event.preventDefault();
-  //   navigate(`/order-food/${trainNumber}`);
-  // };
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -36,34 +26,18 @@ function Dashboard() {
     setIsOpen(!isOpen);
   };
 
-  // const handleChange = (event) => {
-  //   setInputValue(event.target.value);
-  // };
-
-  const SearchValueByTrain = async (event) => {
-    console.log("working");
-    event.preventDefault();
-    if (pnr >= 10) {
-      console.log("pnrr working");
-      async (pnr) => {
-        try {
-          // Perform a search based on the input value
-          const response = await getTrainDetailsByPnr(pnr);
-          console.log("response for train list by pnr", response?.data.data);
-          const trainValue = response?.data.data;
-          console.log("Train Value by pnr", trainValue);
-          setPnr(trainValue?.train);
-        } catch (error) {
-          console.error("Error searching:", error);
-        }
-      };
-    } else {
-      alert("please submit correct pnr number");
+  const handleRestaurantByPnr = () => {
+    console.log("button click", inputValue);
+    if (inputValue) {
+      navigate(`/order-food/${inputValue}`);
     }
   };
 
-  // const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
-  console.log("pnr", pnr);
+  const handleInputChange = (e) => {
+    console.log("Pnr Input Field", e.target.value);
+    setInputValue(e.target.value);
+  };
+
   return (
     <div>
       <div className="uppermain1">
@@ -105,22 +79,33 @@ function Dashboard() {
           </div>
           <div className="mt-3  flex justify-center">
             {activeButton === "pnr" && (
-              <form
-                onSubmit={SearchValueByTrain}
+              <div
+                // onSubmit={SearchValueByPnr}
                 className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
               >
-                <input
+                {/* <input
                   placeholder="Enter PNR Number"
                   className="inputpnr mx-auto w-full"
                   type="text"
-                  value={pnr}
-                  onChange={(e) => setPnr(e.target.value)}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
                   required
+                /> */}
+                <input
+                  type="text"
+                  placeholder="Enter PNR Number"
+                  value={inputValue}
+                  className="inputpnr w-full"
+                  required
+                  onChange={handleInputChange}
                 />
-                <button type="submit" className="button1 sm:my-0 my-4">
+                <button
+                  onClick={handleRestaurantByPnr}
+                  className="button1 sm:my-0 my-4"
+                >
                   Submit
                 </button>
-              </form>
+              </div>
             )}
             {activeButton === "train" && (
               /* Dropdown menu with all train numbers */
@@ -146,7 +131,7 @@ function Dashboard() {
               //     Submit
               //   </button>
               // </form>
-              <TrainSelectInput />
+              <CustomSelect />
             )}
             {/* Add similar conditional rendering for other buttons */}
             {activeButton === "whatsapp" && (

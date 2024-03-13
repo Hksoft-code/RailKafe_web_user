@@ -1,5 +1,5 @@
 // import food from "./../../Assets/items.png";
-import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import "./orderfood.css";
 import NonVeg from "./../../Assets/nonveg.png";
@@ -23,12 +23,9 @@ function OrderFood() {
   const [setshowrestaurant, setSetshowrestaurant] = useState(false);
   const [stationCode, setStationCode] = useState();
   const [selectedStationCode, setSelectedStationCode] = useState("");
-  const { trainNumber } = useParams();
-
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-  // const train_number = queryParams.get("train_number");
-  console.log("station", selectedStationCode);
+  // const [pnr, setPnr] = useState();
+  const { pnrValue } = useParams();
+  console.log("pnr value", pnrValue);
 
   const handleGetSelectedStation = (data) => {
     console.log("get Selected station Code", data);
@@ -38,14 +35,19 @@ function OrderFood() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (selectedStation != null) {
-      getRestaurantByTrain_Number(trainNumber, "RJY");
-    }
+    // getResturantsByPnr();
+    // console.log("trainNumber or pnr", id);
+    // if (trainNumber > 6) {
+    //   setPnr(trainNumber);
+    //   getResturantsByPnr();
+    // } else {
+    //   getRestaurantByTrain_Number(trainNumber, "RJY");
+    // }
   }, [selectedStation]);
 
-  const getRestaurantByTrain_Number = async () => {
+  const getResturantsByPnr = async () => {
     try {
-      const response = await getResturantsByTrain(trainNumber, "RJY");
+      const response = await getResturantsByPnr(pnr);
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturants);
       console.log("restaurant info response", response);
@@ -53,6 +55,17 @@ function OrderFood() {
       console.error("Error fetching data:", error);
     }
   };
+
+  // const getRestaurantByTrain_Number = async () => {
+  //   try {
+  //     const response = await getResturantsByTrain(trainNumber, "RJY");
+  //     const restaurant = response?.data.data;
+  //     setRestaurantList(restaurant?.resturants);
+  //     console.log("restaurant info response", response);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   const HandleRestId = () => {
     navigate("/menu", {
@@ -67,10 +80,6 @@ function OrderFood() {
     console.log("Station Code", Station_Code);
     setSetshowrestaurant(!setshowrestaurant);
   };
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const train_number = queryParams.get("train_number");
-  console.log("train_number", train_number);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -95,7 +104,7 @@ function OrderFood() {
         <>
           <section className="mb-24">
             <h1 className="text-center text-black font-bold text-xl my-3 mx-auto">
-              Order Food in Exp {trainNumber}
+              {/* Order Food in Exp {trainNumber} */}
             </h1>
             <div>
               {restaurantList && restaurantList.length > 0 && (
