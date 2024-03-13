@@ -10,26 +10,20 @@ import { useNavigate } from "react-router-dom";
 import CustomPagination from "../Otherpages/CustomPagination.jsx";
 import { FoodMenuDetails } from "./service/FoodMenu_Get.jsx";
 import PropTypes from "prop-types";
-import { useCart } from "../../contextapi.js";
+import { useDispatch, useSelector } from "react-redux";
+import { AddCart, RemoveFromCart } from "../../Redux/OrderSystem.js";
 
 const Menu = ({ resturant_id }) => {
   console.log("restauuuu", resturant_id);
+  const dispatch = useDispatch();
+  const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
+  console.log("details of cart", cart);
   // const [showAddToCartInfo, setShowAddToCartInfo] = useState(false);
   const [restaurantDetails, setRestaurantDetails] = useState([]);
   const pageSize = 5; // Number of items per page
   const [currentPageMap, setCurrentPageMap] = useState({ All: 1 });
   const [activeButton, setActiveButton] = useState("All");
-  const { addToCart, removeFromCart } = useCart();
-  console.log("content array",addToCart,removeFromCart);
-  const handleAddToCart = () => {
-    addToCart([restaurantDetails]); // Pass item as an array to addToCart method
-  };
-  const handleRemoveFromCart = () => {
-    removeFromCart(restaurantDetails.id);
-  };
-  // const [cart, setCart] = useState([]);
-  // const [itemCount, setItemCount] = useState(0);
-  // console.log("restaurantdetails", restaurantDetails);
+
   const handleButtonClick = (name) => {
     setActiveButton(name);
     setCurrentPageMap((prevMap) => ({
@@ -92,15 +86,6 @@ const Menu = ({ resturant_id }) => {
     navigate("/payment");
   };
 
-  // const handleMinusButtonClick = () => {
-  //   // Logic to handle the click event for the "-" button
-  //   setShowAddToCartInfo(false);
-  // };
-
-  // const handlePlusButtonClick = () => {
-  //   // Logic to handle the click event for the "+" button
-  //   setShowAddToCartInfo(true);
-  // };
   const foodTypes = Array.from(
     new Set(restaurantDetails.map((item) => item.food_type))
   );
@@ -175,7 +160,8 @@ const Menu = ({ resturant_id }) => {
                     <button
                       className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
                       style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
-                      onClick={handleRemoveFromCart}
+                      onClick={() => dispatch(RemoveFromCart(item))}
+                      
                     >
                       -
                     </button>
@@ -183,7 +169,7 @@ const Menu = ({ resturant_id }) => {
                     <button
                       className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
                       style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
-                      onClick={handleAddToCart}
+                      onClick={() => dispatch(AddCart(item))}
                     >
                       +
                     </button>
@@ -208,12 +194,14 @@ const Menu = ({ resturant_id }) => {
         totalPages={getTotalPages()}
         onPageChange={handlePageChange}
       />
-      { (
+      {totalQuantity > 0 && (
         <div className="bg-gradient-to-b from-green-500 to-green-600 px-8 py-6 mt-2 flex items-center justify-between fixed sm:w-3/4 w-full bottom-0 z-20 rounded-sm">
           <div>
-            <h5 className="text-white font-bold">{"itemCount"} Items(s) Added</h5>
+            <h5 className="text-white font-bold">
+              {totalQuantity} Items(s) Added
+            </h5>
             <p className="text-gray-300 font-semibold mb-0">
-              ₹340 plus taz items
+              {totalPrice}₹ Total items price
             </p>
           </div>
           <button
