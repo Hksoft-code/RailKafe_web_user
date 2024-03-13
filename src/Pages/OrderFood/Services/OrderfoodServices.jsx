@@ -28,7 +28,7 @@ const getResturantsByTrain = async (trainNumber, stationCode) => {
         station_code: stationCode,
       },
     });
-    console.log("params",stationCode,trainNumber);
+    console.log("params", stationCode, trainNumber);
     console.log("response is", resp);
     const dataObject = resp;
     return dataObject;
@@ -44,7 +44,7 @@ const getResturantsByTrain = async (trainNumber, stationCode) => {
   }
 };
 
-const getTrainDetailsByPnr = async (Pnr) => {
+const getResturantsByPnr = async (Pnr) => {
   try {
     const resp = await axiosInstance.get("/getResturantsByPnr", {
       params: {
@@ -66,4 +66,4 @@ const getTrainDetailsByPnr = async (Pnr) => {
   }
 };
 
-export { getStationsByTrainNumber, getResturantsByTrain, getTrainDetailsByPnr };
+export { getStationsByTrainNumber, getResturantsByTrain, getResturantsByPnr };

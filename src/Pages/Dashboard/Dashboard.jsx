@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./dashboard.css";
 import delicioustext from "../../Assets/delicioustext.png";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import items from "../../Assets/home (2).png";
 import groupIcon from "../../Assets/Person.png";
 import adds from "../../Assets/adds.png";
@@ -13,11 +13,10 @@ import Footer from "./../../Common-Components/Footer.jsx";
 import CustomSelect from "../Otherpages/TrainSelectInput.jsx";
 
 function Dashboard() {
-  const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
+  const [trainNumber, setTrainNumber] = useState("");
   const navigate = useNavigate();
-
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -26,17 +25,21 @@ function Dashboard() {
     setIsOpen(!isOpen);
   };
 
-  const handleRestaurantByPnr = () => {
-    console.log("button click", inputValue);
-    if (inputValue) {
-      navigate(`/order-food/${inputValue}`);
-    }
+  const handleInputChange = (e) => {
+    e.preventDefault();
+    setTrainNumber(e.target.value);
   };
 
-  const handleInputChange = (e) => {
-    console.log("Pnr Input Field", e.target.value);
-    setInputValue(e.target.value);
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  // };
+
+  const handleSubmit = () => {
+    if (trainNumber) {
+      navigate(`/order-food/${trainNumber}`);
+    }
   };
+  // const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
 
   return (
     <div>
@@ -79,33 +82,23 @@ function Dashboard() {
           </div>
           <div className="mt-3  flex justify-center">
             {activeButton === "pnr" && (
-              <div
-                // onSubmit={SearchValueByPnr}
-                className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
-              >
-                {/* <input
-                  placeholder="Enter PNR Number"
-                  className="inputpnr mx-auto w-full"
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  required
-                /> */}
+              <form className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between">
                 <input
-                  type="text"
                   placeholder="Enter PNR Number"
-                  value={inputValue}
+                  value={trainNumber}
                   className="inputpnr w-full"
                   required
                   onChange={handleInputChange}
+                  type="text"
                 />
                 <button
-                  onClick={handleRestaurantByPnr}
-                  className="button1 sm:my-0 my-4"
+                  type="submit"
+                  className="button1"
+                  onClick={() => handleSubmit()}
                 >
                   Submit
                 </button>
-              </div>
+              </form>
             )}
             {activeButton === "train" && (
               /* Dropdown menu with all train numbers */

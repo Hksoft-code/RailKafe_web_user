@@ -11,6 +11,7 @@ import Img3 from "./../../Assets/offer1 (5).jpg";
 // import BoardingStation from "../BoardingStation";
 import { useEffect, useState } from "react";
 import {
+  getResturantsByPnr,
   getResturantsByTrain,
   getStationsByTrainNumber,
 } from "./Services/OrderfoodServices";
@@ -23,9 +24,12 @@ function OrderFood() {
   const [setshowrestaurant, setSetshowrestaurant] = useState(false);
   const [stationCode, setStationCode] = useState();
   const [selectedStationCode, setSelectedStationCode] = useState("");
-  // const [pnr, setPnr] = useState();
-  const { pnrValue } = useParams();
-  console.log("pnr value", pnrValue);
+  const { trainNumber } = useParams();
+
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const train_number = queryParams.get("train_number");
+  console.log("station", selectedStationCode);
 
   const handleGetSelectedStation = (data) => {
     console.log("get Selected station Code", data);
@@ -35,19 +39,27 @@ function OrderFood() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // getResturantsByPnr();
-    // console.log("trainNumber or pnr", id);
-    // if (trainNumber > 6) {
-    //   setPnr(trainNumber);
-    //   getResturantsByPnr();
-    // } else {
-    //   getRestaurantByTrain_Number(trainNumber, "RJY");
-    // }
+    if (trainNumber > 6) {
+      getRestaurantByPnr();
+    } else {
+      getRestaurantByTrain_Number(trainNumber, "RJY");
+    }
   }, [selectedStation]);
 
-  const getResturantsByPnr = async () => {
+  const getRestaurantByPnr = async () => {
     try {
-      const response = await getResturantsByPnr(pnr);
+      const response = await getResturantsByPnr(trainNumber);
+      const restaurant = response?.data.data;
+      setRestaurantList(restaurant?.resturantDetails);
+      console.log("restaurant info response", response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getRestaurantByTrain_Number = async () => {
+    try {
+      const response = await getResturantsByTrain(trainNumber, "RJY");
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturants);
       console.log("restaurant info response", response);
