@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <div>
       <footer className=" bg-gray-200 bg-opacity-20 py-12">
-        <div className="flex flex-col sm:flex-row items-start justify-between mx-2 sm:mx-0 sm:px-48">
+        <div className="flex flex-col sm:flex-row items-start justify-between mx-6 sm:mx-0 sm:px-48">
           <div className="flex flex-col items-start  my-4">
             <h4 className="text-black">Company</h4>
             <Link to="/about-railkafe" className="text-gray-500 no-underline">
@@ -68,7 +68,7 @@ const Footer = () => {
           </div>
         </div>
         <hr className="w-90 mx-auto" />
-        <div className="flex flex-col sm:flex-row items-start justify-between mx-2 sm:mx-0 sm:px-48">
+        <div className="flex flex-col sm:flex-row items-start justify-between mx-6 sm:mx-0 sm:px-48">
           <div className="flex flex-col items-start my-4 ">
             <h4 className="text-black">Other Links </h4>
             <Link to="/" className="text-gray-500 no-underline">
@@ -92,26 +92,47 @@ const Footer = () => {
           </div>
           <div className="flex flex-col items-start my-4 ">
             <h4 className="text-black">Connect with us </h4>
-            <Link to="/" className="text-gray-500 no-underline d-flex items-center ">
-              <FaFacebook className="mr-2"/> Facebook
+            <Link
+              to="/"
+              className="text-gray-500 no-underline d-flex items-center "
+            >
+              <FaFacebook className="mr-2" /> Facebook
             </Link>
-            <Link to="/" className="text-gray-500 no-underline d-flex items-center ">
-              <FaXTwitter className="mr-2"/> Twitter/X
+            <Link
+              to="/"
+              className="text-gray-500 no-underline d-flex items-center "
+            >
+              <FaXTwitter className="mr-2" /> Twitter/X
             </Link>
-            <Link to="/" className="text-gray-500 no-underline d-flex items-center ">
-              <FaInstagram className="mr-2"/> Instagram
+            <Link
+              to="/"
+              className="text-gray-500 no-underline d-flex items-center "
+            >
+              <FaInstagram className="mr-2" /> Instagram
             </Link>
-            <Link to="/" className="text-gray-500 no-underline d-flex items-center ">
-              <FaPinterestP className="mr-2"/> Pinterest
+            <Link
+              to="/"
+              className="text-gray-500 no-underline d-flex items-center "
+            >
+              <FaPinterestP className="mr-2" /> Pinterest
             </Link>
-            <Link to="/" className="text-gray-500 no-underline d-flex items-center ">
-              <FaLinkedinIn className="mr-2"/> Linkedin
+            <Link
+              to="/"
+              className="text-gray-500 no-underline d-flex items-center "
+            >
+              <FaLinkedinIn className="mr-2" /> Linkedin
             </Link>
-            <Link to="/" className="text-gray-500 no-underline d-flex items-center ">
-              <FaSquareThreads className="mr-2"/> Thread
+            <Link
+              to="/"
+              className="text-gray-500 no-underline d-flex items-center "
+            >
+              <FaSquareThreads className="mr-2" /> Thread
             </Link>
-            <Link to="/" className="text-gray-500 no-underline d-flex items-center ">
-              <PiBirdBold className="mr-2"/> Koo
+            <Link
+              to="/"
+              className="text-gray-500 no-underline d-flex items-center "
+            >
+              <PiBirdBold className="mr-2" /> Koo
             </Link>
           </div>
         </div>

@@ -1,17 +1,25 @@
-import { useState } from "react";
-import food from "./../../Assets/items.png";
+import { useEffect, useState } from "react";
+import Food from "./../../Assets/items.png";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import ImageSlider from "./../Dashboard/ImageSlider.jsx";
 import "./menu.css";
-import dummyData from "./dummydata.js";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../Otherpages/CustomPagination.jsx";
+import { FoodMenuDetails } from "./service/FoodMenu_Get.jsx";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { AddCart, RemoveFromCart } from "../../Redux/OrderSystem.js";
 
-const Menu = () => {
-  const [showAddToCartInfo, setShowAddToCartInfo] = useState(false);
+const Menu = ({ resturant_id }) => {
+  console.log("restauuuu", resturant_id);
+  const dispatch = useDispatch();
+  const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
+  console.log("details of cart", cart);
+  // const [showAddToCartInfo, setShowAddToCartInfo] = useState(false);
+  const [restaurantDetails, setRestaurantDetails] = useState([]);
   const pageSize = 5; // Number of items per page
   const [currentPageMap, setCurrentPageMap] = useState({ All: 1 });
   const [activeButton, setActiveButton] = useState("All");
@@ -30,13 +38,41 @@ const Menu = () => {
       buttonsData.find((btn) => btn.name === activeButton)?.content || [];
     return Math.ceil(currentContent.length / pageSize);
   };
+  useEffect(() => {
+    getRestaurantDetails();
+  }, []);
+
+  const getRestaurantDetails = async () => {
+    try {
+      const response = await FoodMenuDetails("SE69HQ");
+      // const restaurant = response?.data.data;
+      console.log("restaurant info response", response?.data.data);
+      setRestaurantDetails(response?.data.data.resturantDetails);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   // Get the current page's items based on pageSize and currentPage
   const getCurrentContent = () => {
     const currentContent =
       buttonsData.find((btn) => btn.name === activeButton)?.content || [];
     const startIndex = (currentPageMap[activeButton] - 1) * pageSize;
-    return currentContent.slice(startIndex, startIndex + pageSize);
+    const slicedContent = currentContent.slice(
+      startIndex,
+      startIndex + pageSize
+    );
+
+    // Map over the sliced content and add the restaurantDetails data
+    const contentWithDetails = slicedContent.map((item) => {
+      const restaurantDetail = restaurantDetails.find(
+        (detail) => detail.id === item.id
+      );
+      return { ...item, ...restaurantDetail };
+    });
+
+    console.log("contentarray", contentWithDetails);
+    return contentWithDetails;
   };
 
   const handlePageChange = (pageNumber) => {
@@ -50,35 +86,17 @@ const Menu = () => {
     navigate("/payment");
   };
 
-  const handleMinusButtonClick = () => {
-    // Logic to handle the click event for the "-" button
-    setShowAddToCartInfo(false);
-  };
+  const foodTypes = Array.from(
+    new Set(restaurantDetails.map((item) => item.food_type))
+  );
 
-  const handlePlusButtonClick = () => {
-    // Logic to handle the click event for the "+" button
-    setShowAddToCartInfo(true);
-  };
+  // Create buttons data based on unique food types
   const buttonsData = [
-    { name: "All", content: dummyData },
-    {
-      name: "Hamburger",
-      content: dummyData.filter((item) => item.category === "Hamburger"),
-    },
-    {
-      name: "Drinks",
-      content: dummyData.filter((item) => item.category === "Drinks"),
-    },
-    {
-      name:"Appetizer",
-      content: dummyData.filter((item) => item.category === "Appetizer"),
-    },
-    {
-      name:"Pizza",
-      content: dummyData.filter((item) => item.category === "Pizza"),
-    }
-
-    // Add more buttons and corresponding content as needed
+    { name: "All", content: restaurantDetails },
+    ...foodTypes.map((type) => ({
+      name: type,
+      content: restaurantDetails.filter((item) => item.food_type === type),
+    })),
   ];
   return (
     <section className="mb-24">
@@ -123,48 +141,51 @@ const Menu = () => {
         {activeButton && (
           <div>
             {getCurrentContent().map((item, index) => (
-                <div
-                  key={index}
-                  className="d-flex shadow-custom sm:flex-row flex-col-reverse items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
-                >
-                  <div className="d-flex px-3 sm:w-4/12 w-full flex-col items-start ">
-                    <h4 className="text-black font-bold">{item.name}</h4>
-                    <h4 className="text-black font-bold">{item.price}</h4>
-                    <p className="text-justify font-semibold text-gray-400 ">
-                      {item.description}
-                    </p>
-                    <div
-                      className="bg-[#DE4D11] w-fit  text-lg text-white d-flex items-center"
-                      style={{ borderRadius: "2rem" }}
+              <div
+                key={index}
+                className="d-flex shadow-custom sm:flex-row flex-col-reverse items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
+              >
+                <div className="d-flex px-3 sm:w-4/12 w-full flex-col sm:items-start items-center sm:py-1 py-2 ">
+                  <h4 className="text-black font-bold">{item.food_name}</h4>
+                  <h4 className="text-black font-bold">
+                    {item.selling_price} ₹
+                  </h4>
+                  <p className="text-justify font-semibold text-gray-400 ">
+                    {item.food_discription}
+                  </p>
+                  <div
+                    className="bg-[#DE4D11] sm:w-fit w-full  text-lg text-white d-flex sm:justify-start justify-around items-center"
+                    style={{ borderRadius: "2rem" }}
+                  >
+                    <button
+                      className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
+                      style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
+                      onClick={() => dispatch(RemoveFromCart(item))}
+                      
                     >
-                      <button
-                        className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
-                        style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
-                        onClick={handleMinusButtonClick}
-                      >
-                        -
-                      </button>
-                      <h6 className="mb-0 p-2">Add</h6>
-                      <button
-                        className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
-                        style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
-                        onClick={handlePlusButtonClick}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                  <div className="d-flex items-start justify-between md:justify-end">
-                    <img className="w-8/12 mb-2" src={food} alt="Food" />
-                    <Checkbox
-                      style={{ color: "red" }}
-                      {...label}
-                      icon={<FavoriteBorder />}
-                      checkedIcon={<Favorite />}
-                    />
+                      -
+                    </button>
+                    <h6 className="mb-0 p-2">Add</h6>
+                    <button
+                      className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
+                      style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
+                      onClick={() => dispatch(AddCart(item))}
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
-              ))}
+                <div className="d-flex mx-auto items-start sm:justify-between justify-end md:justify-between">
+                  <img className="w-2/4 mb-2 sm:mr-0 mr-16 p-3 bg-gray-800 rounded-lg" src={Food} alt="Food" />
+                  <Checkbox
+                    style={{ color: "red" }}
+                    {...label}
+                    icon={<FavoriteBorder />}
+                    checkedIcon={<Favorite />}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -173,12 +194,14 @@ const Menu = () => {
         totalPages={getTotalPages()}
         onPageChange={handlePageChange}
       />
-      {showAddToCartInfo && (
+      {totalQuantity > 0 && (
         <div className="bg-gradient-to-b from-green-500 to-green-600 px-8 py-6 mt-2 flex items-center justify-between fixed sm:w-3/4 w-full bottom-0 z-20 rounded-sm">
           <div>
-            <h5 className="text-white font-bold">2 Items(s) Added</h5>
+            <h5 className="text-white font-bold">
+              {totalQuantity} Items(s) Added
+            </h5>
             <p className="text-gray-300 font-semibold mb-0">
-              ₹340 plus taz items
+              {totalPrice}₹ Total items price
             </p>
           </div>
           <button
@@ -191,6 +214,9 @@ const Menu = () => {
       )}
     </section>
   );
+};
+Menu.propTypes = {
+  resturant_id: PropTypes.number.isRequired,
 };
 
 export default Menu;

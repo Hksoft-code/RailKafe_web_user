@@ -6,7 +6,10 @@ import paypal from "./../../Assets/logos_paypal.png";
 import parkpay from "./../../Assets/icon-park_pay-code.png";
 import "./payment.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Payment = () => {
+  const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
+  console.log("cart details", cart);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = () => {
@@ -130,7 +133,60 @@ const Payment = () => {
           </div>
           <div className="d-flex justify-between items-center sm:w-3/4 w-11/12 py-2 px-4">
             <p className="text-gray-600 font-bold">Order Total</p>
-            <p className="text-[#DE4D11] font-bold ">₹1322.00</p>
+            <p className="text-[#DE4D11] font-bold ">₹{totalPrice}</p>
+          </div>
+          <div className="sm:w-3/4 w-11/12">
+            <h3 className="text-justify mb-0 text-black font-bold px-4 py-4 mt-2">
+              Bill Details
+            </h3>
+            {cart.map((item, index) => (
+              <div
+                key={index}
+                className="d-flex justify-between items-center px-4 py-3"
+              >
+                <div>
+                  <h4 className="text-justify w-10/12 text-black font-bold text-lg mb-0">
+                    {item.food_name} x{item.quantity}
+                  </h4>
+                  <p className="font-bold mb-0 text-gray-400 pb-2 text-justify">
+                    {item.description}
+                  </p>
+                </div>
+                <p className="text-[#de4d11] mb-0 font-bold text-lg">
+                  ₹{item.quantity * item.selling_price}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-xl border-t border-gray-300 x-4 sm:w-3/4 w-11/12">
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">
+                Item Total
+              </h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">{totalQuantity}</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">
+                Restaurant Handing Charges
+              </h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹00.00</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">
+                Discount Applied (FREEISH)
+              </h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">Taxes</h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+            </div>
+            <div className="d-flex justify-between items-center px-4 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2">
+                Paid Via Bank
+              </h4>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+            </div>
           </div>
           <label
             htmlFor=""

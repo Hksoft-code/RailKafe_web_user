@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./dashboard.css";
 import delicioustext from "../../Assets/delicioustext.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import items from "../../Assets/home (2).png";
 import groupIcon from "../../Assets/Person.png";
 import adds from "../../Assets/adds.png";
@@ -10,22 +10,24 @@ import IRCTCPartner from "../IRCTC partner/IRCTCPartner";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import UpComingFood from "../IRCTC partner/UpcomingOrder";
 import Footer from "./../../Common-Components/Footer.jsx";
-
+import TrainSelectInput from "./../Otherpages/TrainSelectInput.jsx";
+import { getTrainDetailsByPnr } from "../OrderFood/Services/OrderfoodServices.jsx";
 function Dashboard() {
   // const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
-  const [trainNumber, setTrainNumber] = useState("");
-  const navigate = useNavigate();
+  const [pnr, setPnr] = useState("");
+  // const [trainNumber, setTrainNumber] = useState("");
+  // const navigate = useNavigate();
 
-  const handleTrainNumberChange = (event) => {
-    setTrainNumber(event.target.value);
-  };
+  // const handleTrainNumberChange = (event) => {
+  //   setTrainNumber(event.target.value);
+  // };
 
-  const handleSubmitTrainNumber = (event) => {
-    event.preventDefault();
-    navigate(`/order-food/${trainNumber}`);
-  };
+  // const handleSubmitTrainNumber = (event) => {
+  //   event.preventDefault();
+  //   navigate(`/order-food/${trainNumber}`);
+  // };
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -38,13 +40,30 @@ function Dashboard() {
   //   setInputValue(event.target.value);
   // };
 
-  const handleSubmit = (event) => {
+  const SearchValueByTrain = async (event) => {
+    console.log("working");
     event.preventDefault();
-    // Do something with the input value, e.g., submit it to a server
-    // console.log("Submitted value:", inputValue);
+    if (pnr >= 10) {
+      console.log("pnrr working");
+      async (pnr) => {
+        try {
+          // Perform a search based on the input value
+          const response = await getTrainDetailsByPnr(pnr);
+          console.log("response for train list by pnr", response?.data.data);
+          const trainValue = response?.data.data;
+          console.log("Train Value by pnr", trainValue);
+          setPnr(trainValue?.train);
+        } catch (error) {
+          console.error("Error searching:", error);
+        }
+      };
+    } else {
+      alert("please submit correct pnr number");
+    }
   };
-  const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
 
+  // const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
+  console.log("pnr", pnr);
   return (
     <div>
       <div className="uppermain1">
@@ -87,13 +106,15 @@ function Dashboard() {
           <div className="mt-3  flex justify-center">
             {activeButton === "pnr" && (
               <form
-                onSubmit={handleSubmit}
+                onSubmit={SearchValueByTrain}
                 className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
               >
                 <input
                   placeholder="Enter PNR Number"
                   className="inputpnr mx-auto w-full"
                   type="text"
+                  value={pnr}
+                  onChange={(e) => setPnr(e.target.value)}
                   required
                 />
                 <button type="submit" className="button1 sm:my-0 my-4">
@@ -103,33 +124,34 @@ function Dashboard() {
             )}
             {activeButton === "train" && (
               /* Dropdown menu with all train numbers */
-              <form
-                onSubmit={handleSubmitTrainNumber}
-                className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
-              >
-                <input
-                  type="text"
-                  list="trainNumbers"
-                  placeholder="Train Number"
-                  value={trainNumber}
-                  className="inputpnr mx-auto w-full"
-                  required
-                  onChange={handleTrainNumberChange}
-                />
-                <datalist id="trainNumbers">
-                  {trainNumbersArray.map((trainNumber, index) => (
-                    <option key={index} value={trainNumber} />
-                  ))}
-                </datalist>
-                <button type="submit" className="button1 sm:my-0 my-4">
-                  Submit
-                </button>
-              </form>
+              // <form
+              //   onSubmit={handleSubmitTrainNumber}
+              //   className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
+              // >
+              //   <input
+              //     type="text"
+              //     list="trainNumbers"
+              //     placeholder="Train Number"
+              //     value={trainNumber}
+              //     className="inputpnr mx-auto w-full"
+              //     required
+              //     onChange={handleTrainNumberChange}
+              //   />
+              //   <datalist id="trainNumbers">
+              //     {trainNumbersArray.map((trainNumber, index) => (
+              //       <option key={index} value={trainNumber} />
+              //     ))}
+              //   </datalist>
+              //   <button type="submit" className="button1 sm:my-0 my-4">
+              //     Submit
+              //   </button>
+              // </form>
+              <TrainSelectInput />
             )}
             {/* Add similar conditional rendering for other buttons */}
             {activeButton === "whatsapp" && (
               <form
-                onSubmit={handleSubmit}
+                onSubmit={"handleSubmit"}
                 className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
               >
                 <input
@@ -153,7 +175,7 @@ function Dashboard() {
           <div className="d-flex justify-content-around sm:gap-5 gap-1 align-items-center sm:px-10 px-1">
             <img src={groupIcon} className="p-2" alt="" />
             <div>
-              <h3 className="text-justify text-black font-bold ">
+              <h3 className="text-left text-black font-bold ">
                 Group food ordering in train
               </h3>
               <h6 className="text-justify text-black font-semibold">
