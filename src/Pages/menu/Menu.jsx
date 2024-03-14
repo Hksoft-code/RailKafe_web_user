@@ -98,25 +98,26 @@ const Menu = ({ resturant_id }) => {
       content: restaurantDetails.filter((item) => item.food_type === type),
     })),
   ];
+  const { restaurantName, stationName, minimumCost } = useSelector((state) => state.menu);
   return (
     <section className="mb-24">
       <h1 className="text-center font-bold text-black text-xl my-4 mx-auto">
-        Feeders Kitchen
+        {restaurantName}
       </h1>
       <div className="w-fit d-flex flex-col items-start justify-center rounded-lg border border-gray-900 border-opacity-17 shadow-lg sm:px-32 py-2 mx-auto px-5">
         <p className="text-black font-semibold">
           <span className="text-[#de4d11] font-semibold ">
             Restaurant Name:
           </span>{" "}
-          Feeders Kitchen{" "}
+          {restaurantName}{" "}
         </p>
         <p className="text-black font-semibold">
           <span className="text-[#de4d11] font-semibold ">Station Name:</span>{" "}
-          JBY N2M Delhi{" "}
+          {stationName}{" "}
         </p>
         <p className="text-black font-semibold">
           <span className="text-[#de4d11] font-semibold ">Minimum Order:</span>{" "}
-          ₹30
+          ₹{minimumCost}
         </p>
       </div>
 

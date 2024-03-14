@@ -142,11 +142,11 @@ const Payment = () => {
             {cart.map((item, index) => (
               <div
                 key={index}
-                className="d-flex justify-between items-center px-4 py-3"
+                className="d-flex justify-between items-start px-4 py-3"
               >
                 <div>
-                  <h4 className="text-justify w-10/12 text-black font-bold text-lg mb-0">
-                    {item.food_name} x{item.quantity}
+                  <h4 className="text-left w-full text-black font-bold text-lg mb-0">
+                    {item.food_name} x {item.quantity}
                   </h4>
                   <p className="font-bold mb-0 text-gray-400 pb-2 text-justify">
                     {item.description}
@@ -163,7 +163,9 @@ const Payment = () => {
               <h4 className="text-black font-bold text-lg mb-0 py-2">
                 Item Total
               </h4>
-              <p className="text-[#de4d11] mb-0 font-bold text-lg">{totalQuantity}</p>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">
+                {totalQuantity}
+              </p>
             </div>
             <div className="d-flex justify-between items-center px-4 py-2">
               <h4 className="text-black font-bold text-lg mb-0 py-2">
@@ -179,7 +181,9 @@ const Payment = () => {
             </div>
             <div className="d-flex justify-between items-center px-4 py-2">
               <h4 className="text-black font-bold text-lg mb-0 py-2">Taxes</h4>
-              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">
+                ₹{parseFloat((totalPrice * 0.18).toFixed(3))}
+              </p>
             </div>
             <div className="d-flex justify-between items-center px-4 py-2">
               <h4 className="text-black font-bold text-lg mb-0 py-2">
@@ -198,7 +202,9 @@ const Payment = () => {
             Cash on Delivery
             <input
               type="radio"
+              name="paymentMethod"
               value="cash_on_delivery"
+              required
               checked={selectedMethod === "cash_on_delivery"}
               onChange={handleMethodChange}
             />
@@ -214,7 +220,9 @@ const Payment = () => {
             </div>
             <input
               type="radio"
+              name="paymentMethod"
               value="online_payment"
+              required
               checked={selectedMethod === "online_payment"}
               onChange={handleMethodChange}
             />

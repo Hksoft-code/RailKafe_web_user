@@ -1,5 +1,5 @@
 // import food from "./../../Assets/items.png";
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import "./orderfood.css";
 import NonVeg from "./../../Assets/nonveg.png";
@@ -16,10 +16,18 @@ import {
   getStationsByTrainNumber,
 } from "./Services/OrderfoodServices";
 import TrainInfo from "../Otherpages/TrainInfo";
+import { useDispatch } from "react-redux";
+import {
+  setMinimumCost,
+  setRestaurantName,
+  setStationName,
+} from "../../Redux/Actions/menuAction";
 
 function OrderFood() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [restaurantList, setRestaurantList] = useState();
+  const [StationName, setStationName1] = useState("");
   const [selectedStation, setselectedStation] = useState("");
   const [setshowrestaurant, setSetshowrestaurant] = useState(false);
   const [stationCode, setStationCode] = useState();
@@ -39,9 +47,11 @@ function OrderFood() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (trainNumber > 6) {
+    if (trainNumber.toString().length > 6) {
+      console.log("working2", trainNumber > 6);
       getRestaurantByPnr();
     } else {
+      console.log("working3");
       getRestaurantByTrain_Number(trainNumber, "RJY");
     }
   }, [selectedStation]);
@@ -59,6 +69,7 @@ function OrderFood() {
 
   const getRestaurantByTrain_Number = async () => {
     try {
+      console.log("working1");
       const response = await getResturantsByTrain(trainNumber, "RJY");
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturants);
@@ -67,17 +78,6 @@ function OrderFood() {
       console.error("Error fetching data:", error);
     }
   };
-
-  // const getRestaurantByTrain_Number = async () => {
-  //   try {
-  //     const response = await getResturantsByTrain(trainNumber, "RJY");
-  //     const restaurant = response?.data.data;
-  //     setRestaurantList(restaurant?.resturants);
-  //     console.log("restaurant info response", response);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
 
   const HandleRestId = () => {
     navigate("/menu", {
@@ -88,10 +88,12 @@ function OrderFood() {
   const handleChange = (event) => {
     const Station_Code = event.target.value;
     setSelectedStationCode(Station_Code);
+    setStationName1(Station_Code ? Station_Code : StationName);
     handleGetSelectedStation(Station_Code);
     console.log("Station Code", Station_Code);
     setSetshowrestaurant(!setshowrestaurant);
   };
+  console.log("details of train and station", trainNumber, selectedStation);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -108,7 +110,11 @@ function OrderFood() {
       console.error("Error fetching data:", error);
     }
   };
-  console.log("Stationsss", stationCode);
+  // console.log("Stationsss", stationCode);
+  const today = new Date();
+
+  // Format the date in YYYY-MM-DD format for the input field
+  const formattedDate = today.toISOString().split("T")[0];
 
   return (
     <>
@@ -124,11 +130,11 @@ function OrderFood() {
                   <h3 className="font-semibold my-2">
                     Restaurants at {stationCode[0].Stations.station_name}
                   </h3>
-                  <div className="bg-[#de4d11] shadow-custom w-fit h-auto rounded-lg my-2">
+                  {/* <div className="bg-[#de4d11] shadow-custom w-fit h-auto rounded-lg my-2">
                     <p className="text-white font-semibold text-base p-2 mb-0">
                       List of New Restaurants
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>
@@ -180,7 +186,12 @@ function OrderFood() {
                     </div>
                   </div>
                   <button
-                    onClick={HandleRestId}
+                    onClick={() => {
+                      HandleRestId();
+                      dispatch(setRestaurantName(restaurant.resturant_name));
+                      dispatch(setMinimumCost(restaurant.min_order_value));
+                      dispatch(setStationName(restaurant.StationName));
+                    }}
                     className="py-2 bg-[#de4d11] text-white font-semibold text-lg sm:w-11/12 w-full my-4 rounded-full sm:mx-5 mx-auto"
                   >
                     Food Menu
@@ -197,7 +208,7 @@ function OrderFood() {
         <>
           <h2 className="text-center font-semibold my-2">
             {" "}
-            Order Food in Exp {"trainNumber"}
+            Order Food in Exp {trainNumber}
           </h2>
           <div>
             <form
@@ -212,6 +223,7 @@ function OrderFood() {
                   type="date"
                   name=""
                   id=""
+                  min={formattedDate}
                   className="p-1 rounded-md border-gray-300 w-full"
                   style={{ border: "2px #d1d5db solid" }}
                 />
