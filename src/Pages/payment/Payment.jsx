@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./payment.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { placeOrder } from "./Services/PaymentServices";
 const Payment = () => {
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
   console.log("cart details", cart);
@@ -20,40 +21,51 @@ const Payment = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [addNote, setAddNote] = useState("");
-  const payload = {
-    full_name: Name,
-    email: email,
-    phone: phoneNumber,
-    boarding_station: "NDLS",
-    claim_gst: true,
-    coach_number: coach_number,
-    delivery_date_time: "2024-03-15T12:00:00Z",
-    delivery_station_code: "VSKP",
-    discount: 0,
-    final_amount: 100,
-    grand_total: 110,
-    isPaid: false,
-    dateof_journey: "2024-03-15T12:00:00Z",
-    order_note: addNote,
-    order_source: "website",
-    pay_mode: "cod",
-    pnr_no: PNR,
-    resturant_id: "SE69HQ",
-    seat_no: seatNum,
-    tax_amount: 5,
-    train_no: "11058",
-    foodMenuItems:
-      '[{"foodMenuItemId":"KgELVS","quantity":"2"},{"foodMenuItemId":"eoR7LN","quantity":"2"}]',
-  };
-  const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    if (selectedMethod) {
-      navigate("/ordersuccessfull");
-    } else {
-      toast.error("Please select a payment method");
+  const handlePlaceOrder = async () => {
+    const payload = {
+      first_name: "John",
+      last_name: "Doe",
+      sir_name: "Mr.",
+      email: "john1.doe@example.com",
+      phone: "1234567891",
+      boarding_station: "NDLS",
+      claim_gst: true,
+      coach_number: "A2",
+      delivery_date_time: "2024-03-15T12:00:00Z",
+      delivery_station_code: "VSKP",
+      discount: 0,
+      final_amount: 100,
+      grand_total: 110,
+      isPaid: false,
+      dateof_journey: "2024-03-15T12:00:00Z",
+      order_note: "Please deliver on time",
+      order_source: "website",
+      pay_mode: "cod",
+      pnr_no: "2906951589",
+      resturant_id: "SE69HQ",
+      seat_no: "2",
+      tax_amount: 5,
+      train_no: "11058",
+      foodMenuItems: ["KgELVS", "KgELVS"],
+    };
+    try {
+      const response = await placeOrder(payload);
+      console.log("placeorder response", response);
+    } catch (e) {
+      console.log("error", e);
     }
   };
+
+  const navigate = useNavigate();
+
+  // const handleSubmit = () => {
+  //   if (selectedMethod) {
+  //     navigate("/ordersuccessfull");
+  //   } else {
+  //     toast.error("Please select a payment method");
+  //   }
+  // };
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -284,7 +296,10 @@ const Payment = () => {
           </label>
           <button
             className="bg-[#DE4D11] p-2 m-4 w-2/4 rounded-full text-white font-semibold text-lg"
-            onClick={handleSubmit}
+            onClick={(e) => {
+              e.preventDefault(); // Call preventDefault inside a function
+              handlePlaceOrder(); // Call your handlePlaceOrder function
+            }}
           >
             Proceed to pay
           </button>
