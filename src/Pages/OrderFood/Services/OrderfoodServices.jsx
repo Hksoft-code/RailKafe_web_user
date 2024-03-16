@@ -45,11 +45,12 @@ const getResturantsByTrain = async (trainNumber, stationCode) => {
   }
 };
 
-const getResturantsByPnr = async (Pnr) => {
+const getResturantsByPnr = async (pnr) => {
   try {
+    console.log("pnr is here", pnr);
     const resp = await axiosInstance.get("/getResturantsByPnr", {
       params: {
-        pnr: Pnr,
+        pnr: pnr,
       },
     });
     console.log("response is", resp);

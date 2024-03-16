@@ -4,6 +4,8 @@ import visa from "./../../Assets/logos_visa.png";
 import master from "./../../Assets/logos_mastercard.png";
 import paypal from "./../../Assets/logos_paypal.png";
 import parkpay from "./../../Assets/icon-park_pay-code.png";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./payment.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -11,9 +13,46 @@ const Payment = () => {
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
   console.log("cart details", cart);
   const [showModal, setShowModal] = useState(false);
+  const [PNR, setPNR] = useState("");
+  const [coach_number, setCoach_number] = useState("");
+  const [seatNum, setSeatNum] = useState("");
+  const [Name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [addNote, setAddNote] = useState("");
+  const payload = {
+    full_name: Name,
+    email: email,
+    phone: phoneNumber,
+    boarding_station: "NDLS",
+    claim_gst: true,
+    coach_number: coach_number,
+    delivery_date_time: "2024-03-15T12:00:00Z",
+    delivery_station_code: "VSKP",
+    discount: 0,
+    final_amount: 100,
+    grand_total: 110,
+    isPaid: false,
+    dateof_journey: "2024-03-15T12:00:00Z",
+    order_note: addNote,
+    order_source: "website",
+    pay_mode: "cod",
+    pnr_no: PNR,
+    resturant_id: "SE69HQ",
+    seat_no: seatNum,
+    tax_amount: 5,
+    train_no: "11058",
+    foodMenuItems:
+      '[{"foodMenuItemId":"KgELVS","quantity":"2"},{"foodMenuItemId":"eoR7LN","quantity":"2"}]',
+  };
   const navigate = useNavigate();
+
   const handleSubmit = () => {
-    navigate("/ordersuccessfull");
+    if (selectedMethod) {
+      navigate("/ordersuccessfull");
+    } else {
+      toast.error("Please select a payment method");
+    }
   };
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -27,6 +66,7 @@ const Payment = () => {
   const handleMethodChange = (event) => {
     setSelectedMethod(event.target.value);
   };
+
   const TaxPrice = parseFloat((totalPrice * 0.15).toFixed(3));
 
   return (
@@ -36,6 +76,8 @@ const Payment = () => {
           <input
             className="px-6 py-2 border  sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
             type="number"
+            value={PNR}
+            onChange={(e) => setPNR(e.target.value)}
             name=""
             id=""
             placeholder="Enter Your PNR"
@@ -45,6 +87,8 @@ const Payment = () => {
             type="number"
             name=""
             id=""
+            value={coach_number}
+            onChange={(e) => setCoach_number(e.target.value)}
             placeholder="Enter Coach Number"
           />
           <input
@@ -52,6 +96,8 @@ const Payment = () => {
             type="number"
             name=""
             id=""
+            value={seatNum}
+            onChange={(e) => setSeatNum(e.target.value)}
             placeholder="Enter Seat Number"
           />
           <input
@@ -59,6 +105,8 @@ const Payment = () => {
             type="text"
             name=""
             id=""
+            value={Name}
+            onChange={(e) => setName(e.target.value)}
             placeholder="Enter Name"
           />
           <input
@@ -66,6 +114,8 @@ const Payment = () => {
             type="email"
             name=""
             id=""
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter Email id"
           />
           <input
@@ -73,6 +123,8 @@ const Payment = () => {
             type="number"
             name=""
             id=""
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="Enter Phone Number"
           />
           <textarea
@@ -81,6 +133,8 @@ const Payment = () => {
             id=""
             cols=""
             rows=""
+            value={addNote}
+            onChange={(e) => setAddNote(e.target.value)}
             placeholder="Add a note"
           ></textarea>
           <div className="relative w-full">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./dashboard.css";
 import delicioustext from "../../Assets/delicioustext.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import items from "../../Assets/home (2).png";
 import groupIcon from "../../Assets/Person.png";
 import adds from "../../Assets/adds.png";
@@ -11,15 +11,20 @@ import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import UpComingFood from "../IRCTC partner/UpcomingOrder";
 import Footer from "./../../Common-Components/Footer.jsx";
 import CustomSelect from "../Otherpages/TrainSelectInput.jsx";
+import BordingModal from "./BordingModal.jsx";
 
 function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
-  const [trainNumber, setTrainNumber] = useState("");
-  const navigate = useNavigate();
+  // const [trainNumber, setTrainNumber] = useState("");
+  const [PnrNumber, setPnrNumber] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // const navigate = useNavigate();
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
+
   const phoneNumber = "9771231434";
   const redirectToWhatsApp = (e) => {
     e.preventDefault();
@@ -35,20 +40,14 @@ function Dashboard() {
 
   const handleInputChange = (e) => {
     e.preventDefault();
-    setTrainNumber(e.target.value);
+    setPnrNumber(e.target.value);
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
+  // const handleSubmit = () => {
+  //   if (trainNumber) {
+  //     navigate(`/order-food/${trainNumber}`);
+  //   }
   // };
-
-  const handleSubmit = () => {
-    if (trainNumber) {
-      navigate(`/order-food/${trainNumber}`);
-    }
-  };
-  // const trainNumbersArray = ["12345", "67890", "24680", "13579", "98765"];
-
   return (
     <div>
       <div className="uppermain1">
@@ -90,23 +89,29 @@ function Dashboard() {
           </div>
           <div className="mt-3  flex justify-center">
             {activeButton === "pnr" && (
-              <form className="d-flex flex-row items-center w-11/12 sm:w-2/5 justify-between">
-                <input
-                  placeholder="Enter PNR Number"
-                  value={trainNumber}
-                  className="inputpnr w-full"
-                  required
-                  onChange={handleInputChange}
-                  type="text"
-                />
-                <button
-                  type="submit"
-                  className="button1 my-4"
-                  onClick={() => handleSubmit()}
-                >
-                  Submit
-                </button>
-              </form>
+              <>
+                <form className="d-flex flex-row items-center w-11/12 sm:w-2/5 justify-between">
+                  <input
+                    placeholder="Enter PNR Number"
+                    value={PnrNumber}
+                    className="inputpnr w-full"
+                    required
+                    onChange={handleInputChange}
+                    type="text"
+                  />
+                  <button
+                    type="submit"
+                    className="button1 my-4"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsModalOpen(true);
+                    }}
+                  >
+                    Submit
+                  </button>
+                </form>
+                {isModalOpen && <BordingModal pnr={PnrNumber} />}
+              </>
             )}
             {activeButton === "train" && (
               /* Dropdown menu with all train numbers */
