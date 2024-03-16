@@ -14,7 +14,7 @@ function UpComingFood() {
         {
           breakpoint: 500,
           settings: {
-            slidesToShow: 1,
+            slidesToShow: 0,
             slidesToScroll: 1,
           },
         },

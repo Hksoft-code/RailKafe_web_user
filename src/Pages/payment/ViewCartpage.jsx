@@ -12,6 +12,7 @@ const CustomStepper = () => {
     setCurrentStep(stepIndex);
   };
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
+  const TaxPrice = parseFloat((totalPrice * 0.15).toFixed(3));
 
   return (
     <section className="mb-24 mt-12">
@@ -114,9 +115,7 @@ const CustomStepper = () => {
         </div>
         <div className="d-flex justify-between items-center px-4 py-2">
           <h4 className="text-black font-bold text-lg mb-0 py-2">Taxes</h4>
-          <p className="text-[#de4d11] mb-0 font-bold text-lg">
-            ₹{parseFloat((totalPrice * 0.18).toFixed(3))}
-          </p>
+          <p className="text-[#de4d11] mb-0 font-bold text-lg">₹{TaxPrice}</p>
         </div>
         <div className="d-flex justify-between items-center px-4 py-2">
           <h4 className="text-black font-bold text-lg mb-0 py-2">

@@ -106,6 +106,7 @@ function OrderFood() {
       const dataForm = response?.data?.data;
       setStationCode(dataForm?.stations);
       console.log("station info response", response);
+      console.log("stations name", stationCode);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -128,7 +129,7 @@ function OrderFood() {
               {restaurantList && restaurantList.length > 0 && (
                 <div className="d-flex my-3 mx-5 flex-col sm:flex-row justify-between items-center">
                   <h3 className="font-semibold my-2">
-                    Restaurants at {stationCode[0].Stations.station_name}
+                    Restaurants at {stationCode[0].StationsInfo.station_name}
                   </h3>
                   {/* <div className="bg-[#de4d11] shadow-custom w-fit h-auto rounded-lg my-2">
                     <p className="text-white font-semibold text-base p-2 mb-0">
@@ -241,7 +242,7 @@ function OrderFood() {
                 >
                   {stationCode?.map((item, index) => (
                     <option key={index} value={item?.station_code}>
-                      {item?.Stations?.station_name}
+                      {item?.StationsInfo?.station_name}
                     </option>
                   ))}
                 </select>

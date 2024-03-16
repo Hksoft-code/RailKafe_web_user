@@ -55,7 +55,7 @@ function CustomSelect() {
         onSubmit={searchResultsFunction}
         className="w-11/12 sm:w-2/5 mx-auto flex flex-col items-center"
       >
-        <div className="flex flex-row items-center justify-center">
+        <div className="flex flex-row items-center justify-center w-full">
           <input
             type="text"
             list="trainNumbers"
@@ -67,7 +67,7 @@ function CustomSelect() {
           />
           <button
             type="submit"
-            className="button1"
+            className="button1 my-4"
             onClick={() => handleSubmit()}
           >
             Submit

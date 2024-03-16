@@ -20,7 +20,15 @@ function Dashboard() {
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
+  const phoneNumber = "9771231434";
+  const redirectToWhatsApp = (e) => {
+    e.preventDefault();
+    // Construct the WhatsApp URL
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
 
+    // Redirect the user to WhatsApp
+    window.location.href = whatsappUrl;
+  };
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -50,10 +58,10 @@ function Dashboard() {
         </div>
       </div>
       <div className="backcolor">
-        <h1 className="text-center font-bold py-4 ">
+        <h1 className="text-center font-bold pt-4 sm:pb-4 pb-0 ">
           Order Food on Train Online
         </h1>
-        <div className="backcolor ">
+        <div className="backcolor">
           <div className="pt-2">
             <div className="mx-auto flex justify-around p-2 pt-2 box-shadow w-11/12 sm:w-2/4">
               <button
@@ -82,7 +90,7 @@ function Dashboard() {
           </div>
           <div className="mt-3  flex justify-center">
             {activeButton === "pnr" && (
-              <form className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between">
+              <form className="d-flex flex-row items-center w-11/12 sm:w-2/5 justify-between">
                 <input
                   placeholder="Enter PNR Number"
                   value={trainNumber}
@@ -93,7 +101,7 @@ function Dashboard() {
                 />
                 <button
                   type="submit"
-                  className="button1"
+                  className="button1 my-4"
                   onClick={() => handleSubmit()}
                 >
                   Submit
@@ -128,19 +136,26 @@ function Dashboard() {
             )}
             {/* Add similar conditional rendering for other buttons */}
             {activeButton === "whatsapp" && (
-              <form
-                onSubmit={"handleSubmit"}
-                className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
-              >
-                <input
+              <form className="d-flex flex-row items-center w-11/12 sm:w-2/5 justify-between">
+                {/* <input
                   placeholder="Whatsapp Number"
                   className="inputpnr  mx-auto w-full"
                   type="number"
+                  value={9771231434}
                   required
-                />
-                <button type="submit" className="button1 sm:my-0 my-4">
+                /> */}
+                <p
+                  className="inputpnr  mx-auto w-full my-4"
+                  onClick={redirectToWhatsApp}
+                >
+                  9771231434
+                </p>
+                {/* <button
+                  onClick={redirectToWhatsApp}
+                  className="button1 sm:my-0 my-4"
+                >
                   Submit
-                </button>
+                </button> */}
               </form>
             )}
           </div>
@@ -149,25 +164,29 @@ function Dashboard() {
       <IRCTCPartner />
 
       <div className="pt-5 ">
-        <div className=" d-flex justify-content-between gap-2 p-3 w-11/12 pt-2 group-ordering mx-auto">
-          <div className="d-flex justify-content-around sm:gap-5 gap-1 align-items-center sm:px-10 px-1">
-            <img src={groupIcon} className="p-2" alt="" />
-            <div>
-              <h3 className="text-left text-black font-bold ">
-                Group food ordering in train
-              </h3>
-              <h6 className="text-justify text-black font-semibold">
-                Travelling in a group of 10 or more
-              </h6>
+        <Link
+          to="/book-group-order"
+          className="no-underline"
+          style={{ textDecoration: "none !important" }}
+        >
+          <div className=" d-flex justify-content-between gap-2 p-3 w-11/12 pt-2 group-ordering mx-auto ">
+            <div className="d-flex justify-content-around sm:gap-5 gap-1 align-items-center sm:px-10 px-1">
+              <img src={groupIcon} className="p-2" alt="" />
+              <div className="">
+                <h3 className="text-left sm:text-2xl text-lg text-black font-bold  ">
+                  Group food ordering in train
+                </h3>
+                <h6 className="text-justify sm:text-xl text-sm text-black font-semibold ">
+                  Travelling in a group of 10 or more
+                </h6>
+              </div>
             </div>
-          </div>
-          <div className="d-flex align-items-center ">
-            <Link to="/book-group-order">
+            <div className="d-flex align-items-center ">
               {" "}
               <IoIosArrowForward className="text-gray-500 text-xl" />
-            </Link>
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       <div className="my-5">
