@@ -21,17 +21,15 @@ const Payment = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [addNote, setAddNote] = useState("");
-
+  const [selectedMethod, setSelectedMethod] = useState("");
   const handlePlaceOrder = async () => {
     const payload = {
-      first_name: "John",
-      last_name: "Doe",
-      sir_name: "Mr.",
-      email: "john1.doe@example.com",
-      phone: "1234567891",
+      full_name: Name,
+      email: email,
+      phone: phoneNumber,
       boarding_station: "NDLS",
       claim_gst: true,
-      coach_number: "A2",
+      coach_number: coach_number,
       delivery_date_time: "2024-03-15T12:00:00Z",
       delivery_station_code: "VSKP",
       discount: 0,
@@ -39,15 +37,16 @@ const Payment = () => {
       grand_total: 110,
       isPaid: false,
       dateof_journey: "2024-03-15T12:00:00Z",
-      order_note: "Please deliver on time",
+      order_note: addNote,
       order_source: "website",
-      pay_mode: "cod",
-      pnr_no: "2906951589",
+      pay_mode: selectedMethod,
+      pnr_no: PNR,
       resturant_id: "SE69HQ",
-      seat_no: "2",
+      seat_no: seatNum,
       tax_amount: 5,
       train_no: "11058",
-      foodMenuItems: ["KgELVS", "KgELVS"],
+      foodMenuItems:
+        '[{"foodMenuItemId":"KgELVS","quantity":"2"},{"foodMenuItemId":"eoR7LN","quantity":"2"}]',
     };
     try {
       const response = await placeOrder(payload);
@@ -73,7 +72,6 @@ const Payment = () => {
   const handleOptionSelect = (option) => {
     console.log(`You selected: ${option}`);
   };
-  const [selectedMethod, setSelectedMethod] = useState("");
 
   const handleMethodChange = (event) => {
     setSelectedMethod(event.target.value);

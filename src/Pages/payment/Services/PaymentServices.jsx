@@ -1,8 +1,9 @@
 import axiosInstance from "../../../api-config/axiosinstance";
 
 const placeOrder = async (payload) => {
+  console.log("payloadd",payload);
   try {
-    const resp = await axiosInstance.get("/placeOrder", payload);
+    const resp = await axiosInstance.post("/placeOrder", payload);
     console.log("response is", resp);
     const dataObject = resp;
     return dataObject;
