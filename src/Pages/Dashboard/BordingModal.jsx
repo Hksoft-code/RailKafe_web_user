@@ -7,6 +7,7 @@ const BordingModal = ({ pnr }) => {
   const [selectedStationCode, setSelectedStationCode] = useState("");
   const [TrainRoutes, setTrainRoutes] = useState([]);
   const [Datee, setDatee] = useState("");
+  const [boadingData, setBoadingData] = useState([]);
   const navigate = useNavigate();
 
   //   const handleInputClick = () => {
@@ -30,11 +31,26 @@ const BordingModal = ({ pnr }) => {
       const response = await getTrainByPnr(pnr);
       const trainroute = response?.data.data.resp;
       const TrainFinalDetail = trainroute.trainRoutes;
+      setBoadingData(trainroute);
       setTrainRoutes(TrainFinalDetail);
       console.log("train info response 200", response);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  };
+
+  const handleSubmit = () => {
+    const payload = {
+      delivery_date_time: Datee,
+      boarding_station: boadingData?.boardingInfo?.stationName,
+      delivery_station_code: Datee,
+      dateof_journey: Datee,
+      train_no: boadingData?.trainInfo?.trainNo,
+    };
+    console.log("ggggggggggggggggggg", payload);
+    sessionStorage.setItem("placeOrderdata", JSON.stringify(payload));
+    console.log("payload", sessionStorage.getItem("placeOrderdata"));
+    navigate(`/order-food/${pnr}`);
   };
   console.log("trainRpoutessss", TrainRoutes);
 
@@ -86,7 +102,7 @@ const BordingModal = ({ pnr }) => {
             type="submit"
             onClick={(e) => {
               e.preventDefault();
-              navigate(`/order-food/${pnr}`);
+              handleSubmit();
             }}
             className="button1 sm:my-0 w-10/12 my-4"
           >

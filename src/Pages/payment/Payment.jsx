@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import google from "./../../Assets/logos_google-pay.png";
 import visa from "./../../Assets/logos_visa.png";
 import master from "./../../Assets/logos_mastercard.png";
@@ -22,6 +22,16 @@ const Payment = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [addNote, setAddNote] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("");
+  const [placeOrderMetaData, setPlaceOrderMetaData] = useState();
+
+  useEffect(() => {
+    const storedData = sessionStorage.getItem("placeOrderdata");
+    console.log("storage ", storedData?.train_no);
+    if (storedData) {
+      setPlaceOrderMetaData(storedData);
+    }
+  }, []);
+
   const handlePlaceOrder = async () => {
     const payload = {
       full_name: Name,
