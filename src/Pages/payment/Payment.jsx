@@ -25,7 +25,7 @@ const Payment = () => {
   const [placeOrderMetaData, setPlaceOrderMetaData] = useState();
 
   useEffect(() => {
-    const storedData = sessionStorage.getItem("placeOrderdata");
+    const storedData = localStorage.getItem("placeOrderdata");
     console.log("storage ", storedData?.train_no);
     if (storedData) {
       setPlaceOrderMetaData(storedData);

@@ -48,7 +48,7 @@ const BordingModal = ({ pnr }) => {
       train_no: boadingData?.trainInfo?.trainNo,
     };
     console.log("ggggggggggggggggggg", payload);
-    sessionStorage.setItem("placeOrderdata", JSON.stringify(payload));
+    localStorage.setItem("placeOrderdata", JSON.stringify(payload));
     console.log("payload", sessionStorage.getItem("placeOrderdata"));
     navigate(`/order-food/${pnr}`);
   };
