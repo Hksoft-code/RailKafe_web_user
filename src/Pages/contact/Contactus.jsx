@@ -2,20 +2,28 @@ import { PiPhoneCallFill } from "react-icons/pi";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
-import "./contact.css"
+import "./contact.css";
 const Contactus = () => {
   return (
     <section className="mb-12">
       <h1 className="text-center font-bold text-3xl mt-4 mb-3">Contact Us</h1>
       <form action="">
         <div className="d-flex flex-col">
-          <input className="m-3 text-lg p-3 text-gray-500 inputclass" type="text" placeholder="Name" />
+          <input
+            className="m-3 text-lg p-3 text-gray-500 inputclass"
+            type="text"
+            placeholder="Name"
+          />
           <input
             className="m-3 text-lg p-3 text-gray-500 inputclass"
             type="number"
             placeholder="Mobile Number"
           />
-          <input className="m-3 text-lg p-3 text-gray-500 inputclass" type="text" placeholder="Add Message" />
+          <input
+            className="m-3 text-lg p-3 text-gray-500 inputclass"
+            type="text"
+            placeholder="Add Message"
+          />
           <button type="submit" className="px-2 mx-auto py-2 w-2/4 button1">
             Submit
           </button>
@@ -43,27 +51,28 @@ const Contactus = () => {
         <div className="mt-2 mx-5 mb-2 p-3">
           <div className="d-flex items-center">
             <FaPhoneAlt className="text-white text-xl" />{" "}
-            <p className="text-white mb-0">+91320940213</p>
+            <p className="text-white mb-0">9771231434</p>
           </div>
           <a href="/" className="text-white no-underline">
-            Contact@railKafe.com{" "}
+            info@railkafe.com{" "}
           </a>
         </div>
         <div className="mt-2 mx-5 mb-2 p-3">
           <div className="d-flex items-center">
             <FaPhoneAlt className="text-white text-xl" />{" "}
-            <p className="text-white mb-0">+91320940213</p>
+            <p className="text-white mb-0">9771231434</p>
           </div>
           <a href="/" className="text-white no-underline">
-            Contact@railKafe.com{" "}
+            info@railkafe.com{" "}
           </a>
         </div>
         <div className="mt-2 mx-5 mb-2 p-3 ">
           <div className="d-flex items-center">
             <IoLocationSharp className="text-white text-xl" />{" "}
             <p className="text-white mb-0 ">
-              33, B-4/33, Mohan Cooperative <br />
-              Industrial Estate, New Delhi South, India
+              Railkafe office at Circular road,
+              <br />
+              Deoghar, Jharkhand, Pin - 814112
             </p>
           </div>
         </div>
@@ -71,8 +80,9 @@ const Contactus = () => {
           <div className="d-flex items-center">
             <IoLocationSharp className="text-white text-xl" />{" "}
             <p className="text-white mb-0 ">
-              33, B-4/33, Mohan Cooperative <br /> Industrial Estate, New Delhi
-              South, India
+              Railkafe office at Circular road,
+              <br />
+              Deoghar, Jharkhand, Pin - 814112
             </p>
           </div>
         </div>

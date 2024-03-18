@@ -43,7 +43,7 @@ export default function LabelBottomNavigation({ toggleDrawer }) {
         value="Order"
         icon={<MessageOutlinedIcon />}
         component={Link}
-        to="/order-food"
+        to="myorders"
       />
       <BottomNavigationAction
         label="Offer"

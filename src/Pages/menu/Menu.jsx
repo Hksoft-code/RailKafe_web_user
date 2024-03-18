@@ -49,7 +49,7 @@ const Menu = () => {
 
   const getRestaurantDetails = async () => {
     try {
-      const response = await FoodMenuDetails("SE69HQ");
+      const response = await FoodMenuDetails(rest_id);
       // const restaurant = response?.data.data;
       console.log("restaurant info response", response?.data.data);
       setRestaurantDetails(response?.data.data.resturantDetails);
