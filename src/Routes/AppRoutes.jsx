@@ -66,7 +66,7 @@ function AppRoutes() {
           <Route path="/myprofile" element={<Profile />} />
           <Route path="/myorders" element={<Myorder />} />
           <Route path="/order-food/:trainNumber" element={<OrderFood />} />
-          <Route path="/menu" element={<Menu />} />
+          <Route path="/menu/:rest_id" element={<Menu />} />
           <Route path="/Payment" element={<Payment />} />
           <Route path="/ordersuccessfull" element={<OrderSuccessfull />} />
           <Route path="/viewcart" element={<ViewCartpage />} />

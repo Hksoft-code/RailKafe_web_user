@@ -83,9 +83,10 @@ function OrderFood() {
   };
 
   const HandleRestId = (e) => {
-    navigate("/menu", {
-      state: { restaurant_id: restaurantList.resturant_id },
-    });
+    navigate(`/menu/${e.resturant_id}`);
+    // navigate("/menu", {
+    //   state: { restaurant_id: e.resturant_id },
+    // });
     console.log("resturant iddddd", e);
   };
 
@@ -330,7 +331,7 @@ function OrderFood() {
                 </div>
                 <button
                   onClick={() => {
-                    HandleRestId();
+                    HandleRestId(restaurant);
                     dispatch(setRestaurantName(restaurant.resturant_name));
                     dispatch(setMinimumCost(restaurant.min_order_value));
                     dispatch(setStationName(restaurant.StationName));
