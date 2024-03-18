@@ -26,27 +26,35 @@ const Payment = () => {
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("placeOrderdata");
-    console.log("storage ", storedData?.train_no);
-    if (storedData) {
-      setPlaceOrderMetaData(storedData);
+    const StoredDataJSON = JSON.parse(storedData);
+    console.log("storage ", StoredDataJSON);
+    if (StoredDataJSON) {
+      setPlaceOrderMetaData(StoredDataJSON);
     }
   }, []);
+  const {
+    boarding_station,
+    dateof_journey,
+    delivery_date_time,
+    delivery_station_code,
+    train_no,
+  } = placeOrderMetaData;
 
   const handlePlaceOrder = async () => {
     const payload = {
       full_name: Name,
       email: email,
       phone: phoneNumber,
-      boarding_station: "NDLS",
+      boarding_station: boarding_station,
       claim_gst: true,
       coach_number: coach_number,
-      delivery_date_time: "2024-03-15T12:00:00Z",
-      delivery_station_code: "VSKP",
+      delivery_date_time: delivery_date_time,
+      delivery_station_code: delivery_station_code,
       discount: 0,
       final_amount: 100,
       grand_total: 110,
       isPaid: false,
-      dateof_journey: "2024-03-15T12:00:00Z",
+      dateof_journey: dateof_journey,
       order_note: addNote,
       order_source: "website",
       pay_mode: selectedMethod,
@@ -54,7 +62,7 @@ const Payment = () => {
       resturant_id: "SE69HQ",
       seat_no: seatNum,
       tax_amount: 5,
-      train_no: "11058",
+      train_no: train_no,
       foodMenuItems:
         '[{"foodMenuItemId":"KgELVS","quantity":"2"},{"foodMenuItemId":"eoR7LN","quantity":"2"}]',
     };

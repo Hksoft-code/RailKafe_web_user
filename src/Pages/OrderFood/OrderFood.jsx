@@ -79,10 +79,11 @@ function OrderFood() {
     }
   };
 
-  const HandleRestId = () => {
+  const HandleRestId = (e) => {
     navigate("/menu", {
       state: { restaurant_id: restaurantList.resturant_id },
     });
+    console.log("resturant iddddd",e);
   };
 
   const handleChange = (event) => {
@@ -191,7 +192,7 @@ function OrderFood() {
                       </div>
                       <button
                         onClick={() => {
-                          HandleRestId();
+                          HandleRestId(restaurant);
                           dispatch(
                             setRestaurantName(restaurant.resturant_name)
                           );

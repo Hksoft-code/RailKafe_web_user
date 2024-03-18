@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 function CustomSelect() {
   const [trainNumber, setTrainNumber] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [ResultData, setResultData] = useState('');
+  console.log("result",ResultData);
   const navigate = useNavigate();
   const [listOpen, setListOpen] = useState(false);
   console.log("TrainNumber", trainNumber);
@@ -60,7 +62,7 @@ function CustomSelect() {
             type="text"
             list="trainNumbers"
             placeholder="Train Number"
-            value={trainNumber}
+            value={ResultData || trainNumber}
             className="inputpnr w-full"
             required
             onChange={handleInputChange}
@@ -82,6 +84,7 @@ function CustomSelect() {
                 onClick={() => {
                   setTrainNumber(result.train_number);
                   setListOpen(!listOpen);
+                  setResultData(`${result.train_name} - ${result.train_number}`)
                 }}
               >
                 {`${result.train_name} - ${result.train_number}`}

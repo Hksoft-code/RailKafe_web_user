@@ -48,6 +48,7 @@ const Menu = ({ resturant_id }) => {
       // const restaurant = response?.data.data;
       console.log("restaurant info response", response?.data.data);
       setRestaurantDetails(response?.data.data.resturantDetails);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
