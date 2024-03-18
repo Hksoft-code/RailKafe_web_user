@@ -32,6 +32,7 @@ const Payment = () => {
       setPlaceOrderMetaData(StoredDataJSON);
     }
   }, []);
+  console.log("placeOrderMetaData", placeOrderMetaData);
   const {
     boarding_station,
     dateof_journey,
