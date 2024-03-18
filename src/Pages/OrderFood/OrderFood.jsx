@@ -32,6 +32,7 @@ function OrderFood() {
   const [setshowrestaurant, setSetshowrestaurant] = useState(false);
   const [stationCode, setStationCode] = useState();
   const [selectedStationCode, setSelectedStationCode] = useState("");
+  const [resultDataitem, setResultDataitem] = useState("");
   const { trainNumber } = useParams();
 
   // const location = useLocation();
@@ -47,6 +48,8 @@ function OrderFood() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const resultData = localStorage.getItem("TrainNameNumber");
+    setResultDataitem(JSON.parse(resultData));
     if (trainNumber.toString().length > 6) {
       console.log("working2", trainNumber > 6);
       getRestaurantByPnr();
@@ -83,7 +86,7 @@ function OrderFood() {
     navigate("/menu", {
       state: { restaurant_id: restaurantList.resturant_id },
     });
-    console.log("resturant iddddd",e);
+    console.log("resturant iddddd", e);
   };
 
   const handleChange = (event) => {
@@ -95,6 +98,7 @@ function OrderFood() {
     setSetshowrestaurant(!setshowrestaurant);
   };
   console.log("details of train and station", trainNumber, selectedStation);
+  console.log("haha", resultDataitem);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -271,7 +275,7 @@ function OrderFood() {
                 <img src={Img2} className="my-4 mx-1 w-1/4" alt="" />
                 <img src={Img3} className="my-4 mx-1 w-1/4" alt="" />
               </div>
-              <TrainInfo />
+              <TrainInfo trainname={resultDataitem} />
             </section>
           </div>
         </>
@@ -353,7 +357,7 @@ function OrderFood() {
                 <img src={Img2} className="my-4 mx-1 w-1/4" alt="" />
                 <img src={Img3} className="my-4 mx-1 w-1/4" alt="" />
               </div>
-              <TrainInfo />
+              <TrainInfo trainname={resultDataitem} />
             </section>
           </div>
         </>

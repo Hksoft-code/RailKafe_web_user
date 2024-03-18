@@ -64,7 +64,10 @@ const TrainInfo = ({ trainname, trainnumber }) => {
           Here are the steps on how to book food on Railkafe:
         </p>
         <ul className="list-decimal">
-          <li>Go to the Railkafe website or open the <Link to="/">Railkafe app</Link>.</li>
+          <li>
+            Go to the Railkafe website or open the{" "}
+            <Link to="/">Railkafe app</Link>.
+          </li>
           <li>Enter the train number or PNR number or train name.</li>
           <li>
             Choose from the list of restaurant and food options available for
@@ -85,7 +88,9 @@ const TrainInfo = ({ trainname, trainnumber }) => {
           train by following the steps below: -
         </p>
         <ul className="list-decimal">
-          <li>Visit the <a href="www.railkafe.com">www.railkafe.com</a></li>
+          <li>
+            Visit the <a href="www.railkafe.com">www.railkafe.com</a>
+          </li>
           <li>Enter Train Number or PNR Number.</li>
           <li>Choose your favorite restaurant from the list displayed.</li>
           <li>Select food items from the chosen restaurant’s menu.</li>
@@ -123,8 +128,8 @@ const TrainInfo = ({ trainname, trainnumber }) => {
       <div>
         <p>
           <b>
-            Q. How to <Link to="/group-order">order bulk food</Link> in {trainname} {trainnumber} train for
-            groups online?
+            Q. How to <Link to="/group-order">order bulk food</Link> in{" "}
+            {trainname} {trainnumber} train for groups online?
           </b>{" "}
           <br />
           Please follow steps mentioned below to order bulk food for groups
@@ -146,7 +151,8 @@ const TrainInfo = ({ trainname, trainnumber }) => {
       <div>
         <p>
           <b>
-            Q. How to get <Link to="">Jain Food</Link> in train {trainname} {trainnumber}?
+            Q. How to get <Link to="">Jain Food</Link> in train {trainname}{" "}
+            {trainnumber}?
           </b>{" "}
           <br />
           At Railkafe you can get jain food in train {trainname} {trainnumber}.
