@@ -6,15 +6,20 @@ import Favorite from "@mui/icons-material/Favorite";
 import ImageSlider from "./../Dashboard/ImageSlider.jsx";
 import "./menu.css";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CustomPagination from "../Otherpages/CustomPagination.jsx";
 import { FoodMenuDetails } from "./service/FoodMenu_Get.jsx";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCart, RemoveFromCart } from "../../Redux/OrderSystem.js";
 
-const Menu = ({ resturant_id }) => {
-  console.log("restauuuu", resturant_id);
+const Menu = () => {
+  // const location = useLocation();
+  const { rest_id } = useParams();
+
+  // Access the state object from location
+  // const { restaurant_id } = location.state;
+  console.log("restauuuu", rest_id);
   const dispatch = useDispatch();
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
   console.log("details of cart", cart);
@@ -48,7 +53,6 @@ const Menu = ({ resturant_id }) => {
       // const restaurant = response?.data.data;
       console.log("restaurant info response", response?.data.data);
       setRestaurantDetails(response?.data.data.resturantDetails);
-      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -99,7 +103,9 @@ const Menu = ({ resturant_id }) => {
       content: restaurantDetails.filter((item) => item.food_type === type),
     })),
   ];
-  const { restaurantName, stationName, minimumCost } = useSelector((state) => state.menu);
+  const { restaurantName, stationName, minimumCost } = useSelector(
+    (state) => state.menu
+  );
   return (
     <section className="mb-24">
       <h1 className="text-center font-bold text-black text-xl my-4 mx-auto">
@@ -163,7 +169,6 @@ const Menu = ({ resturant_id }) => {
                       className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
                       style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
                       onClick={() => dispatch(RemoveFromCart(item))}
-                      
                     >
                       -
                     </button>
@@ -178,7 +183,11 @@ const Menu = ({ resturant_id }) => {
                   </div>
                 </div>
                 <div className="d-flex mx-auto items-start sm:justify-between justify-end md:justify-between">
-                  <img className="w-2/4 mb-2 sm:mr-0 mr-16 p-3 bg-gray-800 rounded-lg" src={Food} alt="Food" />
+                  <img
+                    className="w-2/4 mb-2 sm:mr-0 mr-16 p-3 bg-gray-800 rounded-lg"
+                    src={Food}
+                    alt="Food"
+                  />
                   <Checkbox
                     style={{ color: "red" }}
                     {...label}

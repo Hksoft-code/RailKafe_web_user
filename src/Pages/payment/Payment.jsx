@@ -74,8 +74,6 @@ const Payment = () => {
     }
   };
 
-  const navigate = useNavigate();
-
   // const handleSubmit = () => {
   //   if (selectedMethod) {
   //     navigate("/ordersuccessfull");
