@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./dashboard.css";
 import delicioustext from "../../Assets/delicioustext.png";
 import { Link } from "react-router-dom";
@@ -11,14 +11,66 @@ import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import UpComingFood from "../IRCTC partner/UpcomingOrder";
 import Footer from "./../../Common-Components/Footer.jsx";
 import CustomSelect from "../Otherpages/TrainSelectInput.jsx";
-import BordingModal from "./BordingModal.jsx";
+import { toast } from "react-toastify";
+import { GetTrainNameList } from "../Otherpages/service/GetTrainName.jsx";
 
 function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
-  // const [trainNumber, setTrainNumber] = useState("");
-  const [PnrNumber, setPnrNumber] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [trainDetails, setTrainDetails] = useState([]);
+  useEffect(() => {
+    getAllTrainlist();
+  }, []);
+
+  const getAllTrainlist = async () => {
+    const limit = 1000;
+    const page = 0;
+    const train_number = 1;
+
+    try {
+      // Perform a search based on the input value
+      const response = await GetTrainNameList(train_number, limit, page);
+      console.log("response for train list", response?.data.data);
+      const trainValue = response?.data.data;
+      setTrainDetails(trainValue);
+      console.log("Train Value", trainValue);
+    } catch (error) {
+      console.error("Error searching:", error);
+    }
+  };
+
+  // const handleInputChange = (e) => {
+  //   const value = e.target.value;
+  //   setTrainNumber(value);
+  //   // Filter trains based on train number
+  //   if (value.trim() === "") {
+  //     setFilteredTrains(trains);
+  //   } else {
+  //     const filtered = trains.filter((train) =>
+  //       train.train_number.includes(value)
+  //     );
+  //     setFilteredTrains(filtered);
+  //   }
+  // };
+
+  const [pnr, setPNR] = useState("");
+
+  const pnrRegex = /^\d{10}$/;
+
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setPNR(value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (pnrRegex.test(pnr)) {
+      console.log("Valid PNR:", pnr);
+    } else {
+      // PNR is not valid, display toast message
+      toast.error("Invalid PNR. Please enter a valid 10-digit PNR number.");
+    }
+  };
 
   // const navigate = useNavigate();
   const handleButtonClick = (buttonName) => {
@@ -38,16 +90,6 @@ function Dashboard() {
     setIsOpen(!isOpen);
   };
 
-  const handleInputChange = (e) => {
-    e.preventDefault();
-    setPnrNumber(e.target.value);
-  };
-
-  // const handleSubmit = () => {
-  //   if (trainNumber) {
-  //     navigate(`/order-food/${trainNumber}`);
-  //   }
-  // };
   return (
     <div>
       <div className="uppermain1">
@@ -90,77 +132,37 @@ function Dashboard() {
           <div className="mt-3  flex justify-center">
             {activeButton === "pnr" && (
               <>
-                <form className="d-flex flex-row items-center w-11/12 sm:w-2/5 justify-between">
-                  <input
-                    placeholder="Enter PNR Number"
-                    value={PnrNumber}
-                    className="inputpnr w-full"
-                    required
-                    onChange={handleInputChange}
-                    type="text"
-                  />
-                  <button
-                    type="submit"
-                    className="button1 my-4"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsModalOpen(true);
-                    }}
-                  >
-                    Submit
-                  </button>
+                <form
+                  className="w-11/12 sm:w-2/5 mx-auto flex flex-col items-center"
+                  onSubmit={handleSubmit}
+                >
+                  <div className="flex flex-row items-center justify-center w-full">
+                    <input
+                      className="inputpnr w-full"
+                      type="text"
+                      value={pnr}
+                      onChange={handleInputChange}
+                      placeholder="Enter PNR number"
+                    />
+                    <button type="submit" className="button1 my-4">
+                      Submit
+                    </button>
+                  </div>
                 </form>
-                {isModalOpen && <BordingModal pnr={PnrNumber} />}
               </>
             )}
             {activeButton === "train" && (
-              /* Dropdown menu with all train numbers */
-              // <form
-              //   onSubmit={handleSubmitTrainNumber}
-              //   className="d-flex flex-row items-center w-10/12 sm:w-2/5 justify-between"
-              // >
-              //   <input
-              //     type="text"
-              //     list="trainNumbers"
-              //     placeholder="Train Number"
-              //     value={trainNumber}
-              //     className="inputpnr mx-auto w-full"
-              //     required
-              //     onChange={handleTrainNumberChange}
-              //   />
-              //   <datalist id="trainNumbers">
-              //     {trainNumbersArray.map((trainNumber, index) => (
-              //       <option key={index} value={trainNumber} />
-              //     ))}
-              //   </datalist>
-              //   <button type="submit" className="button1 sm:my-0 my-4">
-              //     Submit
-              //   </button>
-              // </form>
-              <CustomSelect />
+              <CustomSelect allTrainDetails={trainDetails} />
             )}
             {/* Add similar conditional rendering for other buttons */}
             {activeButton === "whatsapp" && (
               <form className="d-flex flex-row items-center w-11/12 sm:w-2/5 justify-between">
-                {/* <input
-                  placeholder="Whatsapp Number"
-                  className="inputpnr  mx-auto w-full"
-                  type="number"
-                  value={9771231434}
-                  required
-                /> */}
                 <p
                   className="inputpnr  mx-auto w-full my-4"
                   onClick={redirectToWhatsApp}
                 >
                   9771231434
                 </p>
-                {/* <button
-                  onClick={redirectToWhatsApp}
-                  className="button1 sm:my-0 my-4"
-                >
-                  Submit
-                </button> */}
               </form>
             )}
           </div>
