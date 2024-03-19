@@ -22,12 +22,17 @@ const Payment = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [addNote, setAddNote] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("");
-  const [placeOrderMetaData, setPlaceOrderMetaData] = useState();
+  const [restId, setRest_ID] = useState();
+  const [placeOrderMetaData, setPlaceOrderMetaData] = useState([]);
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("placeOrderdata");
+    const res_id = sessionStorage.getItem("res_id");
+    if (res_id) {
+      setRest_ID(restId);
+    }
     const StoredDataJSON = JSON.parse(storedData);
-    console.log("storage ", StoredDataJSON);
+    console.log("storage ", StoredDataJSON, res_id);
     if (StoredDataJSON) {
       setPlaceOrderMetaData(StoredDataJSON);
     }
@@ -60,19 +65,20 @@ const Payment = () => {
       order_source: "website",
       pay_mode: selectedMethod,
       pnr_no: PNR,
-      resturant_id: "SE69HQ",
+      resturant_id: restId,
       seat_no: seatNum,
       tax_amount: 5,
       train_no: train_no,
       foodMenuItems:
         '[{"foodMenuItemId":"KgELVS","quantity":"2"},{"foodMenuItemId":"eoR7LN","quantity":"2"}]',
     };
-    try {
-      const response = await placeOrder(payload);
-      console.log("placeorder response", response);
-    } catch (e) {
-      console.log("error", e);
-    }
+    console.log("response payload", payload);
+    // try {
+    //   const response = await placeOrder(payload);
+    //   console.log("placeorder response", response);
+    // } catch (e) {
+    //   console.log("error", e);
+    // }
   };
 
   const navigate = useNavigate();

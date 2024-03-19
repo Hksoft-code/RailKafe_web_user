@@ -84,6 +84,7 @@ function OrderFood() {
 
   const HandleRestId = (e) => {
     navigate(`/menu/${e.resturant_id}`);
+    sessionStorage.setItem("res_id", e.resturant_id);
     // navigate("/menu", {
     //   state: { restaurant_id: e.resturant_id },
     // });
