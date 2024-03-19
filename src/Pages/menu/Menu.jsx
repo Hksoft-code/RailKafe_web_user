@@ -6,7 +6,7 @@ import Favorite from "@mui/icons-material/Favorite";
 import ImageSlider from "./../Dashboard/ImageSlider.jsx";
 import "./menu.css";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CustomPagination from "../Otherpages/CustomPagination.jsx";
 import { FoodMenuDetails } from "./service/FoodMenu_Get.jsx";
 import PropTypes from "prop-types";

@@ -4,12 +4,12 @@ import visa from "./../../Assets/logos_visa.png";
 import master from "./../../Assets/logos_mastercard.png";
 import paypal from "./../../Assets/logos_paypal.png";
 import parkpay from "./../../Assets/icon-park_pay-code.png";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./payment.css";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { placeOrder } from "./Services/PaymentServices";
+// import { placeOrder } from "./Services/PaymentServices";
 const Payment = () => {
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
   console.log("cart details xxxxxxxxxxxxxxxxxxxxxxx", cart);
@@ -84,7 +84,7 @@ const Payment = () => {
     // }
   };
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // const handleSubmit = () => {
   //   if (selectedMethod) {
@@ -107,7 +107,7 @@ const Payment = () => {
   };
 
   const TaxPrice = parseFloat((totalPrice * 0.15).toFixed(3));
-  const transformedCart = cart.map((item, index) => ({
+  const transformedCart = cart.map((item) => ({
     food_menu_id: item.food_menu_id, // Save the item id
     quantity: item.quantity, 
   }));
