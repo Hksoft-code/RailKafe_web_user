@@ -88,7 +88,7 @@ function OrderFood() {
     // navigate("/menu", {
     //   state: { restaurant_id: e.resturant_id },
     // });
-    console.log("resturant iddddd", e);
+    console.log("resturant iddddd", e.resturant_id);
   };
 
   const handleChange = (event) => {

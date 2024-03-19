@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { placeOrder } from "./Services/PaymentServices";
 const Payment = () => {
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
-  console.log("cart details", cart);
+  console.log("cart details xxxxxxxxxxxxxxxxxxxxxxx", cart);
   const [showModal, setShowModal] = useState(false);
   const [PNR, setPNR] = useState("");
   const [coach_number, setCoach_number] = useState("");
@@ -22,21 +22,25 @@ const Payment = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [addNote, setAddNote] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("");
-  const [restId, setRest_ID] = useState();
+  const [restId, setRest_ID] = useState("");
   const [placeOrderMetaData, setPlaceOrderMetaData] = useState([]);
+  const [isGst, setisGst] = useState(false);
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("placeOrderdata");
     const res_id = sessionStorage.getItem("res_id");
+    console.log(res_id, "resttttttttttttttttttttttttttttttttt");
     if (res_id) {
-      setRest_ID(restId);
+      setRest_ID(res_id);
     }
     const StoredDataJSON = JSON.parse(storedData);
+    // const StoredRestId = JSON.parse(res_id);
     console.log("storage ", StoredDataJSON, res_id);
     if (StoredDataJSON) {
       setPlaceOrderMetaData(StoredDataJSON);
     }
   }, []);
+  console.log("restttt idddd", restId);
   console.log("placeOrderMetaData", placeOrderMetaData);
   const {
     boarding_station,
@@ -52,13 +56,13 @@ const Payment = () => {
       email: email,
       phone: phoneNumber,
       boarding_station: boarding_station,
-      claim_gst: true,
+      claim_gst: isGst,
       coach_number: coach_number,
       delivery_date_time: delivery_date_time,
       delivery_station_code: delivery_station_code,
       discount: 0,
-      final_amount: 100,
-      grand_total: 110,
+      final_amount: totalPrice,
+      grand_total: totalPrice + TaxPrice,
       isPaid: false,
       dateof_journey: dateof_journey,
       order_note: addNote,
@@ -67,10 +71,9 @@ const Payment = () => {
       pnr_no: PNR,
       resturant_id: restId,
       seat_no: seatNum,
-      tax_amount: 5,
+      tax_amount: TaxPrice,
       train_no: train_no,
-      foodMenuItems:
-        '[{"foodMenuItemId":"KgELVS","quantity":"2"},{"foodMenuItemId":"eoR7LN","quantity":"2"}]',
+      foodMenuItems: transformedCart,
     };
     console.log("response payload", payload);
     // try {
@@ -96,6 +99,7 @@ const Payment = () => {
 
   const handleOptionSelect = (option) => {
     console.log(`You selected: ${option}`);
+    setisGst(option);
   };
 
   const handleMethodChange = (event) => {
@@ -103,6 +107,10 @@ const Payment = () => {
   };
 
   const TaxPrice = parseFloat((totalPrice * 0.15).toFixed(3));
+  const transformedCart = cart.map((item, index) => ({
+    food_menu_id: item.food_menu_id, // Save the item id
+    quantity: item.quantity, // Save the item quantity
+  }));
 
   return (
     <section className="mb-24 mt-4">
@@ -201,8 +209,8 @@ const Payment = () => {
                       <input
                         type="radio"
                         name="confirm"
-                        value="yes"
-                        onChange={() => handleOptionSelect("Yes")}
+                        value={true}
+                        onChange={() => handleOptionSelect(true)}
                         className="mr-2 inputpnr"
                       />
                     </label>
@@ -211,8 +219,8 @@ const Payment = () => {
                       <input
                         type="radio"
                         name="confirm"
-                        value="no"
-                        onChange={() => handleOptionSelect("No")}
+                        value={false}
+                        onChange={() => handleOptionSelect(false)}
                         className="mr-2"
                       />
                     </label>
