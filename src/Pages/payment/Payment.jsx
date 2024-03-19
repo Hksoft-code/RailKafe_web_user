@@ -109,7 +109,7 @@ const Payment = () => {
   const TaxPrice = parseFloat((totalPrice * 0.15).toFixed(3));
   const transformedCart = cart.map((item, index) => ({
     food_menu_id: item.food_menu_id, // Save the item id
-    quantity: item.quantity, // Save the item quantity
+    quantity: item.quantity, 
   }));
 
   return (
