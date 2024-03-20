@@ -101,6 +101,7 @@ function OrderFood() {
     console.log("Station Code", Station_Code);
     setSetshowrestaurant(!setshowrestaurant);
   };
+  console.log(handleChange);
   console.log("details of train and station", trainNumber, selectedStation);
   console.log("haha", resultDataitem);
 
@@ -121,10 +122,10 @@ function OrderFood() {
     }
   };
   // console.log("Stationsss", stationCode);
-  const today = new Date();
+  // const today = new Date();
 
   // Format the date in YYYY-MM-DD format for the input field
-  const formattedDate = today.toISOString().split("T")[0];
+  // const formattedDate = today.toISOString().split("T")[0];
 
   return (
     <>
@@ -234,7 +235,7 @@ function OrderFood() {
                       type="date"
                       name=""
                       id=""
-                      min={formattedDate}
+                      min={"formattedDate"}
                       className="p-1 rounded-md border-gray-300 w-full"
                       style={{ border: "2px #d1d5db solid" }}
                     />
@@ -329,7 +330,7 @@ function OrderFood() {
                     HandleRestId(restaurant);
                     dispatch(setRestaurantName(restaurant.resturant_name));
                     dispatch(setMinimumCost(restaurant.min_order_value));
-                    dispatch(setStationName(restaurant.StationName));
+                    dispatch(setStationName(restaurant.station_code));
                   }}
                   className="py-2 bg-[#de4d11] text-white font-semibold text-lg sm:w-11/12 w-full my-4 rounded-full sm:mx-5 mx-auto"
                 >

@@ -104,7 +104,7 @@
 
 // export default CustomSelect;
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import BordingModal from "../Dashboard/BordingModal";
 import PropTypes from "prop-types";
 function CustomSelect(props) {
@@ -112,7 +112,7 @@ function CustomSelect(props) {
 
   console.log("All Train Details get from dashboard", allTrainDetails);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [listOpen, setListOpen] = useState(false);
   const [trainData, setTrainData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -122,6 +122,7 @@ function CustomSelect(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    console.log(resultData);
     const trainData1 = allTrainDetails?.train;
     setTrainData(trainData1);
   }, [allTrainDetails]);

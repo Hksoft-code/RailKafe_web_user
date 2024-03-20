@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./payment.css";
 // import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-// import { placeOrder } from "./Services/PaymentServices";
+import { placeOrder } from "./Services/PaymentServices";
 const Payment = () => {
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
   console.log("cart details xxxxxxxxxxxxxxxxxxxxxxx", cart);
@@ -24,24 +24,42 @@ const Payment = () => {
   const [selectedMethod, setSelectedMethod] = useState("");
   const [restId, setRest_ID] = useState("");
   const [placeOrderMetaData, setPlaceOrderMetaData] = useState([]);
+  const [placeOrderMetaDataByPNR, setPlaceOrderMetaDataByPNR] = useState([]);
   const [isGst, setisGst] = useState(false);
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("placeOrderdata");
+    const DataByPnr = sessionStorage.getItem("traindetaildatabypnr");
     const res_id = sessionStorage.getItem("res_id");
     console.log(res_id, "resttttttttttttttttttttttttttttttttt");
     if (res_id) {
       setRest_ID(res_id);
     }
     const StoredDataJSON = JSON.parse(storedData);
+    const StoredDataPNRJSON = JSON.parse(DataByPnr);
     // const StoredRestId = JSON.parse(res_id);
     console.log("storage ", StoredDataJSON, res_id);
     if (StoredDataJSON) {
       setPlaceOrderMetaData(StoredDataJSON);
     }
+    if (StoredDataPNRJSON) {
+      setPlaceOrderMetaDataByPNR(StoredDataPNRJSON);
+    }
   }, []);
+  const transformedCart = cart.map((item) => ({
+    foodMenuItemId: item.food_menu_id, // Save the item id
+    quantity: item.quantity,
+  }));
   console.log("restttt idddd", restId);
-  console.log("placeOrderMetaData", placeOrderMetaData);
+  console.log(
+    "placeOrderMetaData",
+    placeOrderMetaData,
+    placeOrderMetaDataByPNR
+  );
+  // console.log(
+  //   "placeOrderMetaDataByPNR.boardingInfo.stationName",
+  //   placeOrderMetaDataByPNR.boardingInfo.stationName
+  // );
   const {
     boarding_station,
     dateof_journey,
@@ -50,21 +68,26 @@ const Payment = () => {
     train_no,
   } = placeOrderMetaData;
 
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
     const payload = {
       full_name: Name,
       email: email,
       phone: phoneNumber,
-      boarding_station: boarding_station,
+      boarding_station:
+        placeOrderMetaDataByPNR.boardingInfo.stationCode || boarding_station,
       claim_gst: isGst,
       coach_number: coach_number,
-      delivery_date_time: delivery_date_time,
-      delivery_station_code: delivery_station_code,
+      delivery_date_time:
+        delivery_date_time || placeOrderMetaDataByPNR.trainInfo.dt,
+      delivery_station_code:
+        delivery_station_code ||
+        placeOrderMetaDataByPNR.destinationInfo.stationCode,
       discount: 0,
       final_amount: totalPrice,
       grand_total: totalPrice + TaxPrice,
       isPaid: false,
-      dateof_journey: dateof_journey,
+      dateof_journey: dateof_journey || placeOrderMetaDataByPNR.trainInfo.dt,
       order_note: addNote,
       order_source: "website",
       pay_mode: selectedMethod,
@@ -72,16 +95,25 @@ const Payment = () => {
       resturant_id: restId,
       seat_no: seatNum,
       tax_amount: TaxPrice,
-      train_no: train_no,
-      foodMenuItems: transformedCart,
+      train_no: placeOrderMetaDataByPNR.trainInfo.trainNo || train_no,
+      foodMenuItems: JSON.stringify(transformedCart),
     };
+    // sessionStorage.removeItem("placeOrderdata");
     console.log("response payload", payload);
-    // try {
-    //   const response = await placeOrder(payload);
-    //   console.log("placeorder response", response);
-    // } catch (e) {
-    //   console.log("error", e);
-    // }
+    try {
+      const response = await placeOrder(payload);
+      console.log("placeorder response", response);
+      setPNR("");
+      setCoach_number("");
+      setSeatNum("");
+      setName("");
+      setEmail("");
+      setPhoneNumber("");
+      setAddNote("");
+      setSelectedMethod("");
+    } catch (e) {
+      console.log("error", e);
+    }
   };
 
   // const navigate = useNavigate();
@@ -107,19 +139,16 @@ const Payment = () => {
   };
 
   const TaxPrice = parseFloat((totalPrice * 0.15).toFixed(3));
-  const transformedCart = cart.map((item) => ({
-    food_menu_id: item.food_menu_id, // Save the item id
-    quantity: item.quantity, 
-  }));
 
   return (
     <section className="mb-24 mt-4">
-      <form action="">
+      <form action="" onSubmit={handlePlaceOrder}>
         <div className="d-flex flex-col items-center">
           <input
             className="px-6 py-2 border  sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
             type="number"
             value={PNR}
+            required
             onChange={(e) => setPNR(e.target.value)}
             name=""
             id=""
@@ -131,6 +160,7 @@ const Payment = () => {
             name=""
             id=""
             value={coach_number}
+            required
             onChange={(e) => setCoach_number(e.target.value)}
             placeholder="Enter Coach Number"
           />
@@ -140,6 +170,7 @@ const Payment = () => {
             name=""
             id=""
             value={seatNum}
+            required
             onChange={(e) => setSeatNum(e.target.value)}
             placeholder="Enter Seat Number"
           />
@@ -149,6 +180,7 @@ const Payment = () => {
             name=""
             id=""
             value={Name}
+            required
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter Name"
           />
@@ -158,6 +190,7 @@ const Payment = () => {
             name=""
             id=""
             value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter Email id"
           />
@@ -167,6 +200,7 @@ const Payment = () => {
             name=""
             id=""
             value={phoneNumber}
+            required
             onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="Enter Phone Number"
           />
@@ -185,6 +219,7 @@ const Payment = () => {
               type="text"
               readOnly
               placeholder="Add GST"
+              required
               onClick={toggleModal}
               className="px-6 py-2 border  sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
             />
@@ -326,11 +361,8 @@ const Payment = () => {
             />
           </label>
           <button
+            type="submit"
             className="bg-[#DE4D11] p-2 m-4 w-2/4 rounded-full text-white font-semibold text-lg"
-            onClick={(e) => {
-              e.preventDefault(); // Call preventDefault inside a function
-              handlePlaceOrder(); // Call your handlePlaceOrder function
-            }}
           >
             Proceed to pay
           </button>

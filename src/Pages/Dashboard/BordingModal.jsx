@@ -1,22 +1,31 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getTrainByTrain } from "./Services/dashboardServices";
+import { getTrainByPnr } from "./Services/dashboardServices";
 import { useNavigate } from "react-router-dom";
 import { ImCross } from "react-icons/im";
+import { getStationsByTrainNumber } from "../OrderFood/Services/OrderfoodServices";
 const BordingModal = ({ trainNum }) => {
   console.log(trainNum, "details of pnr");
   const [selectedStationCode, setSelectedStationCode] = useState("");
   const [TrainRoutes, setTrainRoutes] = useState([]);
-  const [Datee, setDatee] = useState("");
   const [boadingData, setBoadingData] = useState([]);
-  const [hide, sethide] = useState(true);
+  // const [hide, sethide] = useState(true);
+  const [stationCode, setStationCode] = useState();
   const navigate = useNavigate();
+  const todayy = new Date();
+  const year = todayy.getFullYear();
+  const month = String(todayy.getMonth() + 1).padStart(2, "0");
+  const day = String(todayy.getDate()).padStart(2, "0");
+  const todayDate = `${year}-${month}-${day}`;
+
+  const [Datee, setDatee] = useState(todayDate);
 
   //   const handleInputClick = () => {
   //     setIsModalOpen(true);
   //   };
   useEffect(() => {
     GetTrainDetailsbyTrain();
+    getStationByTrain_Number();
   }, []);
 
   const handleChange = (event) => {
@@ -27,10 +36,21 @@ const BordingModal = ({ trainNum }) => {
     console.log("Station Code", Station_Code);
   };
 
+  const getStationByTrain_Number = async () => {
+    try {
+      const response = await getStationsByTrainNumber();
+      const dataForm = response?.data?.data;
+      setStationCode(dataForm?.stations);
+      console.log("station info response", response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const GetTrainDetailsbyTrain = async () => {
     // e.preventDefault();
     try {
-      const response = await getTrainByTrain(trainNum);
+      const response = await getTrainByPnr(trainNum);
       const trainroute = response?.data.data.resp;
       const TrainFinalDetail = trainroute.trainRoutes;
       setBoadingData(trainroute);
@@ -45,14 +65,16 @@ const BordingModal = ({ trainNum }) => {
     const payload = {
       delivery_date_time: Datee,
       boarding_station: boadingData?.boardingInfo?.stationName,
-      delivery_station_code: Datee,
+      delivery_station_code: selectedStationCode,
       dateof_journey: Datee,
       train_no: boadingData?.trainInfo?.trainNo,
     };
     console.log("ggggggggggggggggggg", payload);
-    localStorage.setItem("placeOrderdata", JSON.stringify(payload));
+    sessionStorage.setItem("placeOrderdata", JSON.stringify(payload));
     console.log("payload", sessionStorage.getItem("placeOrderdata"));
-    navigate(`/order-food/${trainNum}`);
+    if (trainNum) {
+      navigate(`/order-food/${trainNum}`);
+    }
   };
   console.log("trainRpoutessss", TrainRoutes);
 
@@ -67,13 +89,13 @@ const BordingModal = ({ trainNum }) => {
         <ImCross
           className="mb-2 text-right ml-auto"
           onClick={() => {
-            sethide(false);
+            // sethide(false);
           }}
         />
         <form action="" className="">
           <div className="flex flex-col items-start w-full sm:mx-3 mx-auto">
             <label htmlFor="" className="font-semibold mb-1">
-              Bording Date:
+              Boarding Date:
             </label>
             <input
               type="date"
@@ -90,7 +112,7 @@ const BordingModal = ({ trainNum }) => {
           </div>
           <div className="flex flex-col items-start w-full sm:mx-3 mx-auto">
             <label htmlFor="" className="font-semibold mb-1">
-              Bording Station:
+              Boarding Station:
             </label>
             <select
               value={selectedStationCode}
@@ -99,9 +121,9 @@ const BordingModal = ({ trainNum }) => {
               id=""
               className="border-2 py-1 rounded-md border-gray-300 w-full"
             >
-              {TrainRoutes?.map((item, index) => (
-                <option key={index} value={item?.stationCode}>
-                  {item?.stationName}
+              {stationCode?.map((item, index) => (
+                <option key={index} value={item?.station_code}>
+                  {item?.StationsInfo?.station_name}
                 </option>
               ))}
             </select>

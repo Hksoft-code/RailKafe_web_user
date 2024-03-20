@@ -489,9 +489,9 @@ function Dashboard() {
         )}
       </div>
 
-      <div>
+      {/* <div>
         <button className="button1 px-5 mb-4 ">Sign up as Partner</button>
-      </div>
+      </div> */}
 
       <Footer />
     </div>
