@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./dashboard.css";
 import delicioustext from "../../Assets/delicioustext.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import items from "../../Assets/home (2).png";
 import groupIcon from "../../Assets/Person.png";
 import adds from "../../Assets/adds.png";
@@ -18,6 +18,7 @@ function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
   const [trainDetails, setTrainDetails] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     getAllTrainlist();
   }, []);
@@ -66,6 +67,7 @@ function Dashboard() {
     e.preventDefault();
     if (pnrRegex.test(pnr)) {
       console.log("Valid PNR:", pnr);
+      navigate(`/order-food/${pnr}`);
     } else {
       // PNR is not valid, display toast message
       toast.error("Invalid PNR. Please enter a valid 10-digit PNR number.");

@@ -1,9 +1,9 @@
 import axiosInstance from "../../../api-config/axiosinstance";
 
-const getStationsByTrainNumber = async () => {
+const getStationsByTrainNumber = async (train_number) => {
   try {
     const resp = await axiosInstance.get(
-      "/getStationsByTrainNumber?train_number=18610"
+      `/getStationsByTrainNumber?train_number=${train_number}`
     );
     console.log("response is", resp);
     const dataObject = resp;

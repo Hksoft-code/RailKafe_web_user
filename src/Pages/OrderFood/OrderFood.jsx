@@ -46,6 +46,12 @@ function OrderFood() {
     setselectedStation(data);
   };
 
+  const placeholderImage =
+    "https://play-lh.googleusercontent.com/93TI5hqzUF7_i61dah3PexL9DktIgsExTutymOXUkd7hdjlSx1P-3ZE0T-uZ2bnF5MXq";
+  const onImageError = (e) => {
+    e.target.src = placeholderImage;
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const resultData = localStorage.getItem("TrainNameNumber");
@@ -157,11 +163,12 @@ function OrderFood() {
                     >
                       <div className="flex justify-between items-start flex-col sm:flex-row md:mx-12">
                         <div className="flex items-start">
-                          <div className="p-3 bg-black w-fit h-auto rounded-lg mt-2 mr-5">
+                          <div className="p-3  w-fit h-auto rounded-lg mt-2 mr-5">
                             <img
                               className="w-28"
-                              src={restaurant.kitchen_pic}
                               alt=""
+                              src=""
+                              onError={onImageError}
                             />
                           </div>
                           <div className="flex items-start flex-col">
