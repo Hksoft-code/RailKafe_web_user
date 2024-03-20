@@ -373,5 +373,4 @@ const Payment = () => {
     </section>
   );
 };
-
 export default Payment;
