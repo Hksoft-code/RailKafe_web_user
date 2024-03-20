@@ -158,10 +158,13 @@ function CustomSelect(props) {
             type="text"
             list="trainNumbers"
             placeholder="Train Number"
-            value={inputValue}
+            value={resultData || inputValue}
             className="inputpnr w-full"
             required
             onChange={handleInputChange}
+            onClick={() => {
+              setListOpen(true);
+            }}
           />
           <button
             type="submit"
@@ -173,36 +176,23 @@ function CustomSelect(props) {
           {isModalOpen && <BordingModal trainNum={inputValue} />}
         </div>
 
-        <ul className="mt-1 pl-0 w-10/12 bg-white border border-gray-300 rounded-md shadow-md">
-          {filteredData.map((train) => (
-            <li
-              key={train.id}
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => {
-                setTrainNumber(train.train_number);
-                setListOpen(!listOpen);
-                setResultData(`${train.train_name} - ${train.train_number}`);
-              }}
-            >
-              {train.train_name} - {train.train_number}
-            </li>
-          ))}
-          {/* {searchResults.map((result) => (
+        {listOpen && (
+          <ul className="mt-1 pl-0 w-10/12 bg-white border border-gray-300 rounded-md shadow-md">
+            {filteredData.map((train) => (
               <li
-                key={result.id}
+                key={train.id}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
-                  setTrainNumber(result.train_number);
+                  setTrainNumber(train.train_number);
                   setListOpen(!listOpen);
-                  setResultData(
-                    `${result.train_name} - ${result.train_number}`
-                  );
+                  setResultData(`${train.train_name} - ${train.train_number}`);
                 }}
               >
-                {`${result.train_name} - ${result.train_number}`}
+                {train.train_name} - {train.train_number}
               </li>
-            ))} */}
-        </ul>
+            ))}
+          </ul>
+        )}
       </form>
     </>
   );

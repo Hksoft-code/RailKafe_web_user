@@ -10,6 +10,7 @@ import "./payment.css";
 // import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { placeOrder } from "./Services/PaymentServices";
+import { useNavigate } from "react-router-dom";
 const Payment = () => {
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
   console.log("cart details xxxxxxxxxxxxxxxxxxxxxxx", cart);
@@ -67,6 +68,7 @@ const Payment = () => {
     delivery_station_code,
     train_no,
   } = placeOrderMetaData;
+  const navigate = useNavigate();
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
@@ -111,12 +113,11 @@ const Payment = () => {
       setPhoneNumber("");
       setAddNote("");
       setSelectedMethod("");
+      navigate("/ordersuccessfull");
     } catch (e) {
       console.log("error", e);
     }
   };
-
-  // const navigate = useNavigate();
 
   // const handleSubmit = () => {
   //   if (selectedMethod) {

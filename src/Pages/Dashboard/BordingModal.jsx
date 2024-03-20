@@ -38,7 +38,7 @@ const BordingModal = ({ trainNum }) => {
 
   const getStationByTrain_Number = async () => {
     try {
-      const response = await getStationsByTrainNumber();
+      const response = await getStationsByTrainNumber(trainNum);
       const dataForm = response?.data?.data;
       setStationCode(dataForm?.stations);
       console.log("station info response", response);
