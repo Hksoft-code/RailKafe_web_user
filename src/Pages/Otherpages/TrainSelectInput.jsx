@@ -169,7 +169,7 @@ function CustomSelect(props) {
           >
             Submit
           </button>
-          {isModalOpen && <BordingModal trainNum={trainNumber} />}
+          {isModalOpen && <BordingModal trainNum={inputValue} />}
         </div>
 
         <ul className="mt-1 pl-0 w-10/12 bg-white border border-gray-300 rounded-md shadow-md">
