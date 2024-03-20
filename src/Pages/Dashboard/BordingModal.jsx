@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getTrainByPnr } from "./Services/dashboardServices";
+import { getTrainByTrain } from "./Services/dashboardServices";
 import { useNavigate } from "react-router-dom";
-const BordingModal = ({ pnr }) => {
-  console.log(pnr, "details of pnr");
+import { ImCross } from "react-icons/im";
+const BordingModal = ({ trainNum }) => {
+  console.log(trainNum, "details of pnr");
   const [selectedStationCode, setSelectedStationCode] = useState("");
   const [TrainRoutes, setTrainRoutes] = useState([]);
   const [Datee, setDatee] = useState("");
   const [boadingData, setBoadingData] = useState([]);
+  const [hide, sethide] = useState(true);
   const navigate = useNavigate();
 
   //   const handleInputClick = () => {
   //     setIsModalOpen(true);
   //   };
   useEffect(() => {
-    GetTrainDetailsPnr();
+    GetTrainDetailsbyTrain();
   }, []);
 
   const handleChange = (event) => {
@@ -25,10 +27,10 @@ const BordingModal = ({ pnr }) => {
     console.log("Station Code", Station_Code);
   };
 
-  const GetTrainDetailsPnr = async () => {
+  const GetTrainDetailsbyTrain = async () => {
     // e.preventDefault();
     try {
-      const response = await getTrainByPnr(pnr);
+      const response = await getTrainByTrain(trainNum);
       const trainroute = response?.data.data.resp;
       const TrainFinalDetail = trainroute.trainRoutes;
       setBoadingData(trainroute);
@@ -50,7 +52,7 @@ const BordingModal = ({ pnr }) => {
     console.log("ggggggggggggggggggg", payload);
     localStorage.setItem("placeOrderdata", JSON.stringify(payload));
     console.log("payload", sessionStorage.getItem("placeOrderdata"));
-    navigate(`/order-food/${pnr}`);
+    navigate(`/order-food/${trainNum}`);
   };
   console.log("trainRpoutessss", TrainRoutes);
 
@@ -62,6 +64,12 @@ const BordingModal = ({ pnr }) => {
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-gray-500 opacity-65"></div>
       <div className="bg-white rounded-lg p-8 z-10 sm:w-2/5 w-11/12 ">
+        <ImCross
+          className="mb-2 text-right ml-auto"
+          onClick={() => {
+            sethide(false);
+          }}
+        />
         <form action="" className="">
           <div className="flex flex-col items-start w-full sm:mx-3 mx-auto">
             <label htmlFor="" className="font-semibold mb-1">
@@ -114,7 +122,7 @@ const BordingModal = ({ pnr }) => {
   );
 };
 BordingModal.propTypes = {
-  pnr: PropTypes.string.isRequired, // Define prop-types validation
+  trainNum: PropTypes.string.isRequired, // Define prop-types validation
 };
 
 export default BordingModal;

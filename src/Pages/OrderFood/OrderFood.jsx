@@ -1,6 +1,7 @@
 // import food from "./../../Assets/items.png";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
+import Img from "./../../Assets/items.png";
 import "./orderfood.css";
 import NonVeg from "./../../Assets/nonveg.png";
 import Veg from "./../../Assets/veg.png";
@@ -49,6 +50,7 @@ function OrderFood() {
   useEffect(() => {
     window.scrollTo(0, 0);
     const resultData = localStorage.getItem("TrainNameNumber");
+    localStorage.removeItem("TrainNameNumber");
     setResultDataitem(JSON.parse(resultData));
     if (trainNumber.toString().length > 6) {
       console.log("working2", trainNumber > 6);
@@ -64,7 +66,7 @@ function OrderFood() {
       const response = await getResturantsByPnr(trainNumber);
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturantDetails);
-      console.log("restaurant info response", response);
+      console.log("restaurant info response by pnr", response);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -158,11 +160,7 @@ function OrderFood() {
                       <div className="flex justify-between items-start flex-col sm:flex-row md:mx-12">
                         <div className="flex items-start">
                           <div className="p-3 bg-black w-fit h-auto rounded-lg mt-2 mr-5">
-                            <img
-                              className="w-28"
-                              src={restaurant.kitchen_pic}
-                              alt=""
-                            />
+                            <img className="w-28" src={Img} alt="" />
                           </div>
                           <div className="flex items-start flex-col">
                             <h2 className="mb-0 text-black font-bold sm:text-2xl text-xl text-left">
@@ -292,11 +290,7 @@ function OrderFood() {
                 <div className="flex justify-between items-start flex-col sm:flex-row md:mx-12">
                   <div className="flex items-start">
                     <div className="p-3 bg-black w-fit h-auto rounded-lg mt-2 mr-5">
-                      <img
-                        className="w-28"
-                        src={restaurant.kitchen_pic}
-                        alt=""
-                      />
+                      <img className="w-28" src={Img} alt="" />
                     </div>
                     <div className="flex items-start flex-col">
                       <h2 className="mb-0 text-black font-bold sm:text-2xl text-xl text-left">

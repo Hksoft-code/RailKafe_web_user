@@ -146,7 +146,7 @@ const Menu = () => {
         ))}
 
         {/* Show content based on the active button */}
-        {activeButton && (
+        {activeButton ? (
           <div>
             {getCurrentContent().map((item, index) => (
               <div
@@ -198,6 +198,10 @@ const Menu = () => {
               </div>
             ))}
           </div>
+        ) : (
+          <>
+            <p className="text-center">no food menu available now.</p>
+          </>
         )}
       </div>
       <CustomPagination

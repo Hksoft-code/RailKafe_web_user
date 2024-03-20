@@ -1,13 +1,13 @@
 import axiosInstance from "../../../api-config/axiosinstance";
 
-const getTrainByPnr = async (Pnr) => {
+const getTrainByTrain = async (trainNum) => {
   try {
-    const resp = await axiosInstance.get("/getTrainDetailsByPnr", {
+    const resp = await axiosInstance.get("/getTrainDetailsByTrainNumber", {
       params: {
-        pnr: Pnr,
+        trainNumber: trainNum,
       },
     });
-    console.log("response is", resp);
+    console.log("response is by train number", resp);
     const dataObject = resp;
     return dataObject;
   } catch (error) {
@@ -22,4 +22,4 @@ const getTrainByPnr = async (Pnr) => {
   }
 };
 
-export { getTrainByPnr };
+export { getTrainByTrain };
