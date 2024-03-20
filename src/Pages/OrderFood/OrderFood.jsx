@@ -1,6 +1,7 @@
 // import food from "./../../Assets/items.png";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
+import Img from "./../../Assets/items.png";
 import "./orderfood.css";
 import NonVeg from "./../../Assets/nonveg.png";
 import Veg from "./../../Assets/veg.png";
@@ -55,6 +56,7 @@ function OrderFood() {
   useEffect(() => {
     window.scrollTo(0, 0);
     const resultData = localStorage.getItem("TrainNameNumber");
+    localStorage.removeItem("TrainNameNumber");
     setResultDataitem(JSON.parse(resultData));
     if (trainNumber.toString().length > 6) {
       console.log("working2", trainNumber > 6);
@@ -70,7 +72,7 @@ function OrderFood() {
       const response = await getResturantsByPnr(trainNumber);
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturantDetails);
-      console.log("restaurant info response", response);
+      console.log("restaurant info response by pnr", response);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -94,7 +96,7 @@ function OrderFood() {
     // navigate("/menu", {
     //   state: { restaurant_id: e.resturant_id },
     // });
-    console.log("resturant iddddd", e);
+    console.log("resturant iddddd", e.resturant_id);
   };
 
   const handleChange = (event) => {
@@ -105,6 +107,7 @@ function OrderFood() {
     console.log("Station Code", Station_Code);
     setSetshowrestaurant(!setshowrestaurant);
   };
+  console.log(handleChange);
   console.log("details of train and station", trainNumber, selectedStation);
   console.log("haha", resultDataitem);
 
@@ -125,10 +128,10 @@ function OrderFood() {
     }
   };
   // console.log("Stationsss", stationCode);
-  const today = new Date();
+  // const today = new Date();
 
   // Format the date in YYYY-MM-DD format for the input field
-  const formattedDate = today.toISOString().split("T")[0];
+  // const formattedDate = today.toISOString().split("T")[0];
 
   return (
     <>
@@ -243,7 +246,7 @@ function OrderFood() {
                       type="date"
                       name=""
                       id=""
-                      min={formattedDate}
+                      min={"formattedDate"}
                       className="p-1 rounded-md border-gray-300 w-full"
                       style={{ border: "2px #d1d5db solid" }}
                     />
@@ -299,11 +302,7 @@ function OrderFood() {
                 <div className="flex justify-between items-start flex-col sm:flex-row md:mx-12">
                   <div className="flex items-start">
                     <div className="p-3 bg-black w-fit h-auto rounded-lg mt-2 mr-5">
-                      <img
-                        className="w-28"
-                        src={restaurant.kitchen_pic}
-                        alt=""
-                      />
+                      <img className="w-28" src={Img} alt="" />
                     </div>
                     <div className="flex items-start flex-col">
                       <h2 className="mb-0 text-black font-bold sm:text-2xl text-xl text-left">
@@ -342,7 +341,7 @@ function OrderFood() {
                     HandleRestId(restaurant);
                     dispatch(setRestaurantName(restaurant.resturant_name));
                     dispatch(setMinimumCost(restaurant.min_order_value));
-                    dispatch(setStationName(restaurant.StationName));
+                    dispatch(setStationName(restaurant.station_code));
                   }}
                   className="py-2 bg-[#de4d11] text-white font-semibold text-lg sm:w-11/12 w-full my-4 rounded-full sm:mx-5 mx-auto"
                 >
