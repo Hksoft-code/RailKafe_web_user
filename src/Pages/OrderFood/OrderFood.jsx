@@ -1,7 +1,7 @@
 // import food from "./../../Assets/items.png";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
-import Img from "./../../Assets/items.png";
+// import Img from "./../../Assets/items.png";
 import "./orderfood.css";
 import NonVeg from "./../../Assets/nonveg.png";
 import Veg from "./../../Assets/veg.png";
@@ -17,7 +17,7 @@ import {
   getStationsByTrainNumber,
 } from "./Services/OrderfoodServices";
 import TrainInfo from "../Otherpages/TrainInfo";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setMinimumCost,
   setRestaurantName,
@@ -54,19 +54,22 @@ function OrderFood() {
   const onImageError = (e) => {
     e.target.src = placeholderImage;
   };
+  const stationCodeByTrainNumber = useSelector(
+    (state) => state.station.stationCode
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const resultData = localStorage.getItem("TrainNameNumber");
-    localStorage.removeItem("TrainNameNumber");
-    setResultDataitem(JSON.parse(resultData));
+    const resultData = localStorage.getItem("trainNameNumber");
+    setResultDataitem(resultData);
+    // console.log("statttttttttttttttttttttttt", stationCodeByTrainNumber);
     if (trainNumber.toString().length > 6) {
-      console.log("working2", trainNumber > 6);
+      // console.log("working2", trainNumber > 6);
       setTestMessage("PNR Number");
       getRestaurantByPnr();
     } else {
-      console.log("working3");
-      getRestaurantByTrain_Number(trainNumber, "RJY");
+      // console.log("working3");
+      getRestaurantByTrain_Number(trainNumber, stationCodeByTrainNumber);
     }
   }, [selectedStation]);
 
@@ -83,8 +86,11 @@ function OrderFood() {
 
   const getRestaurantByTrain_Number = async () => {
     try {
-      console.log("working1");
-      const response = await getResturantsByTrain(trainNumber, "RJY");
+      // console.log("working1");
+      const response = await getResturantsByTrain(
+        trainNumber,
+        stationCodeByTrainNumber
+      );
       const restaurant = response?.data.data;
       setRestaurantList(restaurant?.resturants);
       console.log("restaurant info response", response);
@@ -96,6 +102,8 @@ function OrderFood() {
   const HandleRestId = (e) => {
     navigate(`/menu/${e.resturant_id}`);
     sessionStorage.setItem("res_id", e.resturant_id);
+    sessionStorage.removeItem("stationCodetakesfromBoardingStation");
+    localStorage.removeItem("trainNameNumber");
     // navigate("/menu", {
     //   state: { restaurant_id: e.resturant_id },
     // });
@@ -111,7 +119,11 @@ function OrderFood() {
     setSetshowrestaurant(!setshowrestaurant);
   };
   console.log(handleChange);
-  console.log("details of train and station", trainNumber, selectedStation);
+  console.log(
+    "details of train and station",
+    trainNumber,
+    stationCodeByTrainNumber
+  );
   console.log("haha", resultDataitem);
 
   useEffect(() => {
@@ -130,6 +142,7 @@ function OrderFood() {
       console.error("Error fetching data:", error);
     }
   };
+  console.log("ressssssssssssssssssssssssssssssssssssssssssss",restaurantList);
   // console.log("Stationsss", stationCode);
   // const today = new Date();
 
@@ -197,7 +210,7 @@ function OrderFood() {
                     HandleRestId(restaurant);
                     dispatch(setRestaurantName(restaurant.resturant_name));
                     dispatch(setMinimumCost(restaurant.min_order_value));
-                    dispatch(setStationName(restaurant.StationName));
+                    dispatch(setStationName(restaurant.station_code));
                   }}
                   className="py-2 bg-[#de4d11] text-white font-semibold text-lg sm:w-11/12 w-full my-4 rounded-full sm:mx-5 mx-auto"
                 >

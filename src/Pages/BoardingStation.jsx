@@ -14,7 +14,7 @@ const BoardingStation = ({ sendSelectedStationCode }) => {
     const Station_Code = event.target.value;
     setSelectedStationCode(Station_Code);
     sendSelectedStationCode(Station_Code);
-    console.log("Station Code", Station_Code);
+    // console.log("Station Code", Station_Code);
   };
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

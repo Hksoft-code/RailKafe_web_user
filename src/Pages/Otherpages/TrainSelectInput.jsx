@@ -120,6 +120,13 @@ function CustomSelect(props) {
   const [resultData, setResultData] = useState("");
   const [trainNumber, setTrainNumber] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 8) {
+      // Backspace key pressed
+      setInputValue(""); // Clear input value
+      setResultData(""); // Clear result data
+    }
+  };
 
   useEffect(() => {
     console.log(resultData);
@@ -127,6 +134,7 @@ function CustomSelect(props) {
     setTrainData(trainData1);
   }, [allTrainDetails]);
   console.log("train number", trainNumber);
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
     filterData(e.target.value);
@@ -141,10 +149,15 @@ function CustomSelect(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsModalOpen(true);
+    localStorage.setItem("trainNameNumber", resultData);
+    toggleModal();
     // if (trainNumber) {
     //   navigate(`/order-food/${trainNumber}`);
     // }
+  };
+  const toggleModal = () => {
+    console.log("yes i am working");
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -161,6 +174,7 @@ function CustomSelect(props) {
             value={resultData || inputValue}
             className="inputpnr w-full"
             required
+            onKeyDown={handleKeyDown} // Handle keydown event
             onChange={handleInputChange}
             onClick={() => {
               setListOpen(true);
@@ -169,11 +183,13 @@ function CustomSelect(props) {
           <button
             type="submit"
             className="button1 my-4"
-            // onClick={() => handleSubmit()}
+            // onClick={() => toggleModal}
           >
             Submit
           </button>
-          {isModalOpen && <BordingModal trainNum={inputValue} />}
+          {isModalOpen && (
+            <BordingModal toggleModal={toggleModal} trainNum={inputValue} />
+          )}
         </div>
 
         {listOpen && (

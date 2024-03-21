@@ -28,6 +28,7 @@ const Menu = () => {
   const pageSize = 5; // Number of items per page
   const [currentPageMap, setCurrentPageMap] = useState({ All: 1 });
   const [activeButton, setActiveButton] = useState("All");
+  const [stationCodeByTrain, setstationCodeByTrain] = useState("");
 
   const handleButtonClick = (name) => {
     setActiveButton(name);
@@ -45,6 +46,8 @@ const Menu = () => {
   };
   useEffect(() => {
     getRestaurantDetails();
+    const StationCodeByTrainNumber = sessionStorage.getItem("stationcode");
+    setstationCodeByTrain(StationCodeByTrainNumber);
   }, []);
 
   const getRestaurantDetails = async () => {
@@ -53,6 +56,7 @@ const Menu = () => {
       // const restaurant = response?.data.data;
       console.log("restaurant info response", response?.data.data);
       setRestaurantDetails(response?.data.data.resturantDetails);
+      sessionStorage.removeItem("stationcode");
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -106,6 +110,12 @@ const Menu = () => {
   const { restaurantName, stationName, minimumCost } = useSelector(
     (state) => state.menu
   );
+  console.log(
+    "ttttttttttttttttttttttttttttttttttttttttttttt",
+    restaurantName,
+    stationName,
+    minimumCost
+  );
   return (
     <>
       {restaurantDetails ? (
@@ -124,7 +134,7 @@ const Menu = () => {
               <span className="text-[#de4d11] font-semibold ">
                 Station Name:
               </span>{" "}
-              {stationName}{" "}
+              {stationName || stationCodeByTrain}{" "}
             </p>
             <p className="text-black font-semibold">
               <span className="text-[#de4d11] font-semibold ">
@@ -138,78 +148,86 @@ const Menu = () => {
             <ImageSlider />
           </div>
 
-          <div>
-            {buttonsData.map((button, index) => (
-              <button
-                key={index}
-                onClick={() => handleButtonClick(button.name)}
-                className={`buttons p-2 m-2 rounded-2xl ${
-                  activeButton === button.name ? "active" : ""
-                }`}
-              >
-                {button.name}
-              </button>
-            ))}
+          {restaurantDetails.length > 0 ? (
+            <div>
+              {buttonsData.map((button, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleButtonClick(button.name)}
+                  className={`buttons p-2 m-2 rounded-2xl ${
+                    activeButton === button.name ? "active" : ""
+                  }`}
+                >
+                  {button.name}
+                </button>
+              ))}
 
-            {/* Show content based on the active button */}
-            {activeButton ? (
-              <div>
-                {getCurrentContent().map((item, index) => (
-                  <div
-                    key={index}
-                    className="d-flex shadow-custom sm:flex-row flex-col-reverse items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
-                  >
-                    <div className="d-flex px-3 sm:w-4/12 w-full flex-col sm:items-start items-center sm:py-1 py-2 ">
-                      <h4 className="text-black font-bold">{item.food_name}</h4>
-                      <h4 className="text-black font-bold">
-                        {item.selling_price} ₹
-                      </h4>
-                      <p className="text-justify font-semibold text-gray-400 ">
-                        {item.food_discription}
-                      </p>
-                      <div
-                        className="bg-[#DE4D11] sm:w-fit w-full  text-lg text-white d-flex sm:justify-start justify-around items-center"
-                        style={{ borderRadius: "2rem" }}
-                      >
-                        <button
-                          className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
-                          style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
-                          onClick={() => dispatch(RemoveFromCart(item))}
+              {/* Show content based on the active button */}
+              {activeButton ? (
+                <div>
+                  {getCurrentContent().map((item, index) => (
+                    <div
+                      key={index}
+                      className="d-flex shadow-custom sm:flex-row flex-col-reverse items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
+                    >
+                      <div className="d-flex px-3 sm:w-4/12 w-full flex-col sm:items-start items-center sm:py-1 py-2 ">
+                        <h4 className="text-black font-bold">
+                          {item.food_name}
+                        </h4>
+                        <h4 className="text-black font-bold">
+                          {item.selling_price} ₹
+                        </h4>
+                        <p className="text-justify font-semibold text-gray-400 ">
+                          {item.food_discription}
+                        </p>
+                        <div
+                          className="bg-[#DE4D11] sm:w-fit w-full  text-lg text-white d-flex sm:justify-start justify-around items-center"
+                          style={{ borderRadius: "2rem" }}
                         >
-                          -
-                        </button>
-                        <h6 className="mb-0 p-2">Add</h6>
-                        <button
-                          className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
-                          style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
-                          onClick={() => dispatch(AddCart(item))}
-                        >
-                          +
-                        </button>
+                          <button
+                            className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
+                            style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
+                            onClick={() => dispatch(RemoveFromCart(item))}
+                          >
+                            -
+                          </button>
+                          <h6 className="mb-0 p-2">Add</h6>
+                          <button
+                            className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
+                            style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
+                            onClick={() => dispatch(AddCart(item))}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                      <div className="d-flex mx-auto items-start sm:justify-between justify-end md:justify-between">
+                        <img
+                          className="w-2/4 mb-2 sm:mr-0 mr-16 p-3 bg-gray-800 rounded-lg"
+                          src={Food}
+                          alt="Food"
+                        />
+                        <Checkbox
+                          style={{ color: "red" }}
+                          {...label}
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                        />
                       </div>
                     </div>
-                    <div className="d-flex mx-auto items-start sm:justify-between justify-end md:justify-between">
-                      <img
-                        className="w-2/4 mb-2 sm:mr-0 mr-16 p-3 bg-gray-800 rounded-lg"
-                        src={Food}
-                        alt="Food"
-                      />
-                      <Checkbox
-                        style={{ color: "red" }}
-                        {...label}
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <>
-                <p className="text-center">no food menu available now.</p>
-              </>
-            )}
-          </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <p className="text-center">no food menu available now.</p>
+                </>
+              )}
+            </div>
+          ) : (
+            <>
+              <p className="text-center">no food menu available now.</p>
+            </>
+          )}
           <CustomPagination
             currentPage={currentPageMap[activeButton] || 1}
             totalPages={getTotalPages()}

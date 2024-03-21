@@ -20,16 +20,16 @@ const getStationsByTrainNumber = async (train_number) => {
   }
 };
 
-const getResturantsByTrain = async (trainNumber, stationCode) => {
+const getResturantsByTrain = async (trainNumber, selectedStationCode1) => {
   try {
-    console.log("paramstrain", trainNumber, stationCode);
+    console.log("paramstrain", trainNumber, selectedStationCode1);
     const resp = await axiosInstance.get("/getResturantsByTrain", {
       params: {
         train_number: trainNumber,
-        station_code: stationCode,
+        station_code: selectedStationCode1,
       },
     });
-    console.log("params", stationCode, trainNumber);
+    console.log("params", selectedStationCode1, trainNumber);
     console.log("response is ", resp);
     const dataObject = resp;
     return dataObject;

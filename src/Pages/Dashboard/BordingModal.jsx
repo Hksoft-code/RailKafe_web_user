@@ -4,7 +4,9 @@ import { getTrainByPnr } from "./Services/dashboardServices";
 import { useNavigate } from "react-router-dom";
 import { ImCross } from "react-icons/im";
 import { getStationsByTrainNumber } from "../OrderFood/Services/OrderfoodServices";
-const BordingModal = ({ trainNum }) => {
+import { useDispatch } from "react-redux";
+import { setStationCodeforTrain } from "../../Redux/Actions/stationAction";
+const BordingModal = ({ trainNum, toggleModal }) => {
   console.log(trainNum, "details of pnr");
   const [selectedStationCode, setSelectedStationCode] = useState("");
   const [TrainRoutes, setTrainRoutes] = useState([]);
@@ -19,7 +21,7 @@ const BordingModal = ({ trainNum }) => {
   const todayDate = `${year}-${month}-${day}`;
 
   const [Datee, setDatee] = useState(todayDate);
-
+  const dispatch = useDispatch();
   //   const handleInputClick = () => {
   //     setIsModalOpen(true);
   //   };
@@ -27,6 +29,11 @@ const BordingModal = ({ trainNum }) => {
     GetTrainDetailsbyTrain();
     getStationByTrain_Number();
   }, []);
+
+  const handleSetStationCode = () => {
+    // Example of setting station code
+    dispatch(setStationCodeforTrain(selectedStationCode));
+  };
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -71,6 +78,7 @@ const BordingModal = ({ trainNum }) => {
     };
     console.log("ggggggggggggggggggg", payload);
     sessionStorage.setItem("placeOrderdata", JSON.stringify(payload));
+    handleSetStationCode();
     console.log("payload", sessionStorage.getItem("placeOrderdata"));
     if (trainNum) {
       navigate(`/order-food/${trainNum}`);
@@ -86,12 +94,7 @@ const BordingModal = ({ trainNum }) => {
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-gray-500 opacity-65"></div>
       <div className="bg-white rounded-lg p-8 z-10 sm:w-2/5 w-11/12 ">
-        <ImCross
-          className="mb-2 text-right ml-auto"
-          onClick={() => {
-            // sethide(false);
-          }}
-        />
+        <ImCross className="mb-2 text-right ml-auto" onClick={toggleModal} />
         <form action="" className="">
           <div className="flex flex-col items-start w-full sm:mx-3 mx-auto">
             <label htmlFor="" className="font-semibold mb-1">
@@ -145,6 +148,7 @@ const BordingModal = ({ trainNum }) => {
 };
 BordingModal.propTypes = {
   trainNum: PropTypes.string.isRequired, // Define prop-types validation
+  toggleModal: PropTypes.func.isRequired,
 };
 
 export default BordingModal;
