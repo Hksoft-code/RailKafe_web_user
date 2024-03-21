@@ -27,6 +27,7 @@ const Payment = () => {
   const [placeOrderMetaData, setPlaceOrderMetaData] = useState([]);
   const [placeOrderMetaDataByPNR, setPlaceOrderMetaDataByPNR] = useState([]);
   const [isGst, setisGst] = useState(false);
+  // const [onlinepaymenturl, setOnlinepaymenturl] = useState({});
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("placeOrderdata");
@@ -57,10 +58,7 @@ const Payment = () => {
     placeOrderMetaData,
     placeOrderMetaDataByPNR
   );
-  // console.log(
-  //   "placeOrderMetaDataByPNR.boardingInfo.stationName",
-  //   placeOrderMetaDataByPNR.boardingInfo.stationName
-  // );
+
   const {
     boarding_station,
     dateof_journey,
@@ -100,11 +98,18 @@ const Payment = () => {
       train_no: placeOrderMetaDataByPNR.trainInfo.trainNo || train_no,
       foodMenuItems: JSON.stringify(transformedCart),
     };
+    sessionStorage.setItem("PlaceOrderData", payload);
     // sessionStorage.removeItem("placeOrderdata");
     console.log("response payload", payload);
     try {
       const response = await placeOrder(payload);
       console.log("placeorder response", response);
+      // const onlinedata = response?.data.data.data;
+      // const onlineDataUrl = onlinedata.redirectInfo.url;
+      // setOnlinepaymenturl(onlineDataUrl);
+      // console.log("onlinepaymenturl", onlinedata, onlinepaymenturl,onlineDataUrl);
+      navigate("/ordersuccessfull");
+
       setPNR("");
       setCoach_number("");
       setSeatNum("");
@@ -113,7 +118,6 @@ const Payment = () => {
       setPhoneNumber("");
       setAddNote("");
       setSelectedMethod("");
-      navigate("/ordersuccessfull");
     } catch (e) {
       console.log("error", e);
     }
@@ -148,7 +152,7 @@ const Payment = () => {
           <input
             className="px-6 py-2 border  sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
             type="number"
-            value={PNR}
+            value={placeOrderMetaDataByPNR.boardingInfo || PNR}
             required
             onChange={(e) => setPNR(e.target.value)}
             name=""
@@ -157,10 +161,10 @@ const Payment = () => {
           />
           <input
             className="px-6 py-2 border sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
-            type="number"
+            type="text"
             name=""
             id=""
-            value={coach_number}
+            value={placeOrderMetaDataByPNR.seatInfo.coach|| coach_number}
             required
             onChange={(e) => setCoach_number(e.target.value)}
             placeholder="Enter Coach Number"
@@ -170,7 +174,7 @@ const Payment = () => {
             type="number"
             name=""
             id=""
-            value={seatNum}
+            value={placeOrderMetaDataByPNR.seatInfo.noOfSeats || seatNum}
             required
             onChange={(e) => setSeatNum(e.target.value)}
             placeholder="Enter Seat Number"
@@ -191,9 +195,8 @@ const Payment = () => {
             name=""
             id=""
             value={email}
-            required
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter Email id"
+            placeholder="Enter Email id (optional)"
           />
           <input
             className="px-6 py-2 border sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
@@ -213,13 +216,13 @@ const Payment = () => {
             rows=""
             value={addNote}
             onChange={(e) => setAddNote(e.target.value)}
-            placeholder="Add a note"
+            placeholder="Add a note (Optional)"
           ></textarea>
           <div className="relative w-full">
             <input
               type="text"
               readOnly
-              placeholder="Add GST"
+              placeholder="Claim GST? (Optional)"
               required
               onClick={toggleModal}
               className="px-6 py-2 border  sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
@@ -337,9 +340,9 @@ const Payment = () => {
             <input
               type="radio"
               name="paymentMethod"
-              value="cash_on_delivery"
+              value="cod"
               required
-              checked={selectedMethod === "cash_on_delivery"}
+              checked={selectedMethod === "cod"}
               onChange={handleMethodChange}
             />
           </label>
@@ -355,9 +358,9 @@ const Payment = () => {
             <input
               type="radio"
               name="paymentMethod"
-              value="online_payment"
+              value="online"
               required
-              checked={selectedMethod === "online_payment"}
+              checked={selectedMethod === "online"}
               onChange={handleMethodChange}
             />
           </label>

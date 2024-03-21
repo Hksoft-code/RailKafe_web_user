@@ -201,9 +201,9 @@ const Menu = () => {
                           </button>
                         </div>
                       </div>
-                      <div className="d-flex mx-auto items-start sm:justify-between justify-end md:justify-between">
+                      <div className="d-flex items-start sm:justify-end justify-end md:justify-end">
                         <img
-                          className="w-2/4 mb-2 sm:mr-0 mr-16 p-3 bg-gray-800 rounded-lg"
+                          className="w-2/4 mb-2 sm:mr-4 mr-16 p-3 bg-gray-800 rounded-lg "
                           src={Food}
                           alt="Food"
                         />
