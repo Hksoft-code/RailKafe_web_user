@@ -155,53 +155,36 @@ const Menu = () => {
             {activeButton ? (
               <div>
                 {getCurrentContent().map((item, index) => (
-                  <div
-                    key={index}
-                    className="d-flex shadow-custom sm:flex-row flex-col-reverse items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
-                  >
-                    <div className="d-flex px-3 sm:w-4/12 w-full flex-col sm:items-start items-center sm:py-1 py-2 ">
-                      <h4 className="text-black font-bold">{item.food_name}</h4>
-                      <h4 className="text-black font-bold">
-                        {item.selling_price} ₹
-                      </h4>
-                      <p className="text-justify font-semibold text-gray-400 ">
-                        {item.food_discription}
-                      </p>
-                      <div
-                        className="bg-[#DE4D11] sm:w-fit w-full  text-lg text-white d-flex sm:justify-start justify-around items-center"
-                        style={{ borderRadius: "2rem" }}
-                      >
-                        <button
-                          className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
-                          style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
-                          onClick={() => dispatch(RemoveFromCart(item))}
-                        >
-                          -
-                        </button>
-                        <h6 className="mb-0 p-2">Add</h6>
-                        <button
-                          className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
-                          style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
-                          onClick={() => dispatch(AddCart(item))}
-                        >
-                          +
-                        </button>
+                  <>
+                    <div className="shadow-md px-2 py-2 sm:px-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-lg leading-6 font-medium text-gray-900">
+                            Veg mini thali
+                          </div>
+                          <div className="text-sm leading-6 font-medium text-gray-900">
+                            In thalis
+                          </div>
+                          <div className="text-sm leading-6 font-medium text-gray-900">
+                            220
+                          </div>
+                          <div className="text-sm leading-6 font-medium text-gray-900">
+                            seasonal veg
+                          </div>
+                        </div>
+                        <div className="mt-4 text-center">
+                          <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPE1cY2FnbHeMJfA-7DhfTAA2EVmwpeEVygA&usqp=CAU"
+                            alt=""
+                            className="max-w-lg"
+                          />
+                          <button className="bg-pink-200 border-2 rounded-md -mt-10 pl-3 pr-3 border-pink-400">
+                            ADD +
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <div className="d-flex mx-auto items-start sm:justify-between justify-end md:justify-between">
-                      <img
-                        className="w-2/4 mb-2 sm:mr-0 mr-16 p-3 bg-gray-800 rounded-lg"
-                        src={Food}
-                        alt="Food"
-                      />
-                      <Checkbox
-                        style={{ color: "red" }}
-                        {...label}
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
-                      />
-                    </div>
-                  </div>
+                  </>
                 ))}
               </div>
             ) : (
