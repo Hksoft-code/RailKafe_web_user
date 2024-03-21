@@ -42,7 +42,7 @@ function OrderFood() {
   // const queryParams = new URLSearchParams(location.search);
   // const train_number = queryParams.get("train_number");
   console.log("station and pnr", selectedStationCode, trainNumber);
-
+  sessionStorage.setItem("pnr", trainNumber);
   const handleGetSelectedStation = (data) => {
     console.log("get Selected station Code", data);
     // Receive data from child component
@@ -142,7 +142,7 @@ function OrderFood() {
       console.error("Error fetching data:", error);
     }
   };
-  console.log("ressssssssssssssssssssssssssssssssssssssssssss",restaurantList);
+  console.log("ressssssssssssssssssssssssssssssssssssssssssss", restaurantList);
   // console.log("Stationsss", stationCode);
   // const today = new Date();
 

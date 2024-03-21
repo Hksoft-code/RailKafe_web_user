@@ -27,11 +27,16 @@ const Payment = () => {
   const [placeOrderMetaData, setPlaceOrderMetaData] = useState([]);
   const [placeOrderMetaDataByPNR, setPlaceOrderMetaDataByPNR] = useState([]);
   const [isGst, setisGst] = useState(false);
+  const [pnrset, setPnrset] = useState("");
+  const [setCoach, setSetCoach] = useState("");
+  const [setseatnum, setSetseatnum] = useState("");
   // const [onlinepaymenturl, setOnlinepaymenturl] = useState({});
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("placeOrderdata");
     const DataByPnr = sessionStorage.getItem("traindetaildatabypnr");
+    const pnrnumber = sessionStorage.getItem("pnr");
+    setPnrset(pnrnumber);
     const res_id = sessionStorage.getItem("res_id");
     console.log(res_id, "resttttttttttttttttttttttttttttttttt");
     if (res_id) {
@@ -48,6 +53,18 @@ const Payment = () => {
       setPlaceOrderMetaDataByPNR(StoredDataPNRJSON);
     }
   }, []);
+  useEffect(() => {
+    if (placeOrderMetaDataByPNR && placeOrderMetaDataByPNR.seatInfo) {
+      const coachValue = placeOrderMetaDataByPNR.seatInfo.coach;
+      const seatNumValue = placeOrderMetaDataByPNR.seatInfo.noOfSeats;
+
+      // Set state values using the setter functions
+      setSetCoach(coachValue);
+      setSetseatnum(seatNumValue);
+    } else {
+      console.error("placeOrderMetaDataByPNR or seatInfo is undefined");
+    }
+  }, [placeOrderMetaDataByPNR]);
   const transformedCart = cart.map((item) => ({
     foodMenuItemId: item.food_menu_id, // Save the item id
     quantity: item.quantity,
@@ -56,7 +73,9 @@ const Payment = () => {
   console.log(
     "placeOrderMetaData",
     placeOrderMetaData,
-    placeOrderMetaDataByPNR
+    placeOrderMetaDataByPNR,
+    placeOrderMetaDataByPNR.seatInfo,
+    placeOrderMetaDataByPNR.seatInfo
   );
 
   const {
@@ -77,7 +96,7 @@ const Payment = () => {
       boarding_station:
         placeOrderMetaDataByPNR.boardingInfo.stationCode || boarding_station,
       claim_gst: isGst,
-      coach_number: coach_number,
+      coach_number: setCoach || coach_number,
       delivery_date_time:
         delivery_date_time || placeOrderMetaDataByPNR.trainInfo.dt,
       delivery_station_code:
@@ -85,15 +104,15 @@ const Payment = () => {
         placeOrderMetaDataByPNR.destinationInfo.stationCode,
       discount: 0,
       final_amount: totalPrice,
-      grand_total: totalPrice + TaxPrice,
+      grand_total: TaxPrice + totalPrice,
       isPaid: false,
       dateof_journey: dateof_journey || placeOrderMetaDataByPNR.trainInfo.dt,
       order_note: addNote,
       order_source: "website",
       pay_mode: selectedMethod,
-      pnr_no: PNR,
+      pnr_no: pnrset || PNR,
       resturant_id: restId,
-      seat_no: seatNum,
+      seat_no: setseatnum || seatNum,
       tax_amount: TaxPrice,
       train_no: placeOrderMetaDataByPNR.trainInfo.trainNo || train_no,
       foodMenuItems: JSON.stringify(transformedCart),
@@ -104,11 +123,24 @@ const Payment = () => {
     try {
       const response = await placeOrder(payload);
       console.log("placeorder response", response);
-      // const onlinedata = response?.data.data.data;
-      // const onlineDataUrl = onlinedata.redirectInfo.url;
+      const responseData = response.data?.data?.data;
+
+      if (!responseData || Object.keys(responseData).length === 0) {
+        navigate("/ordersuccessfull");
+        return; // Exit early to avoid further processing
+      }
+
+      if (!responseData.redirectInfo || !responseData.redirectInfo.url) {
+        console.error("Invalid response data:", responseData);
+        return; // Exit early if response data or required properties are missing
+      }
+
+      const onlineDataUrl = responseData.redirectInfo.url;
       // setOnlinepaymenturl(onlineDataUrl);
-      // console.log("onlinepaymenturl", onlinedata, onlinepaymenturl,onlineDataUrl);
-      navigate("/ordersuccessfull");
+      console.log("onlinepaymenturl", onlineDataUrl);
+
+      // Open the payment URL in a new window
+      window.open(onlineDataUrl, "_blank");
 
       setPNR("");
       setCoach_number("");
@@ -118,6 +150,10 @@ const Payment = () => {
       setPhoneNumber("");
       setAddNote("");
       setSelectedMethod("");
+      setPnrset("");
+      setSetCoach("");
+      setSetseatnum("");
+      sessionStorage.removeItem("traindetaildatabypnr");
     } catch (e) {
       console.log("error", e);
     }
@@ -144,7 +180,6 @@ const Payment = () => {
   };
 
   const TaxPrice = parseFloat((totalPrice * 0.15).toFixed(3));
-
   return (
     <section className="mb-24 mt-4">
       <form action="" onSubmit={handlePlaceOrder}>
@@ -152,7 +187,7 @@ const Payment = () => {
           <input
             className="px-6 py-2 border  sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
             type="number"
-            value={placeOrderMetaDataByPNR.boardingInfo || PNR}
+            value={pnrset || PNR}
             required
             onChange={(e) => setPNR(e.target.value)}
             name=""
@@ -164,7 +199,7 @@ const Payment = () => {
             type="text"
             name=""
             id=""
-            value={placeOrderMetaDataByPNR.seatInfo.coach|| coach_number}
+            value={setCoach || coach_number}
             required
             onChange={(e) => setCoach_number(e.target.value)}
             placeholder="Enter Coach Number"
@@ -174,7 +209,7 @@ const Payment = () => {
             type="number"
             name=""
             id=""
-            value={placeOrderMetaDataByPNR.seatInfo.noOfSeats || seatNum}
+            value={setseatnum || seatNum}
             required
             onChange={(e) => setSeatNum(e.target.value)}
             placeholder="Enter Seat Number"
@@ -297,7 +332,7 @@ const Payment = () => {
           </div>
           <div className="rounded-xl border-t border-gray-300 x-4 sm:w-3/4 w-11/12">
             <div className="d-flex justify-between items-center px-4 py-2">
-              <h4 className="text-black font-bold text-lg mb-0 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
                 Item Total
               </h4>
               <p className="text-[#de4d11] mb-0 font-bold text-lg">
@@ -305,28 +340,32 @@ const Payment = () => {
               </p>
             </div>
             <div className="d-flex justify-between items-center px-4 py-2">
-              <h4 className="text-black font-bold text-lg mb-0 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
                 Restaurant Handing Charges
               </h4>
               <p className="text-[#de4d11] mb-0 font-bold text-lg">₹00.00</p>
             </div>
             <div className="d-flex justify-between items-center px-4 py-2">
-              <h4 className="text-black font-bold text-lg mb-0 py-2">
+              <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
                 Discount Applied (FREEISH)
               </h4>
               <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
             </div>
             <div className="d-flex justify-between items-center px-4 py-2">
-              <h4 className="text-black font-bold text-lg mb-0 py-2">Taxes</h4>
+              <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
+                Taxes
+              </h4>
               <p className="text-[#de4d11] mb-0 font-bold text-lg">
                 ₹{TaxPrice}
               </p>
             </div>
             <div className="d-flex justify-between items-center px-4 py-2">
-              <h4 className="text-black font-bold text-lg mb-0 py-2">
-                Paid Via Bank
+              <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
+                Final amount
               </h4>
-              <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+              <p className="text-[#de4d11] mb-0 font-bold text-lg">
+                ₹{TaxPrice + totalPrice}
+              </p>
             </div>
           </div>
           <label
@@ -364,12 +403,22 @@ const Payment = () => {
               onChange={handleMethodChange}
             />
           </label>
-          <button
-            type="submit"
-            className="bg-[#DE4D11] p-2 m-4 w-2/4 rounded-full text-white font-semibold text-lg"
-          >
-            Proceed to pay
-          </button>
+          {selectedMethod === "online" ? (
+            <button
+              type="submit"
+              className="bg-[#DE4D11] p-2 m-4 w-2/4 rounded-full text-white font-semibold text-lg"
+            >
+              Proceed to pay
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="bg-[#DE4D11] p-2 m-4 w-2/4 rounded-full text-white font-semibold text-lg"
+            >
+              Pay on delivery
+            </button>
+          )}
+
           <hr style={{ width: "50%", border: "2px solid black" }} />
         </div>
       </form>

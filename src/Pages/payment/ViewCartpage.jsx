@@ -96,32 +96,34 @@ const CustomStepper = () => {
       </div>
       <div className="rounded-xl border-t border-gray-300 x-4 sm:w-3/4 w-11/12 mx-auto">
         <div className="d-flex justify-between items-center px-4 py-2">
-          <h4 className="text-black font-bold text-lg mb-0 py-2">Item Total</h4>
+          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">Item Total</h4>
           <p className="text-[#de4d11] mb-0 font-bold text-lg">
             {totalQuantity}
           </p>
         </div>
         <div className="d-flex justify-between items-center px-4 py-2">
-          <h4 className="text-black font-bold text-lg mb-0 py-2">
+          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
             Restaurant Handing Charges
           </h4>
           <p className="text-[#de4d11] mb-0 font-bold text-lg">₹00.00</p>
         </div>
         <div className="d-flex justify-between items-center px-4 py-2">
-          <h4 className="text-black font-bold text-lg mb-0 py-2">
+          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
             Discount Applied (FREEISH)
           </h4>
           <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
         </div>
         <div className="d-flex justify-between items-center px-4 py-2">
-          <h4 className="text-black font-bold text-lg mb-0 py-2">Taxes</h4>
+          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">Taxes</h4>
           <p className="text-[#de4d11] mb-0 font-bold text-lg">₹{TaxPrice}</p>
         </div>
         <div className="d-flex justify-between items-center px-4 py-2">
-          <h4 className="text-black font-bold text-lg mb-0 py-2">
-            Paid Via Bank
+          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
+            Final amount
           </h4>
-          <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
+          <p className="text-[#de4d11] mb-0 font-bold text-lg">
+            ₹{TaxPrice + totalPrice}
+          </p>
         </div>
       </div>
       <button className="bg-[#DE4D11] p-2 m-4 w-2/4 rounded-full text-white font-semibold text-xl">

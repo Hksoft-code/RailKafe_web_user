@@ -175,7 +175,7 @@ const Menu = () => {
                           {item.food_name}
                         </h4>
                         <h4 className="text-black font-bold">
-                          {item.selling_price} ₹
+                          ₹ {item.selling_price}
                         </h4>
                         <p className="text-justify font-semibold text-gray-400 ">
                           {item.food_discription}
