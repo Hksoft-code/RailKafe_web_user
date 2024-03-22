@@ -94,7 +94,7 @@ const Payment = () => {
       email: email,
       phone: phoneNumber,
       boarding_station:
-        placeOrderMetaDataByPNR.boardingInfo.stationCode || boarding_station,
+        placeOrderMetaDataByPNR?.boardingInfo?.stationCode || boarding_station,
       claim_gst: isGst,
       coach_number: setCoach || coach_number,
       delivery_date_time:
@@ -106,7 +106,7 @@ const Payment = () => {
       final_amount: totalPrice,
       grand_total: TaxPrice + totalPrice,
       isPaid: false,
-      dateof_journey: dateof_journey || placeOrderMetaDataByPNR.trainInfo.dt,
+      dateof_journey: dateof_journey || placeOrderMetaDataByPNR?.trainInfo?.dt,
       order_note: addNote,
       order_source: "website",
       pay_mode: selectedMethod,
@@ -114,7 +114,7 @@ const Payment = () => {
       resturant_id: restId,
       seat_no: setseatnum || seatNum,
       tax_amount: TaxPrice,
-      train_no: placeOrderMetaDataByPNR.trainInfo.trainNo || train_no,
+      train_no: placeOrderMetaDataByPNR?.trainInfo?.trainNo || train_no,
       foodMenuItems: JSON.stringify(transformedCart),
     };
     sessionStorage.setItem("PlaceOrderData", payload);
@@ -185,11 +185,19 @@ const Payment = () => {
       <form action="" onSubmit={handlePlaceOrder}>
         <div className="d-flex flex-col items-center">
           <input
-            className="px-6 py-2 border  sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
+            className="px-6 py-2 border sm:w-3/4 w-11/12 m-3 text-gray-600 border-gray-400 text-lg rounded-md cursor-pointer"
             type="number"
             value={pnrset || PNR}
             required
             onChange={(e) => setPNR(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Backspace") {
+                // Prevent default behavior of backspace key
+                e.preventDefault();
+                // Remove the last character from the input value
+                setPnrset((prevPNR) => prevPNR.slice(0, -1));
+              }
+            }}
             name=""
             id=""
             placeholder="Enter Your PNR"

@@ -10,7 +10,8 @@ const BordingModal = ({ trainNum, toggleModal }) => {
   console.log(trainNum, "details of pnr");
   const [selectedStationCode, setSelectedStationCode] = useState("");
   const [TrainRoutes, setTrainRoutes] = useState([]);
-  const [boadingData, setBoadingData] = useState([]);
+  // const [boadingData, setBoadingData] = useState([]);
+  const [stationData, setStationData] = useState([]);
   // const [hide, sethide] = useState(true);
   const [stationCode, setStationCode] = useState();
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const BordingModal = ({ trainNum, toggleModal }) => {
       const response = await getTrainByPnr(trainNum);
       const trainroute = response?.data.data.resp;
       const TrainFinalDetail = trainroute.trainRoutes;
-      setBoadingData(trainroute);
+      // setBoadingData(trainroute);
       setTrainRoutes(TrainFinalDetail);
       console.log("train info response 200", response);
     } catch (error) {
@@ -71,10 +72,10 @@ const BordingModal = ({ trainNum, toggleModal }) => {
   const handleSubmit = () => {
     const payload = {
       delivery_date_time: Datee,
-      boarding_station: boadingData?.boardingInfo?.stationName,
+      boarding_station: stationData?.station_code,
       delivery_station_code: selectedStationCode,
       dateof_journey: Datee,
-      train_no: boadingData?.trainInfo?.trainNo,
+      train_no: stationData?.train_number,
     };
     console.log("ggggggggggggggggggg", payload);
     sessionStorage.setItem("placeOrderdata", JSON.stringify(payload));
@@ -84,7 +85,7 @@ const BordingModal = ({ trainNum, toggleModal }) => {
       navigate(`/order-food/${trainNum}`);
     }
   };
-  console.log("trainRpoutessss", TrainRoutes);
+  console.log("trainRpoutessss", TrainRoutes, stationData);
 
   const today = new Date();
 
@@ -119,16 +120,30 @@ const BordingModal = ({ trainNum, toggleModal }) => {
             </label>
             <select
               value={selectedStationCode}
-              onChange={handleChange}
+              onChange={(event) => {
+                handleChange(event);
+                const selectedStation = stationCode.find(
+                  (item) => item.station_code === event.target.value
+                );
+                if (selectedStation) {
+                  setStationData(selectedStation);
+                }
+              }}
               name=""
               id=""
               className="border-2 py-1 rounded-md border-gray-300 w-full"
             >
-              {stationCode?.map((item, index) => (
-                <option key={index} value={item?.station_code}>
-                  {item?.StationsInfo?.station_name}
+              {stationCode && stationCode.length > 0 ? (
+                stationCode.map((item, index) => (
+                  <option key={index} value={item?.station_code}>
+                    {item?.StationsInfo?.station_name}
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>
+                  No stations available
                 </option>
-              ))}
+              )}
             </select>
           </div>
           <button
