@@ -107,6 +107,7 @@ import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import BordingModal from "../Dashboard/BordingModal";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 function CustomSelect(props) {
   const { allTrainDetails } = props;
 
@@ -150,6 +151,10 @@ function CustomSelect(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("trainNameNumber", resultData);
+    if (!allTrainDetails?.train?.find((el) => el.train_number === inputValue)) {
+      toast.error("invalid train number");
+      return;
+    }
     toggleModal();
     // if (trainNumber) {
     //   navigate(`/order-food/${trainNumber}`);

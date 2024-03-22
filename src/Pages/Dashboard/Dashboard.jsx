@@ -275,6 +275,10 @@ function Dashboard() {
       const response = await GetTrainNameList(train_number, limit, page);
       console.log("response for train list", response?.data.data);
       const trainValue = response?.data.data;
+      // if (trainValue.length === 0) {
+      //   toast.error("invalid train number");
+      //   return;
+      // }
       setTrainDetails(trainValue);
       console.log("Train Value", trainValue);
     } catch (error) {
@@ -310,12 +314,17 @@ function Dashboard() {
       // Perform a search based on the input value
       const response = await getTrainByPnr(pnr);
       const trainDetail = response?.data.data.resp;
+      if (!trainDetail) {
+        toast.error("Invalid PNR Number");
+        return;
+      }
       const serializedData = JSON.stringify(trainDetail);
       console.log("response for train detail by pnr", trainDetail);
       sessionStorage.setItem("traindetaildatabypnr", serializedData);
       navigate(`/order-food/${pnr}`);
     } catch (error) {
       console.error("Error searching:", error);
+      toast.error("no restaurant found");
     }
   };
 

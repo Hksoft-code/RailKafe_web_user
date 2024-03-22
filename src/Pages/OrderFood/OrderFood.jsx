@@ -23,6 +23,7 @@ import {
   setRestaurantName,
   setStationName,
 } from "../../Redux/Actions/menuAction";
+import { toast } from "react-toastify";
 
 function OrderFood() {
   const navigate = useNavigate();
@@ -81,6 +82,7 @@ function OrderFood() {
       console.log("restaurant info response by pnr", response);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("no restaurant found");
     }
   };
 

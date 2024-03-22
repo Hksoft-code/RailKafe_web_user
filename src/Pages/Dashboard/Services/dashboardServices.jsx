@@ -1,3 +1,4 @@
+// import { toast } from "react-toastify";
 import axiosInstance from "../../../api-config/axiosinstance";
 
 const getTrainByPnr = async (Pnr) => {
@@ -7,7 +8,7 @@ const getTrainByPnr = async (Pnr) => {
         pnr: Pnr,
       },
     });
-    console.log("response is", resp);
+    console.log("response issssssssss", resp);
     const dataObject = resp;
     return dataObject;
   } catch (error) {

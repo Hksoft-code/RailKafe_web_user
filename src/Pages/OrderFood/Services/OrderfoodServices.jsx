@@ -57,14 +57,15 @@ const getResturantsByPnr = async (pnr) => {
     const dataObject = resp;
     return dataObject;
   } catch (error) {
-    if (error.response) {
-      console.log("error is", error.response.data);
+    // if (error.response) {
+    //   console.log("error is", error.response.data);
 
-      return error.response.data;
-    } else {
-      // Handle other types of errors
-    }
-    throw error;
+    //   return error.response.data;
+    // } else {
+    //   // Handle other types of errors
+    // }
+    console.log(error, "error");
+    return error;
   }
 };
 

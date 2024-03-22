@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Food from "./../../Assets/items.png";
-import Checkbox from "@mui/material/Checkbox";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import Favorite from "@mui/icons-material/Favorite";
+// import Checkbox from "@mui/material/Checkbox";
+// import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+// import Favorite from "@mui/icons-material/Favorite";
 import ImageSlider from "./../Dashboard/ImageSlider.jsx";
 import "./menu.css";
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
+// const label = { inputProps: { "aria-label": "Checkbox demo" } };
 import { useNavigate, useParams } from "react-router-dom";
 import CustomPagination from "../Otherpages/CustomPagination.jsx";
 import { FoodMenuDetails } from "./service/FoodMenu_Get.jsx";
@@ -119,6 +119,7 @@ const Menu = () => {
     stationName,
     minimumCost
   );
+
   return (
     <>
       {restaurantDetails ? (
@@ -171,51 +172,55 @@ const Menu = () => {
                   {getCurrentContent().map((item, index) => (
                     <div
                       key={index}
-                      className="d-flex shadow-custom sm:flex-row flex-col-reverse items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
+                      className="d-flex shadow-custom sm:flex-row  items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
                     >
-                      <div className="d-flex px-3 sm:w-4/12 w-full flex-col sm:items-start items-center sm:py-1 py-2 ">
-                        <h4 className="text-black font-bold">
+                      <div className="d-flex px-3 sm:w-4/12 w-full flex-col items-start  sm:py-1 py-2 ">
+                        <h4 className="text-black font-bold text-left">
                           {item.food_name}
                         </h4>
-                        <h4 className="text-black font-bold">
+                        <h4 className="text-black font-bold text-left">
                           ₹ {item.selling_price}
                         </h4>
-                        <p className="text-justify font-semibold text-gray-400 ">
+                        <p className="text-left font-semibold text-gray-400  ">
                           {item.food_discription}
                         </p>
                         <div
                           className="bg-[#DE4D11] sm:w-fit w-full  text-lg text-white d-flex sm:justify-start justify-around items-center"
                           style={{ borderRadius: "2rem" }}
-                        >
+                        ></div>
+                      </div>
+                      <div className="d-flex flex-col items-center sm:justify-end justify-end md:justify-end">
+                        <img
+                          className="w-2/4 mb-2 sm:mr-4  p-3 bg-gray-800 rounded-lg "
+                          src={Food}
+                          alt="Food"
+                        />
+                        {/* <Checkbox
+                          style={{ color: "red" }}
+                          {...label}
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                        /> */}
+
+                        <div className="d-flex flex-row  item-baseline  justify-center">
                           <button
-                            className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
-                            style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
+                            className="bg-[#DE4D11] text-white font-semibold text-lg p-2 h-fit"
+                            // style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
                             onClick={() => dispatch(RemoveFromCart(item))}
                           >
                             -
                           </button>
-                          <h6 className="mb-0 p-2">Add</h6>
+                          <h6 className="mb-0 p-2 bg-[#DE4D11] text-white w-fit ">
+                            Add
+                          </h6>
                           <button
-                            className="bg-[#DE4D11] text-white font-semibold text-lg p-2"
-                            style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
+                            className="bg-[#DE4D11] text-white font-semibold text-lg p-2 h-fit"
+                            // style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
                             onClick={() => dispatch(AddCart(item))}
                           >
                             +
                           </button>
                         </div>
-                      </div>
-                      <div className="d-flex items-start sm:justify-end justify-end md:justify-end">
-                        <img
-                          className="w-2/4 mb-2 sm:mr-4 mr-16 p-3 bg-gray-800 rounded-lg "
-                          src={Food}
-                          alt="Food"
-                        />
-                        <Checkbox
-                          style={{ color: "red" }}
-                          {...label}
-                          icon={<FavoriteBorder />}
-                          checkedIcon={<Favorite />}
-                        />
                       </div>
                     </div>
                   ))}
