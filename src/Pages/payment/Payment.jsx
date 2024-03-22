@@ -43,14 +43,17 @@ const Payment = () => {
       setRest_ID(res_id);
     }
     const StoredDataJSON = JSON.parse(storedData);
-    const StoredDataPNRJSON = JSON.parse(DataByPnr);
+
     // const StoredRestId = JSON.parse(res_id);
     console.log("storage ", StoredDataJSON, res_id);
     if (StoredDataJSON) {
       setPlaceOrderMetaData(StoredDataJSON);
     }
-    if (StoredDataPNRJSON) {
-      setPlaceOrderMetaDataByPNR(StoredDataPNRJSON);
+    if (DataByPnr) {
+      const StoredDataPNRJSON = JSON.parse(DataByPnr);
+      if (StoredDataPNRJSON) {
+        setPlaceOrderMetaDataByPNR(StoredDataPNRJSON);
+      }
     }
   }, []);
   useEffect(() => {
