@@ -24,6 +24,7 @@ import {
   setStationName,
 } from "../../Redux/Actions/menuAction";
 import { toast } from "react-toastify";
+import Loader from "../Otherpages/Loader";
 
 function OrderFood() {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ function OrderFood() {
   const [selectedStationCode, setSelectedStationCode] = useState("");
   const [resultDataitem, setResultDataitem] = useState("");
   const [textMessage, setTestMessage] = useState("Train Number");
+  const [loading, setLoading] = useState(false);
 
   const { trainNumber } = useParams();
 
@@ -75,6 +77,7 @@ function OrderFood() {
   }, [selectedStation]);
 
   const getRestaurantByPnr = async () => {
+    setLoading(true);
     try {
       const response = await getResturantsByPnr(trainNumber);
       const restaurant = response?.data.data;
@@ -83,10 +86,13 @@ function OrderFood() {
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error("no restaurant found");
+    } finally {
+      setLoading(false);
     }
   };
 
   const getRestaurantByTrain_Number = async () => {
+    setLoading(true);
     try {
       // console.log("working1");
       const response = await getResturantsByTrain(
@@ -98,6 +104,8 @@ function OrderFood() {
       console.log("restaurant info response", response);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,6 +163,7 @@ function OrderFood() {
     <>
       <>
         <section className="mb-10">
+          {loading && <Loader/>}
           <h1 className="text-center text-black font-bold text-xl my-3 mx-auto">
             {/* Order Food in Exp {trainNumber} */}
           </h1>
@@ -167,19 +176,19 @@ function OrderFood() {
               >
                 <div className="flex justify-between items-start flex-col sm:flex-row md:mx-12">
                   <div className="flex items-start">
-                    <div className="p-3  w-fit h-auto rounded-lg mt-2 mr-5">
+                    <div className="sm:p-3 p-0  w-fit h-auto rounded-lg mt-2 mr-5">
                       <img
-                        className="w-28"
+                        className=" w-48"
                         alt=""
                         src=""
                         onError={onImageError}
                       />
                     </div>
                     <div className="flex items-start flex-col">
-                      <h2 className="mb-0 text-black font-bold sm:text-2xl text-xl text-left">
+                      <h2 className="mb-0 text-black font-bold sm:text-2xl text-lg text-left">
                         {restaurant.resturant_name}
                       </h2>
-                      <p className="mb-0 text-black font-semibold text-lg my-2">
+                      <p className="mb-0 text-black font-semibold text-base my-2">
                         Min Order: {restaurant.min_order_value}
                       </p>
                       <div className="d-flex items-center ">

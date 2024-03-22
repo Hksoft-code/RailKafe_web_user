@@ -11,7 +11,8 @@ import CustomPagination from "../Otherpages/CustomPagination.jsx";
 import { FoodMenuDetails } from "./service/FoodMenu_Get.jsx";
 // import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { AddCart, RemoveFromCart } from "../../Redux/OrderSystem.js";
+import { AddCart } from "../../Redux/OrderSystem.js";
+// import { AddCart, RemoveFromCart } from "../../Redux/OrderSystem.js";
 
 const Menu = () => {
   // const location = useLocation();
@@ -175,13 +176,13 @@ const Menu = () => {
                       className="d-flex shadow-custom sm:flex-row  items-start justify-evenly px-2 sm:w-10/12 sm:mx-auto custommargin  rounded-lg my-4 py-3"
                     >
                       <div className="d-flex px-3 sm:w-4/12 w-full flex-col items-start  sm:py-1 py-2 ">
-                        <h4 className="text-black font-bold text-left">
+                        <h4 className="text-black font-bold text-left sm:text-2xl text-xl">
                           {item.food_name}
                         </h4>
-                        <h4 className="text-black font-bold text-left">
+                        <h4 className="text-black font-bold text-left sm:text-xl text-lg">
                           ₹ {item.selling_price}
                         </h4>
-                        <p className="text-left font-semibold text-gray-400  ">
+                        <p className="text-left font-semibold text-gray-400   sm:text-xl text-lg">
                           {item.food_discription}
                         </p>
                         <div
@@ -202,7 +203,7 @@ const Menu = () => {
                           checkedIcon={<Favorite />}
                         /> */}
 
-                        <div className="d-flex flex-row  item-baseline  justify-center">
+                        {/* <div className="d-flex flex-row  item-baseline  justify-center">
                           <button
                             className="bg-[#DE4D11] text-white font-semibold text-lg p-2 h-fit"
                             // style={{ borderRadius: "2rem 0rem 0rem 2rem" }}
@@ -220,7 +221,14 @@ const Menu = () => {
                           >
                             +
                           </button>
-                        </div>
+                        </div> */}
+                        <button
+                          className="bg-[#DE4D11] text-white font-semibold text-lg p-2 h-fit"
+                          // style={{ borderRadius: "0rem 2rem 2rem 0rem" }}
+                          onClick={() => dispatch(AddCart(item))}
+                        >
+                          Add
+                        </button>
                       </div>
                     </div>
                   ))}

@@ -255,11 +255,13 @@ import CustomSelect from "../Otherpages/TrainSelectInput.jsx";
 import { toast } from "react-toastify";
 import { GetTrainNameList } from "../Otherpages/service/GetTrainName.jsx";
 import { getTrainByPnr } from "./Services/dashboardServices.jsx";
+import Loader from "../Otherpages/Loader.jsx";
 
 function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
   const [trainDetails, setTrainDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     getAllTrainlist();
   }, []);
@@ -310,6 +312,7 @@ function Dashboard() {
   };
 
   const traindetailsByPnr = async () => {
+    setLoading(true);
     try {
       // Perform a search based on the input value
       const response = await getTrainByPnr(pnr);
@@ -325,6 +328,8 @@ function Dashboard() {
     } catch (error) {
       console.error("Error searching:", error);
       toast.error("no restaurant found");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -359,6 +364,7 @@ function Dashboard() {
 
   return (
     <div>
+      {loading && <Loader />}
       <div className="uppermain1">
         <div className="d-flex items-center justify-around px-4 py-0 sm:p-12 ">
           <img className="w-2/4 sm:w-2/5" src={delicioustext} alt="Delicious" />
