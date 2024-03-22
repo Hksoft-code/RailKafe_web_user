@@ -98,12 +98,15 @@ const Menu = () => {
   const foodTypes = Array.from(
     new Set(restaurantDetails.map((item) => item.food_type))
   );
+  const foodTypesCamelCase = foodTypes.map((type) =>
+    type.replace(/\b(\w)/g, (match) => match.toUpperCase())
+  );
 
   // Create buttons data based on unique food types
   const buttonsData = [
     { name: "All", content: restaurantDetails },
-    ...foodTypes.map((type) => ({
-      name: type,
+    ...foodTypes.map((type, index) => ({
+      name: foodTypesCamelCase[index],
       content: restaurantDetails.filter((item) => item.food_type === type),
     })),
   ];

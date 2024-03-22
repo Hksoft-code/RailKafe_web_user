@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { RiGroupFill } from "react-icons/ri";
@@ -7,10 +7,24 @@ import { useSelector } from "react-redux";
 
 const CustomStepper = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [placeOrderdata, setPlaceOrderdata] = useState([]);
 
   const handleStepClick = (stepIndex) => {
     setCurrentStep(stepIndex);
   };
+  const { restaurantName } = useSelector(
+    (state) => state.menu
+  );
+  useEffect(() => {
+    const placeorder = sessionStorage.getItem("PlaceOrderData");
+    const finalData = JSON.parse(placeorder);
+    setPlaceOrderdata(finalData);
+  }, []);
+  console.log("placeOrderdata", placeOrderdata);
+  // let parsedFoodMenuItems = placeOrderdata.foodMenuItems;
+  // parsedFoodMenuItems = JSON.parse(placeOrderdata.foodMenuItems);
+  // console.log(parsedFoodMenuItems, "parsedFoodMenuItems");
+
   const { cart, totalQuantity, totalPrice } = useSelector((item) => item.order);
   const TaxPrice = parseFloat((totalPrice * 0.15).toFixed(3));
 
@@ -31,10 +45,9 @@ const CustomStepper = () => {
               currentStep === 0 && "active"
             }`}
           >
-            Biryani
-            <p className="py-1 sm:w-3/4 w-11/12 text-gray-400 font-bold">
-              South Park Roshan Tower First Floor Main Road
-            </p>
+            {restaurantName} ,{placeOrderdata?.boarding_station}
+            {/* <p className="py-1 sm:w-3/4 w-11/12 text-gray-400 font-bold">
+            </p> */}
           </span>
         </div>
         <div
@@ -47,10 +60,11 @@ const CustomStepper = () => {
               currentStep === 1 && "active"
             }`}
           >
-            Sakib
+            {placeOrderdata?.full_name},{placeOrderdata?.phone}
             <p className="py-1 sm:w-3/4 w-11/12 text-gray-400 font-bold">
-              Line No 6, Straight Mile Rd, A Block, Dhalkiidh, Jamsphedpur..
-              Jharkhand 832940, India
+              {placeOrderdata?.delivery_station_code},
+              {placeOrderdata?.coach_number},{placeOrderdata?.seat_no},
+              {placeOrderdata?.pnr_no}
             </p>
           </span>
           <div className="line"></div> {/* Vertical line */}
@@ -65,7 +79,7 @@ const CustomStepper = () => {
           <span className={`label ${currentStep === 2 && "active"}`}>
             <p className="py-1 sm:w-3/4 w-11/12 text-gray-400 text-justify font-bold">
               {" "}
-              Order delivered on Dec 21, 4:23PM
+              Order delivered on {placeOrderdata?.delivery_date_time}
             </p>
           </span>
           <div className="line"></div> {/* Vertical line */}
@@ -96,7 +110,9 @@ const CustomStepper = () => {
       </div>
       <div className="rounded-xl border-t border-gray-300 x-4 sm:w-3/4 w-11/12 mx-auto">
         <div className="d-flex justify-between items-center px-4 py-2">
-          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">Item Total</h4>
+          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
+            Item Total
+          </h4>
           <p className="text-[#de4d11] mb-0 font-bold text-lg">
             {totalQuantity}
           </p>
@@ -107,14 +123,16 @@ const CustomStepper = () => {
           </h4>
           <p className="text-[#de4d11] mb-0 font-bold text-lg">₹00.00</p>
         </div>
-        <div className="d-flex justify-between items-center px-4 py-2">
+        {/* <div className="d-flex justify-between items-center px-4 py-2">
           <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
             Discount Applied (FREEISH)
           </h4>
           <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
-        </div>
+        </div> */}
         <div className="d-flex justify-between items-center px-4 py-2">
-          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">Taxes</h4>
+          <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
+            Taxes
+          </h4>
           <p className="text-[#de4d11] mb-0 font-bold text-lg">₹{TaxPrice}</p>
         </div>
         <div className="d-flex justify-between items-center px-4 py-2">

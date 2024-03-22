@@ -120,7 +120,7 @@ const Payment = () => {
       train_no: placeOrderMetaDataByPNR?.trainInfo?.trainNo || train_no,
       foodMenuItems: JSON.stringify(transformedCart),
     };
-    sessionStorage.setItem("PlaceOrderData", payload);
+    sessionStorage.setItem("PlaceOrderData", JSON.stringify(payload));
     // sessionStorage.removeItem("placeOrderdata");
     console.log("response payload", payload);
     try {
@@ -356,12 +356,12 @@ const Payment = () => {
               </h4>
               <p className="text-[#de4d11] mb-0 font-bold text-lg">₹00.00</p>
             </div>
-            <div className="d-flex justify-between items-center px-4 py-2">
+            {/* <div className="d-flex justify-between items-center px-4 py-2">
               <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
                 Discount Applied (FREEISH)
               </h4>
               <p className="text-[#de4d11] mb-0 font-bold text-lg">₹20.00</p>
-            </div>
+            </div> */}
             <div className="d-flex justify-between items-center px-4 py-2">
               <h4 className="text-black font-bold text-lg mb-0 py-2 text-left">
                 Taxes
