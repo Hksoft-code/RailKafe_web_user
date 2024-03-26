@@ -255,34 +255,39 @@ import CustomSelect from "../Otherpages/TrainSelectInput.jsx";
 import { toast } from "react-toastify";
 import { GetTrainNameList } from "../Otherpages/service/GetTrainName.jsx";
 import { getTrainByPnr } from "./Services/dashboardServices.jsx";
-import Loader from "../Otherpages/Loader.jsx";
+// import Loader from "../Otherpages/Loader.jsx";
+import NewLoader from "../../Loader/NewLoading.jsx";
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("pnr");
   const [trainDetails, setTrainDetails] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  console.log("loading", loading);
+
   useEffect(() => {
     getAllTrainlist();
   }, []);
-  const navigate = useNavigate();
-
   const getAllTrainlist = async () => {
-    const limit = 1000;
+    const limit = 10000;
     const page = 0;
-    const train_number = 1;
+    const train_number = "";
 
     try {
+      setIsLoading(true);
       // Perform a search based on the input value
       const response = await GetTrainNameList(train_number, limit, page);
-      console.log("response for train list", response?.data.data);
-      const trainValue = response?.data.data;
-      // if (trainValue.length === 0) {
-      //   toast.error("invalid train number");
-      //   return;
-      // }
-      setTrainDetails(trainValue);
-      console.log("Train Value", trainValue);
+      if (response.data.success) {
+        setIsLoading(false);
+        console.log("response for train list", response?.data.data);
+        const trainValue = response?.data.data;
+        setTrainDetails(trainValue);
+        console.log("Train Value", trainValue);
+      } else {
+        toast.error("Something went wrong");
+      }
     } catch (error) {
       console.error("Error searching:", error);
     }
@@ -364,7 +369,8 @@ function Dashboard() {
 
   return (
     <div>
-      {loading && <Loader />}
+      {/* {loading && <Loader />} */}
+      {isLoading && NewLoader(isLoading)}
       <div className="uppermain1">
         <div className="d-flex items-center justify-around px-4 py-0 sm:p-12 ">
           <img className="w-2/4 sm:w-2/5" src={delicioustext} alt="Delicious" />

@@ -122,6 +122,7 @@ function CustomSelect(props) {
   const [trainNumber, setTrainNumber] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleKeyDown = (e) => {
+    console.log("e", e);
     if (e.keyCode === 8) {
       // Backspace key pressed
       setInputValue(""); // Clear input value
@@ -150,12 +151,22 @@ function CustomSelect(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("inputValue", inputValue);
     localStorage.setItem("trainNameNumber", resultData);
-    if (!allTrainDetails?.train?.find((el) => el.train_number === inputValue)) {
+    const result = allTrainDetails?.train?.find(
+      (el) => el.train_number === inputValue
+    );
+    console.log("result is", result);
+    if (result) {
+      toggleModal();
+    } else {
       toast.error("invalid train number");
-      return;
     }
-    toggleModal();
+    // if (allTrainDetails?.train?.find((el) => el.train_number === inputValue)) {
+    //   // toast.error("invalid train number");
+    //   return;
+    // }
+    // toggleModal();
     // if (trainNumber) {
     //   navigate(`/order-food/${trainNumber}`);
     // }
@@ -169,15 +180,17 @@ function CustomSelect(props) {
     <>
       <form
         onSubmit={handleSubmit}
-        className="w-11/12 sm:w-2/5 mx-auto flex flex-col items-center"
+        className="w-11/12 sm:w-2/5 flex flex-col items-start "
       >
-        <div className="flex flex-row items-center justify-center w-full">
+        <div
+          className={`flex mb-2 flex-row gap-[10px] items-center justify-between w-full `}
+        >
           <input
             type="text"
             list="trainNumbers"
             placeholder="Train Number"
             value={resultData || inputValue}
-            className="inputpnr w-full"
+            className="inputpnr text-[14px] font-semibold w-[80%]"
             required
             onKeyDown={handleKeyDown} // Handle keydown event
             onChange={handleInputChange}
@@ -187,7 +200,7 @@ function CustomSelect(props) {
           />
           <button
             type="submit"
-            className="button1 my-4"
+            className="bg-[#de4d11] text-[20px px-[16px] py-[8px] text-white rounded-full"
             // onClick={() => toggleModal}
           >
             Submit
@@ -198,21 +211,22 @@ function CustomSelect(props) {
         </div>
 
         {listOpen && (
-          <ul className="mt-1 pl-0 w-10/12 bg-white border border-gray-300 rounded-md shadow-md">
+          <div className=" py-2 px-3 w-full minsm:w-[80%] flex flex-col max-h-[250px] sm:max-h-[300px] overflow-y-auto border bg-white border-gray-300 rounded-md shadow-md trainlistscrollbar">
             {filteredData.map((train) => (
-              <li
+              <span
                 key={train.id}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                className=" hover:bg-gray-200 px-3 py-2 flex items-center cursor-pointer text-[14px] font-semibold"
                 onClick={() => {
                   setTrainNumber(train.train_number);
                   setListOpen(!listOpen);
                   setResultData(`${train.train_name} - ${train.train_number}`);
+                  setInputValue(train.train_number);
                 }}
               >
-                {train.train_name} - {train.train_number}
-              </li>
+                {train.train_number} / {train.train_name}
+              </span>
             ))}
-          </ul>
+          </div>
         )}
       </form>
     </>

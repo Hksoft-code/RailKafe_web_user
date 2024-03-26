@@ -1,15 +1,11 @@
-// import food from "./../../Assets/items.png";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
-// import Img from "./../../Assets/items.png";
 import "./orderfood.css";
 import NonVeg from "./../../Assets/nonveg.png";
 import Veg from "./../../Assets/veg.png";
 import Img1 from "./../../Assets/offer1 (3).jpg";
 import Img2 from "./../../Assets/offer1 (4).jpg";
 import Img3 from "./../../Assets/offer1 (5).jpg";
-// import TrainInfo from "../Otherpages/TrainInfo";
-// import BoardingStation from "../BoardingStation";
 import { useEffect, useState } from "react";
 import {
   getResturantsByPnr,
@@ -24,7 +20,8 @@ import {
   setStationName,
 } from "../../Redux/Actions/menuAction";
 import { toast } from "react-toastify";
-import Loader from "../Otherpages/Loader";
+// import Loader from "../Otherpages/Loader";
+import NewLoader from "../../Loader/NewLoading";
 
 function OrderFood() {
   const navigate = useNavigate();
@@ -77,7 +74,7 @@ function OrderFood() {
   }, [selectedStation]);
 
   const getRestaurantByPnr = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await getResturantsByPnr(trainNumber);
       const restaurant = response?.data.data;
@@ -87,7 +84,7 @@ function OrderFood() {
       console.error("Error fetching data:", error);
       toast.error("no restaurant found");
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -152,7 +149,11 @@ function OrderFood() {
       console.error("Error fetching data:", error);
     }
   };
-  console.log("ressssssssssssssssssssssssssssssssssssssssssss", restaurantList);
+  console.log(
+    "ressssssssssssssssssssssssssssssssssssssssssss",
+    restaurantList,
+    loading
+  );
   // console.log("Stationsss", stationCode);
   // const today = new Date();
 
@@ -161,83 +162,99 @@ function OrderFood() {
 
   return (
     <>
-      <>
-        <section className="mb-10">
-          {loading && <Loader/>}
-          <h1 className="text-center text-black font-bold text-xl my-3 mx-auto">
-            {/* Order Food in Exp {trainNumber} */}
-          </h1>
-          {/*  */}
-          {restaurantList ? (
-            restaurantList.map((restaurant, index) => (
-              <div
-                key={index}
-                className="shadow-custom my-4 mt-8 p-3 rounded-lg mx-3"
-              >
-                <div className="flex justify-between items-start flex-col sm:flex-row md:mx-12">
-                  <div className="flex items-start">
-                    <div className="sm:p-3 p-0  w-fit h-auto rounded-lg mt-2 mr-5">
-                      <img
-                        className=" w-48"
-                        alt=""
-                        src=""
-                        onError={onImageError}
-                      />
-                    </div>
-                    <div className="flex items-start flex-col">
-                      <h2 className="mb-0 text-black font-bold sm:text-2xl text-lg text-left">
-                        {restaurant.resturant_name}
-                      </h2>
-                      <p className="mb-0 text-black font-semibold text-base my-2">
-                        Min Order: {restaurant.min_order_value}
-                      </p>
-                      <div className="d-flex items-center ">
-                        <div className="d-flex bg-[#356D09FF] items-center p-2 mt-2 mr-2">
-                          <p className="font-semibold text-white mb-0 mr-1">
-                            {restaurant.rating}
-                          </p>{" "}
-                          <FaStar style={{ color: "gold" }} />
+      <section className="mb-6 sm:mb-8">
+        {loading && NewLoader(loading)}
+        <h1 className="text-center text-black font-bold text-xl my-3 mx-auto">
+          {/* Order Food in Exp {trainNumber} */}
+        </h1>
+        {/*  */}
+        {restaurantList ? (
+          restaurantList.map((restaurant, index) => (
+            <div
+              key={index}
+              className="flex flex-col justify-center items-center"
+            >
+              <div className=" mb-2 mt-4">
+                <div>
+                  <h2 className="text-[20px] mb-[10px] font-medium uppercase">
+                    RESTAURANTS AT {restaurant?.stationInfo?.station_name}
+                  </h2>
+                  <p className="text-gray-400">
+                    HALT: 05 MINS. | S.T.A. 09:35 | E.T.A. 09:35
+                  </p>
+                </div>
+              </div>
+              <div className="restaurant_box">
+                <p className="text-[20px] mb-[10px] font-medium uppercase">
+                  {restaurant?.resturant_name ?? "N/A"}
+                </p>
+                <div className="flex gap-2">
+                  <div>
+                    <img
+                      className="w-[220px] h-[200px]"
+                      alt=""
+                      src=""
+                      onError={onImageError}
+                    />
+                  </div>
+                  <div className="flex flex-col  justify-between items-start">
+                    <p className="font-medium text-[14px] text-[#4c4e52]">
+                      Station: {restaurant?.stationInfo?.station_name}
+                    </p>
+                    <p className="font-normal text-[13px] text-[#4c4e52] text-left">
+                      North Indian, Continental, Chinese, Rajasthani, Gujrati
+                    </p>
+                    <div className="flex flex-col w-full">
+                      <div className="flex justify-between flex-col">
+                        <div className="flex justify-start">
+                          <p className="mb-0 text-[13px] font-bold">
+                            Min. Order : {restaurant?.min_order_value ?? "N?A"}
+                          </p>
                         </div>
-                        <p className="text-gray-500 mb-0">
-                          {restaurant.rating_count} rating
-                        </p>
+                        <div className="flex justify-between">
+                          <div className=" w-fit h-auto rounded-lg">
+                            <p className=" mb-0">
+                              {restaurant.food_type === "non-veg" ? (
+                                <img className="w-7 h-7" src={NonVeg} alt="" />
+                              ) : (
+                                <img className="w-7 h-7" src={Veg} alt="" />
+                              )}
+                            </p>
+                          </div>
+                          <div className="d-flex bg-green-700 items-center  h-8 rounded-lg w-auto px-2">
+                            <p className="font-semibold text-white mb-0 mr-1">
+                              {restaurant.rating}
+                            </p>{" "}
+                            <FaStar style={{ color: "gold" }} />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col items-end justify-between sm:h-40 h-auto sm:w-fit w-full sm:flex-row">
-                    <div className=" w-fit h-auto rounded-lg">
-                      <p className=" mb-0">
-                        {restaurant.food_type === "non-veg" ? (
-                          <img className="w-10" src={NonVeg} alt="" />
-                        ) : (
-                          <img className="w-10" src={Veg} alt="" />
-                        )}
-                      </p>
-                    </div>
-                  </div>
                 </div>
-                <button
-                  onClick={() => {
-                    HandleRestId(restaurant);
-                    dispatch(setRestaurantName(restaurant.resturant_name));
-                    dispatch(setMinimumCost(restaurant.min_order_value));
-                    dispatch(setStationName(restaurant.station_code));
-                  }}
-                  className="py-2 bg-[#de4d11] text-white font-semibold text-lg sm:w-11/12 w-full my-4 rounded-full sm:mx-5 mx-auto"
-                >
-                  Food Menu
-                </button>
+                <div>
+                  <button
+                    onClick={() => {
+                      HandleRestId(restaurant);
+                      dispatch(setRestaurantName(restaurant.resturant_name));
+                      dispatch(setMinimumCost(restaurant.min_order_value));
+                      dispatch(setStationName(restaurant.station_code));
+                    }}
+                    className="py-2 bg-[#ff645a;] text-white font-semibold text-lg w-full mt-2  rounded-full  mx-auto"
+                  >
+                    Food Menu
+                  </button>
+                </div>
               </div>
-            ))
-          ) : (
-            <p>
-              No restaurant found for the given {textMessage} {trainNumber}.
-            </p>
-          )}
-          {/* <TrainInfo trainname=" Purushottam Exp" trainnumber={trainNumber} /> */}
-        </section>
-      </>
-
+            </div>
+          ))
+        ) : (
+          <p className=" text-[19px] sm:text-[23px] font-extrabold">
+            No restaurant found for the given {textMessage} {trainNumber}.
+          </p>
+        )}
+        {/* <TrainInfo trainname=" Purushottam Exp" trainnumber={trainNumber} /> */}
+      </section>
       <div>
         <section className="mb-24">
           <Link

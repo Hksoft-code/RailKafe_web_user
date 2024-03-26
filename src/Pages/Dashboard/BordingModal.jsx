@@ -6,6 +6,8 @@ import { ImCross } from "react-icons/im";
 import { getStationsByTrainNumber } from "../OrderFood/Services/OrderfoodServices";
 import { useDispatch } from "react-redux";
 import { setStationCodeforTrain } from "../../Redux/Actions/stationAction";
+import Loader from "../../Loader/NewLoading";
+import { toast } from "react-toastify";
 const BordingModal = ({ trainNum, toggleModal }) => {
   console.log(trainNum, "details of pnr");
   const [selectedStationCode, setSelectedStationCode] = useState("");
@@ -14,6 +16,7 @@ const BordingModal = ({ trainNum, toggleModal }) => {
   const [stationData, setStationData] = useState([]);
   // const [hide, sethide] = useState(true);
   const [stationCode, setStationCode] = useState();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const todayy = new Date();
   const year = todayy.getFullYear();
@@ -46,9 +49,13 @@ const BordingModal = ({ trainNum, toggleModal }) => {
 
   const getStationByTrain_Number = async () => {
     try {
+      setLoading(true);
       const response = await getStationsByTrainNumber(trainNum);
-      const dataForm = response?.data?.data;
-      setStationCode(dataForm?.stations);
+      if (response.data.success) {
+        setLoading(false)
+        const dataForm = response?.data?.data;
+        setStationCode(dataForm?.stations);
+      }
       console.log("station info response", response);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -70,6 +77,10 @@ const BordingModal = ({ trainNum, toggleModal }) => {
   };
 
   const handleSubmit = () => {
+    if(!stationData?.station_code){
+      toast.error("Please select the boarding station");
+      return;
+    }
     const payload = {
       delivery_date_time: Datee,
       boarding_station: stationData?.station_code,
@@ -91,11 +102,18 @@ const BordingModal = ({ trainNum, toggleModal }) => {
 
   // Format the date in YYYY-MM-DD format for the input field
   const formattedDate = today.toISOString().split("T")[0];
+  console.log("Boarding Date:", stationData);
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
+      {
+        loading && Loader(loading)
+      }
       <div className="absolute inset-0 bg-gray-500 opacity-65"></div>
       <div className="bg-white rounded-lg p-8 z-10 sm:w-2/5 w-11/12 ">
-        <ImCross className="mb-2 text-right ml-auto" onClick={toggleModal} />
+        <ImCross
+          className="mb-2 text-right ml-auto cursor-pointer"
+          onClick={toggleModal}
+        />
         <form action="" className="">
           <div className="flex flex-col items-start w-full sm:mx-3 mx-auto">
             <label htmlFor="" className="font-semibold mb-1">
@@ -133,6 +151,7 @@ const BordingModal = ({ trainNum, toggleModal }) => {
               id=""
               className="border-2 py-1 rounded-md border-gray-300 w-full"
             >
+              <option selected>- -Select station- -</option>
               {stationCode && stationCode.length > 0 ? (
                 stationCode.map((item, index) => (
                   <option key={index} value={item?.station_code}>

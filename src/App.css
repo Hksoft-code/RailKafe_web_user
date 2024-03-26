@@ -62,3 +62,44 @@
     transform: rotate(360deg);
   }
 }
+
+ 
+.trainlistscrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: block;
+  margin-right: 5px;
+}
+
+.trainlistscrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+  display: block;
+}
+
+.trainlistscrollbar::-webkit-scrollbar-track {
+  background-color: gainsboro;
+  border-radius: 1px;
+}
+
+/* Handle */
+
+.trainlistscrollbar::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 10px;
+}
+.trainlistscrollbar::-webkit-scrollbar-track-piece {
+  margin-right: 20px; /* Adjust as needed */
+}
+.restaurant_box{
+  display: block !important;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(46,46,46,.4);
+  box-shadow: 0 1px 2px 0 rgba(46,46,46,.4);
+  border: 1px solid #d5d6d9;
+  padding:10px;
+  border-radius: 10px;
+  background: #fff;
+  margin-top: 12px;
+  width: inherit;
+  cursor: pointer;
+  width: 550px;
+}

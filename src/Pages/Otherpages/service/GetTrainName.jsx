@@ -15,7 +15,6 @@ const GetTrainNameList = async (trainNumber, limit, page) => {
   } catch (error) {
     if (error.response) {
       console.log("error is", error.response.data);
-
       return error.response.data;
     } else {
       // Handle other types of errors
